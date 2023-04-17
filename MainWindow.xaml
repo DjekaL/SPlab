@@ -47,24 +47,12 @@
                 <Label Grid.Column="0" Grid.Row="0" Name="WidthLabel" Content="Ширина:" Margin="0,0,4,0"/>
                 <Label Grid.Column="0" Content="Глубина:" Margin="0,66,4,0" Grid.RowSpan="2"/>
                 <Label Grid.Column="0" Grid.Row="1" Content="Длина:" Margin="0,66,4,66" Grid.RowSpan="3"/>
-                <Label Grid.Column="0" Grid.Row="3" Margin="0,0,4,66" Grid.RowSpan="2">
-                    <Label.Content>
-                        <TextBlock TextWrapping="Wrap">
-                            Производительность:
-                        </TextBlock>
-                    </Label.Content>
-                </Label>
-                <Label Grid.Column="0" Grid.Row="4" Content="Темпeратура:" Margin="0,0,4,66" Grid.RowSpan="2"/>
-                <Label Grid.Column="0" Grid.Row="5" Content="Вязкость:" Margin="0,0,4,0"/>
                 <Label x:Name="eff" Grid.Column="1" Grid.Row="3" Content="sample" Grid.ColumnSpan="2" Margin="0,0,31,66" Grid.RowSpan="2"/>
                 <Label x:Name="T" Grid.Column="1" Grid.Row="4" Content="sample" Grid.ColumnSpan="2" Margin="0,0,31,66" Grid.RowSpan="2"/>
                 <Label x:Name="visc" Grid.Column="1" Grid.Row="5" Content="sample" Grid.ColumnSpan="2" Margin="0,0,31,0"/>
                 <Label Grid.Column="2" Grid.Row="0" Content="м"/>
                 <Label Grid.Column="2" Content="м" Margin="0,66,0,0" Grid.RowSpan="2"/>
                 <Label Grid.Column="2" Grid.Row="1" Content="м" Margin="0,66,0,66" Grid.RowSpan="3"/>
-                <Label Grid.Column="2" Grid.Row="3" Content="кг/ч" Margin="0,0,0,66" Grid.RowSpan="2"/>
-                <Label Grid.Column="2" Grid.Row="4" Content="°С" Margin="0,0,0,66" Grid.RowSpan="2"/>
-                <Label Grid.Column="2" Grid.Row="5" Content="Па*с"/>
                 <TextBox x:Name="W" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
                          Width="66" Margin="0,5,0,0" TextChanged="CheckInputChange" Height="18" />
                 <TextBox x:Name="H" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
