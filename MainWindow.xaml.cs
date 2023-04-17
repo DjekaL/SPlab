@@ -34,6 +34,7 @@ namespace Don_tKnowHowToNameThis
             step.Text = calc._step.ToString();*/
             tableValueButton.IsEnabled = false;
             target.Background = Brushes.LightPink;
+            materialComboBox.SelectedIndex = 0;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
