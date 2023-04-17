@@ -1,5 +1,6 @@
 ﻿using LiveChartsCore;
 using LiveChartsCore.Defaults;
+using LiveChartsCore.Kernel;
 using LiveChartsCore.SkiaSharpView;
 using System;
 using System.Collections.Generic;
@@ -22,12 +23,6 @@ namespace Don_tKnowHowToNameThis {
             for (int i = 0; i < x.Count; i++) {
                 values.Add(new ObservablePoint(x[i], y[i]));
             }
-            serie.Values = values;
-            serie.Fill = null;
-            serie.GeometrySize = 3;
-            serie.Name = serieName;
-            Series.Add(serie);
-
             XAxes = new Axis[] {
                 new Axis {
                     Name = "Координата по длине канала, м"
@@ -39,6 +34,12 @@ namespace Don_tKnowHowToNameThis {
                     Name = yAxisTitle
                 }
             };
+            serie.Values = values;
+            serie.Fill = null;
+            serie.GeometrySize = 3;
+            serie.Name = serieName;
+            serie.TooltipLabelFormatter = (chartPoint) => $"{YAxes[0].Name}: {chartPoint.PrimaryValue}, {XAxes[0].Name}: {chartPoint.SecondaryValue}";
+            Series.Add(serie);
         }
     }
 }
