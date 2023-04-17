@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Привет, Женя :D" Height="500" Width="1100"
         Loaded="Window_Loaded">
-    <Grid ShowGridLines="True">
+    <Grid ShowGridLines="False">
         <Grid.RowDefinitions>
             <RowDefinition Height="30px"></RowDefinition>
             <RowDefinition Height="30px"></RowDefinition>
@@ -16,7 +16,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="140*"></ColumnDefinition>
             <ColumnDefinition Width="170*"></ColumnDefinition>
-            <ColumnDefinition Width="120*"></ColumnDefinition>
+            <ColumnDefinition Width="170*"></ColumnDefinition>
             <ColumnDefinition Width="250*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Menu Grid.Row="0">
@@ -29,37 +29,78 @@
             <SystemGesture:String>Полиэтилен высокой плотности</SystemGesture:String>
             <SystemGesture:String>da</SystemGesture:String>
         </ComboBox>
-        <GroupBox Header="Геометрические параметры:" Grid.Row="2" Grid.Column="0" Margin="2, 2, 2, 2">
+        <GroupBox Header="Варьируемые параметры" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="2, 2, 2, 2">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80*"></ColumnDefinition>
-                    <ColumnDefinition Width="66*"></ColumnDefinition>
-                    <ColumnDefinition Width="35*"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
-                <Label Grid.Column="0" Grid.Row="0" Name="WidthLabel" Content="Ширина:" Margin="0,0,4,0"/>
-                <Label Grid.Column="0" Content="Глубина:" Margin="0,66,4,0" Grid.RowSpan="2"/>
-                <Label Grid.Column="0" Grid.Row="1" Content="Длина:" Margin="0,66,4,66" Grid.RowSpan="3"/>
+                <GroupBox Header="Геометрические параметры:" Grid.Column="0" Margin="2, 2, 2, 2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80*"></ColumnDefinition>
+                            <ColumnDefinition Width="66*"></ColumnDefinition>
+                            <ColumnDefinition Width="35*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.Row="0" Name="WidthLabel" Content="Ширина:" Margin="0,0,4,0"/>
+                        <Label Grid.Column="0" Content="Глубина:" Margin="0,66,4,0" Grid.RowSpan="2"/>
+                        <Label Grid.Column="0" Grid.Row="1" Content="Длина:" Margin="0,66,4,66" Grid.RowSpan="3"/>
 
-                <Label Grid.Column="2" Grid.Row="0" Content="м"/>
-                <Label Grid.Column="2" Content="м" Margin="0,66,0,0" Grid.RowSpan="2"/>
-                <Label Grid.Column="2" Grid.Row="1" Content="м" Margin="0,66,0,66" Grid.RowSpan="3"/>
-                <TextBox x:Name="W" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                        <Label Grid.Column="2" Grid.Row="0" Content="м"/>
+                        <Label Grid.Column="2" Grid.Row="1" Content="м"/>
+                        <Label Grid.Column="2" Grid.Row="2" Content="м"/>
+                        <TextBox x:Name="W" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
                          Width="66" Margin="0,5,0,0" TextChanged="CheckInputChange" Height="18" />
-                <TextBox x:Name="H" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                        <TextBox x:Name="H" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
                          Width="66" Margin="0,5,0,0" TextChanged="CheckInputChange" Height="18"/>
-                <TextBox x:Name="L" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                        <TextBox x:Name="L" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
                          Width="66" Margin="0,5,0,0" AutomationProperties.Name="L" TextChanged="CheckInputChange" Height="18"/>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Grid.Column="1" Header="Режимные параметры:" Margin="2, 2, 2, 2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.Row="0">
+                            <Label.Content>
+                                <TextBlock TextWrapping="Wrap">
+                            Скорость крышки:
+                                </TextBlock>
+                            </Label.Content>
+                        </Label>
+                        <Label Grid.Column="0" Grid.Row="1">
+                            <Label.Content>
+                                <TextBlock TextWrapping="Wrap">
+                                Температура крышки:
+                                </TextBlock>
+                            </Label.Content>
+                        </Label>
+                        <Label Name="VelocityMeasuresTextBox" Grid.Column="2" Grid.Row="0" Content="м/с"/>
+                        <Label Grid.Column="2" Grid.Row="1" Content="°С"/>
+                        <TextBox x:Name="Vu" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="{Binding Path=ActualWidth, ElementName=VelocityMeasuresTextBox}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
+                        <TextBox x:Name="Tu" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="{Binding Path=ActualWidth, ElementName=VelocityMeasuresTextBox}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
+                    </Grid>
+                </GroupBox>
             </Grid>
         </GroupBox>
-        <GroupBox Grid.Column="1" Header="Параметры свойств материала:" Grid.Row="2" Margin="2, 2, 2, 2">
+        <GroupBox Header="Параметры свойств материала" Grid.Row="2" Grid.Column="2" Margin="2, 2, 2, 2">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1.3*"></ColumnDefinition>
@@ -97,12 +138,8 @@
                          Width="{Binding Path=ActualWidth, ElementName=DensityMeasureLabel}" Margin="0,5,0,0" TextChanged="CheckInputChange" />
             </Grid>
         </GroupBox>
-        <Grid Grid.Column="2" Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <GroupBox Grid.Row="0" Header="Режимные параметры:" Margin="2, 2, 2, 2">
+        <GroupBox Header="Настраиваемые параметры" Grid.Row="2" Grid.Column="3" Margin="2, 2, 2, 2">
+            <GroupBox Header="Эмпирические коэффициенты математической модели:">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -110,39 +147,7 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Column="0" Grid.Row="0">
-                        <Label.Content>
-                            <TextBlock TextWrapping="Wrap">
-                            Скорость крышки:
-                            </TextBlock>
-                        </Label.Content>
-                    </Label>
-                    <Label Grid.Column="0" Grid.Row="1">
-                        <Label.Content>
-                            <TextBlock TextWrapping="Wrap">
-                                Температура крышки:
-                            </TextBlock>
-                        </Label.Content>
-                    </Label>
-                    <Label Name="VelocityMeasuresTextBox" Grid.Column="2" Grid.Row="0" Content="м/с"/>
-                    <Label Grid.Column="2" Grid.Row="1" Content="°С"/>
-                    <TextBox x:Name="Vu" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
-                         Width="{Binding Path=ActualWidth, ElementName=VelocityMeasuresTextBox}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
-                    <TextBox x:Name="Tu" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
-                         Width="{Binding Path=ActualWidth, ElementName=VelocityMeasuresTextBox}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
-                </Grid>
-            </GroupBox>
-            <GroupBox Grid.Row="1" Header="Параметры метода решения:" Margin="2, 2, 2, 2">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.2*"></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <Label Grid.Column="0" Grid.Row="0">
@@ -155,73 +160,71 @@
                     <Label Grid.Column="2" Content="м"/>
                     <TextBox x:Name="step" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
                          Width="{Binding Path=ActualWidth, ElementName=VelocityMeasuresTextBox}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
+                    <Grid Grid.Row="1" Grid.ColumnSpan="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.3*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="0.9*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.Row="0">
+                            <Label.Content>
+                                <TextBlock TextWrapping="Wrap">
+                            Коэффициент консистенции при температуре приведения:
+                                </TextBlock>
+                            </Label.Content>
+                        </Label>
+                        <Label Grid.Column="0" Grid.Row="1">
+                            <Label.Content>
+                                <TextBlock TextWrapping="Wrap">
+                            Энергия активации вязкого течения материала:
+                                </TextBlock>
+                            </Label.Content>
+                        </Label>
+                        <Label Grid.Column="0" Grid.Row="2">
+                            <Label.Content>
+                                <TextBlock TextWrapping="Wrap">
+                            Температура приведения:
+                                </TextBlock>
+                            </Label.Content>
+                        </Label>
+                        <Label Grid.Column="0" Grid.Row="3">
+                            <Label.Content>
+                                <TextBlock TextWrapping="Wrap">
+                            Индекс течения:
+                                </TextBlock>
+                            </Label.Content>
+                        </Label>
+                        <Label Grid.Column="0" Grid.Row="4">
+                            <Label.Content>
+                                <TextBlock TextWrapping="Wrap">
+                            Коэффициент теплоотдачи от крышки:
+                                </TextBlock>
+                            </Label.Content>
+                        </Label>
+                        <Label Grid.Column="2" Grid.Row="0" Content="Па*с^n"/>
+                        <Label Grid.Column="2" Grid.Row="1" Content="Дж/моль"/>
+                        <Label Grid.Column="2" Grid.Row="2" Content="°С"/>
+                        <Label Grid.Column="2" Grid.Row="4" Content="Вт/(м^2*°С)"/>
+                        <TextBox x:Name="mu0" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="{Binding Path=ActualWidth, ElementName=WidthLabel}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
+                        <TextBox x:Name="Ea" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="{Binding Path=ActualWidth, ElementName=WidthLabel}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
+                        <TextBox x:Name="Tr" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="{Binding Path=ActualWidth, ElementName=WidthLabel}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
+                        <TextBox x:Name="n" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="{Binding Path=ActualWidth, ElementName=WidthLabel}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
+                        <TextBox x:Name="alphaU" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="{Binding Path=ActualWidth, ElementName=WidthLabel}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
+                    </Grid>
                 </Grid>
             </GroupBox>
-        </Grid>
-        <GroupBox Grid.Column="3" Header="Эмпирические коэффициенты:" Grid.Row="2" Margin="2, 2, 2, 2">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.3*"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition Width="0.9*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
-                <Label Grid.Column="0" Grid.Row="0">
-                    <Label.Content>
-                        <TextBlock TextWrapping="Wrap">
-                            Коэффициент консистенции при температуре приведения:
-                        </TextBlock>
-                    </Label.Content>
-                </Label>
-                <Label Grid.Column="0" Grid.Row="1">
-                    <Label.Content>
-                        <TextBlock TextWrapping="Wrap">
-                            Энергия активации вязкого течения материала:
-                        </TextBlock>
-                    </Label.Content>
-                </Label>
-                <Label Grid.Column="0" Grid.Row="2">
-                    <Label.Content>
-                        <TextBlock TextWrapping="Wrap">
-                            Температура приведения:
-                        </TextBlock>
-                    </Label.Content>
-                </Label>
-                <Label Grid.Column="0" Grid.Row="3">
-                    <Label.Content>
-                        <TextBlock TextWrapping="Wrap">
-                            Индекс течения:
-                        </TextBlock>
-                    </Label.Content>
-                </Label>
-                <Label Grid.Column="0" Grid.Row="4">
-                    <Label.Content>
-                        <TextBlock TextWrapping="Wrap">
-                            Коэффициент теплоотдачи от крышки:
-                        </TextBlock>
-                    </Label.Content>
-                </Label>
-                <Label Grid.Column="2" Grid.Row="0" Content="Па*с^n"/>
-                <Label Grid.Column="2" Grid.Row="1" Content="Дж/моль"/>
-                <Label Grid.Column="2" Grid.Row="2" Content="°С"/>
-                <Label Grid.Column="2" Grid.Row="4" Content="Вт/(м^2*°С)"/>
-                <TextBox x:Name="mu0" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
-                         Width="{Binding Path=ActualWidth, ElementName=WidthLabel}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
-                <TextBox x:Name="Ea" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
-                         Width="{Binding Path=ActualWidth, ElementName=WidthLabel}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
-                <TextBox x:Name="Tr" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
-                         Width="{Binding Path=ActualWidth, ElementName=WidthLabel}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
-                <TextBox x:Name="n" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
-                         Width="{Binding Path=ActualWidth, ElementName=WidthLabel}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
-                <TextBox x:Name="alphaU" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
-                         Width="{Binding Path=ActualWidth, ElementName=WidthLabel}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
-            </Grid>
         </GroupBox>
     </Grid>
 </Window>
