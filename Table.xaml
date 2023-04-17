@@ -18,7 +18,7 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <GroupBox Header="Критериальные параметры" Grid.Column="0">
-                <Grid ShowGridLines="True">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
@@ -47,11 +47,22 @@
                 </Grid>
             </GroupBox>
             <GroupBox Header="Параметры состояния процесса" Grid.Column="1">
-                <Grid ShowGridLines="True">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.1*"></ColumnDefinition>
+                        <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Content="Затарты ОЗУ:"/>
+                    <Label x:Name="RAM" Grid.Column="1" Grid.Row="0" Content="sample"/>
+                    <Label Grid.Column="2" Grid.Row="0" Content="КБ"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Время вычислений:"/>
+                    <Label x:Name="time" Grid.Column="1" Grid.Row="1" Content="sample"/>
+                    <Label Grid.Column="2" Grid.Row="1" Content="мс"/>
                 </Grid>
             </GroupBox>
         </Grid>
