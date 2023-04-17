@@ -30,7 +30,7 @@ namespace Don_tKnowHowToNameThis {
 
             XAxes = new Axis[] {
                 new Axis {
-                    Name = "Длина канала, м"
+                    Name = "Координата по длине канала, м"
                 }
             };
 

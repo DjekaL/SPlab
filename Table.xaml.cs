@@ -29,13 +29,10 @@ namespace Don_tKnowHowToNameThis
             table.ItemsSource = data;
 
             Chart temperatureChart = new Chart(zCoords, temperature, "Температура, °C", "Температура");
-            ChartWindow tempChartWindow = new ChartWindow(temperatureChart);
+            tempChart.DataContext = temperatureChart;
 
             Chart viscosityChart = new Chart(zCoords, viscosity, "Вязкость, Па * с", "Вязкость");
-            ChartWindow visChartWindow = new ChartWindow(viscosityChart);
-
-            tempChartWindow.Show();
-            visChartWindow.Show();
+            visChart.DataContext = viscosityChart;
         }
     }
 }
