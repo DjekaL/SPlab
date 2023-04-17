@@ -18,7 +18,7 @@ namespace Don_tKnowHowToNameThis
         Calc calc = new Calc();
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            p.Text = calc._p.ToString();
+            /*p.Text = calc._p.ToString();
             c.Text = calc._c.ToString();
             T0.Text = calc._T0.ToString();
             Vu.Text = calc._Vu.ToString();
@@ -31,7 +31,9 @@ namespace Don_tKnowHowToNameThis
             W.Text = calc._W.ToString();
             H.Text = calc._H.ToString();
             L.Text = calc._L.ToString();
-            step.Text = calc._step.ToString();
+            step.Text = calc._step.ToString();*/
+            tableValueButton.IsEnabled = false;
+            target.Background = Brushes.LightPink;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -75,12 +77,51 @@ namespace Don_tKnowHowToNameThis
                 a.Foreground = Brushes.Black;
                 a.Background = Brushes.White;
                 tableValueButton.IsEnabled = true;
+                target.Background = Brushes.White;
             }
             else
             {
                 a.Foreground = Brushes.DarkRed;
                 a.Background= Brushes.LightPink;
                 tableValueButton.IsEnabled = false;
+            }
+        }
+
+        private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (materialComboBox.SelectedIndex == 0)
+            {
+                p.Text = calc._p.ToString();
+                c.Text = calc._c.ToString();
+                T0.Text = calc._T0.ToString();
+                Vu.Text = calc._Vu.ToString();
+                Tu.Text = calc._Tu.ToString();
+                mu0.Text = calc._mu0.ToString();
+                Ea.Text = calc._Ea.ToString();
+                Tr.Text = calc._Tr.ToString();
+                n.Text = calc._n.ToString();
+                alphaU.Text = calc._alphaU.ToString();
+                W.Text = calc._W.ToString();
+                H.Text = calc._H.ToString();
+                L.Text = calc._L.ToString();
+                step.Text = calc._step.ToString();
+            }
+            else
+            {
+                p.Text = "";
+                c.Text = "";
+                T0.Text = "";
+                Vu.Text = "";
+                Tu.Text = "";
+                mu0.Text = "";
+                Ea.Text = "";
+                Tr.Text = "";
+                n.Text = "";
+                alphaU.Text = "";
+                W.Text = "";
+                H.Text = "";
+                L.Text = "";
+                step.Text = "";
             }
         }
     }
