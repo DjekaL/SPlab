@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Don_tKnowHowToNameThis
 {
@@ -80,7 +81,7 @@ namespace Don_tKnowHowToNameThis
             mem = GC.GetTotalMemory(false);
             Stopwatch t = new Stopwatch();
             t.Start();
-
+            Thread.Sleep(10000);
             calc.MaterialShearStrainRate();
             calc.SpecificHeatFluxes();
             calc.VolumeFlowRateOfMaterialFlowInTheChannel();
@@ -97,6 +98,7 @@ namespace Don_tKnowHowToNameThis
             mem = (GC.GetTotalMemory(false) - mem) / 1024.0;
             Lostmem = mem;
             LostTime = time;
+            calc.Efficiency();
             this.zCoords = zCoord;
             this.temperature = temperature;
             this.viscosity = viscosity;
@@ -116,10 +118,9 @@ namespace Don_tKnowHowToNameThis
 
             return n;
         }
-        public int Efficiency()
+        private void Efficiency()
         {
             Q = (int)Math.Round(_p * Qch * 3600, 0);
-            return Q;
         }
     }
 }

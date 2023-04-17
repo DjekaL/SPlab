@@ -34,6 +34,7 @@ namespace Don_tKnowHowToNameThis
             L.Text = calc._L.ToString();
             step.Text = calc._step.ToString();*/
             tableValueButton.IsEnabled = false;
+            saveToFile.IsEnabled = false;
             target.Background = Brushes.LightPink;
             materialComboBox.SelectedIndex = 0;
         }
@@ -69,9 +70,10 @@ namespace Don_tKnowHowToNameThis
             //Table table = new Table(zCoord, temperature, viscosity);
             Table table = new Table(calc);
             table.Show();
-/*            eff.Content = calc.Efficiency().ToString();
-            T.Content = Math.Round(temperature[temperature.Count - 1], 2).ToString();
-            visc.Content = Math.Round(viscosity[viscosity.Count - 1], 2).ToString();*/
+            saveToFile.IsEnabled = true;
+            /*            eff.Content = calc.Efficiency().ToString();
+                        T.Content = Math.Round(temperature[temperature.Count - 1], 2).ToString();
+                        visc.Content = Math.Round(viscosity[viscosity.Count - 1], 2).ToString();*/
         }
 
         private void CheckInputChange(object sender, System.Windows.Controls.TextChangedEventArgs e)

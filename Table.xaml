@@ -70,8 +70,8 @@
             <TabItem Header="Таблица">
                 <DataGrid x:Name="table" AutoGenerateColumns="False" >
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Path= _z}" Header="Координата по длине канала, м"  Width="200"/>
-                        <DataGridTextColumn Binding="{Binding Path= _T}" Header="Температура, °С" Width="200"/>
+                        <DataGridTextColumn Binding="{Binding Path= _z}" Header="Координата по длине канала, м"  Width="*"/>
+                        <DataGridTextColumn Binding="{Binding Path= _T}" Header="Температура, °С" Width="*"/>
                         <DataGridTextColumn Binding="{Binding Path= _n}" Header="Вязкость, Па*с" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
