@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -51,7 +52,7 @@ namespace Don_tKnowHowToNameThis
             }
             else
             {*/
-                calc = new Calc(Convert.ToDouble(W.Text), Convert.ToDouble(H.Text), Convert.ToDouble(L.Text), Convert.ToDouble(step.Text), Convert.ToDouble(p.Text), Convert.ToDouble(c.Text),
+                calc = new Calc(materialComboBox.Text, Convert.ToDouble(W.Text), Convert.ToDouble(H.Text), Convert.ToDouble(L.Text), Convert.ToDouble(step.Text), Convert.ToDouble(p.Text), Convert.ToDouble(c.Text),
                     Convert.ToDouble(T0.Text), Convert.ToDouble(Vu.Text), Convert.ToDouble(Tu.Text), Convert.ToDouble(mu0.Text), Convert.ToDouble(Ea.Text), Convert.ToDouble(Tr.Text),
                     Convert.ToDouble(n.Text), Convert.ToDouble(alphaU.Text));
             //}
@@ -59,8 +60,11 @@ namespace Don_tKnowHowToNameThis
             List<double> zCoord = new List<double>();
             List<double> temperature = new List<double>();
             List<double> viscosity = new List<double>();
-            
-            calc.TemperatureAndViscosity(calc, zCoord, temperature, viscosity);
+            double timeLost = 0;
+            double memLost = 0;
+
+            calc.TemperatureAndViscosity(calc, zCoord, temperature, viscosity, ref timeLost, ref memLost);
+
             Table table = new Table(zCoord, temperature, viscosity);
             table.Show();
             eff.Content = calc.Efficiency().ToString();
@@ -123,6 +127,17 @@ namespace Don_tKnowHowToNameThis
                 L.Text = "";
                 step.Text = "";
             }
+        }
+
+        private void FileSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            if (sfd.ShowDialog() == false) return;
+            string fileName = sfd.FileName;
+            FileWork fileWork;
+            if (fileName.Contains(".xlsx")) { fileWork = new FileWork(calc, fileName); }
+            else { fileWork = new FileWork(calc, fileName + ".xlsx"); }
+            fileWork.SaveToExel();
         }
     }
 }
