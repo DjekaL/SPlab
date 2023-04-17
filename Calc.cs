@@ -7,7 +7,7 @@ namespace Don_tKnowHowToNameThis
 {
     public class Calc
     {
-        public readonly string _material;
+        public readonly string? _material;
         public readonly double _R = 8.314;
         public readonly double _W = 0.20;
         public readonly double _H = 0.005;
