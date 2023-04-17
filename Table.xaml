@@ -4,11 +4,69 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Don_tKnowHowToNameThis"
+        xmlns:lvc ="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
         mc:Ignorable="d"
-        Title="Table" Height="450" Width="603" Loaded="Window_Loaded">
+        Title="Table" Height="600" Width="800" Loaded="Window_Loaded">
     <Grid>
-        
-        <TabControl Margin="0,50,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.3*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <GroupBox Header="Критериальные параметры" Grid.Column="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.1*"></ColumnDefinition>
+                        <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0">
+                        <Label.Content>
+                            <TextBlock TextWrapping="Wrap">
+                            Производительность:
+                            </TextBlock>
+                        </Label.Content>
+                    </Label>
+                    <Label x:Name="eff" Grid.Column="1" Grid.Row="0" Content="sample"/>
+                    <Label Grid.Column="2" Grid.Row="0" Content="кг/ч"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Темпeратура:"/>
+                    <Label x:Name="T" Grid.Column="1" Grid.Row="1" Content="sample"/>
+                    <Label Grid.Column="2" Grid.Row="1" Content="°С"/>
+                    <Label Grid.Column="0" Grid.Row="2" Content="Вязкость:"/>
+                    <Label x:Name="visc" Grid.Column="1" Grid.Row="2" Content="sample"/>
+                    <Label Grid.Column="2" Grid.Row="2" Content="Па*с"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Параметры состояния процесса" Grid.Column="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.1*"></ColumnDefinition>
+                        <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Content="Затраты ОЗУ:"/>
+                    <Label x:Name="RAM" Grid.Column="1" Grid.Row="0" Content="sample"/>
+                    <Label Grid.Column="2" Grid.Row="0" Content="КБ"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Время вычислений:"/>
+                    <Label x:Name="time" Grid.Column="1" Grid.Row="1" Content="sample"/>
+                    <Label Grid.Column="2" Grid.Row="1" Content="мс"/>
+                </Grid>
+            </GroupBox>
+        </Grid>
+        <TabControl Margin="0,0,0,0" Grid.Row="1">
             <TabItem Header="Таблица">
                 <DataGrid x:Name="table" AutoGenerateColumns="False" >
                     <DataGrid.Columns>
@@ -18,11 +76,15 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
-            <TabItem Header="График температуры">
-                <Grid Background="#FFE5E5E5"/>
+            <TabItem Name="tempChart" Header="График температуры">
+                <Grid Background="#FFE5E5E5">
+                    <lvc:CartesianChart Series="{Binding Series}" XAxes="{Binding XAxes}" YAxes="{Binding YAxes}" TooltipPosition="Top"/>
+                </Grid>
             </TabItem>
-            <TabItem Header="График вязкости">
-                <Grid Background="#FFE5E5E5"/>
+            <TabItem Name="visChart" Header="График вязкости">
+                <Grid Background="#FFE5E5E5">
+                    <lvc:CartesianChart Series="{Binding Series}" XAxes="{Binding XAxes}" YAxes="{Binding YAxes}" TooltipPosition="Top"/>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

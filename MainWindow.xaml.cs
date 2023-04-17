@@ -35,6 +35,7 @@ namespace Don_tKnowHowToNameThis
             step.Text = calc._step.ToString();*/
             tableValueButton.IsEnabled = false;
             target.Background = Brushes.LightPink;
+            materialComboBox.SelectedIndex = 0;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -67,9 +68,9 @@ namespace Don_tKnowHowToNameThis
 
             Table table = new Table(zCoord, temperature, viscosity);
             table.Show();
-            eff.Content = calc.Efficiency().ToString();
+/*            eff.Content = calc.Efficiency().ToString();
             T.Content = Math.Round(temperature[temperature.Count - 1], 2).ToString();
-            visc.Content = Math.Round(viscosity[viscosity.Count - 1], 2).ToString();
+            visc.Content = Math.Round(viscosity[viscosity.Count - 1], 2).ToString();*/
         }
 
         private void CheckInputChange(object sender, System.Windows.Controls.TextChangedEventArgs e)
