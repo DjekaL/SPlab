@@ -7,12 +7,23 @@
         mc:Ignorable="d"
         Title="Table" Height="450" Width="603" Loaded="Window_Loaded">
     <Grid>
-        <DataGrid x:Name="table" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path= _z}" Header="Координата по длине канала, м"  Width="200"/>
-                <DataGridTextColumn Binding="{Binding Path= _T}" Header="Температура, °С" Width="200"/>
-                <DataGridTextColumn Binding="{Binding Path= _n}" Header="Вязкость, Па*с" Width="*"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        
+        <TabControl Margin="0,50,0,0">
+            <TabItem Header="Таблица">
+                <DataGrid x:Name="table" AutoGenerateColumns="False" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Path= _z}" Header="Координата по длине канала, м"  Width="200"/>
+                        <DataGridTextColumn Binding="{Binding Path= _T}" Header="Температура, °С" Width="200"/>
+                        <DataGridTextColumn Binding="{Binding Path= _n}" Header="Вязкость, Па*с" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="График температуры">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="График вязкости">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

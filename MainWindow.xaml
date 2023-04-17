@@ -23,10 +23,11 @@
             <MenuItem Header="Файл" Height="25px"></MenuItem>
             <MenuItem x:Name="tableValueButton" Header="Таблица значений" Click="MenuItem_Click"></MenuItem>
         </Menu>
-        <Label Grid.Column="1" Grid.Row="0" Content="Материал:" HorizontalAlignment="Left"  VerticalAlignment="Top" />
+        <Label x:Name="target" Grid.Column="1" Grid.Row="0" Content="Материал:" HorizontalAlignment="Left"  VerticalAlignment="Top" />
         <Label Grid.Column="0" Grid.Row="1" Content="Входные параметры:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,0,0,0" />
-        <ComboBox Grid.Column="1" Height="26" HorizontalAlignment="Left" Margin="72,0,0,0" VerticalAlignment="Center" Width="205" Grid.ColumnSpan="2" >
+        <ComboBox x:Name="materialComboBox" Grid.Column="1" Height="26" HorizontalAlignment="Left" Margin="72,0,0,0" VerticalAlignment="Center" Width="205" Grid.ColumnSpan="2" SelectionChanged="ComboBox_SelectionChanged" Visibility="Visible" >
             <SystemGesture:String>Полиэтилен высокой плотности</SystemGesture:String>
+            <SystemGesture:String>da</SystemGesture:String>
         </ComboBox>
         <GroupBox Header="Геометрические параметры:" Grid.Row="2" Grid.Column="0" Margin="2, 2, 2, 2">
             <Grid>
