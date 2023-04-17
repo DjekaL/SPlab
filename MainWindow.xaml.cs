@@ -64,9 +64,9 @@ namespace Don_tKnowHowToNameThis
             calc.TemperatureAndViscosity(calc, zCoord, temperature, viscosity);
             Table table = new Table(zCoord, temperature, viscosity);
             table.Show();
-            eff.Content = calc.Efficiency().ToString();
+/*            eff.Content = calc.Efficiency().ToString();
             T.Content = Math.Round(temperature[temperature.Count - 1], 2).ToString();
-            visc.Content = Math.Round(viscosity[viscosity.Count - 1], 2).ToString();
+            visc.Content = Math.Round(viscosity[viscosity.Count - 1], 2).ToString();*/
         }
 
         private void CheckInputChange(object sender, System.Windows.Controls.TextChangedEventArgs e)
