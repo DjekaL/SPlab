@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Don_tKnowHowToNameThis" xmlns:SystemGesture="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Привет, Женя :D" Height="500" Width="1000"
+        Title="Привет, Женя :D" Height="500" Width="1100"
         Loaded="Window_Loaded">
     <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
@@ -14,8 +14,8 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="130*"></ColumnDefinition>
-            <ColumnDefinition Width="160*"></ColumnDefinition>
+            <ColumnDefinition Width="140*"></ColumnDefinition>
+            <ColumnDefinition Width="170*"></ColumnDefinition>
             <ColumnDefinition Width="120*"></ColumnDefinition>
             <ColumnDefinition Width="250*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
@@ -54,7 +54,7 @@
                         </TextBlock>
                     </Label.Content>
                 </Label>
-                <Label Grid.Column="0" Grid.Row="4" Content="Темп.:" Margin="0,0,4,66" Grid.RowSpan="2"/>
+                <Label Grid.Column="0" Grid.Row="4" Content="Темпeратура:" Margin="0,0,4,66" Grid.RowSpan="2"/>
                 <Label Grid.Column="0" Grid.Row="5" Content="Вязкость:" Margin="0,0,4,0"/>
                 <Label x:Name="eff" Grid.Column="1" Grid.Row="3" Content="sample" Grid.ColumnSpan="2" Margin="0,0,31,66" Grid.RowSpan="2"/>
                 <Label x:Name="T" Grid.Column="1" Grid.Row="4" Content="sample" Grid.ColumnSpan="2" Margin="0,0,31,66" Grid.RowSpan="2"/>
