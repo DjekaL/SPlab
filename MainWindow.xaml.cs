@@ -36,7 +36,7 @@ namespace Don_tKnowHowToNameThis
             tableValueButton.IsEnabled = false;
             saveToFile.IsEnabled = false;
             target.Background = Brushes.LightPink;
-            materialComboBox.SelectedIndex = 0;
+            //materialComboBox.SelectedIndex = 0;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)

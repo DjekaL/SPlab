@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Don_tKnowHowToNameThis"
         xmlns:lvc ="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
         mc:Ignorable="d"
-        Title="Table" Height="600" Width="800" Loaded="Window_Loaded">
+        Title="Выходные параметры" Height="600" Width="800" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.3*"></RowDefinition>

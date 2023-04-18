@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Don_tKnowHowToNameThis" xmlns:SystemGesture="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Привет, Женя :D" Height="500" Width="1100"
+        Title="Программный комплекс для иследования неизотермического течения аномально-вязких материалов" Height="500" Width="1100"
         Loaded="Window_Loaded">
     <Grid ShowGridLines="False">
         <Grid.RowDefinitions>

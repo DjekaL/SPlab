@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Threading;
 
 namespace Don_tKnowHowToNameThis
 {
@@ -81,7 +80,7 @@ namespace Don_tKnowHowToNameThis
             mem = GC.GetTotalMemory(false);
             Stopwatch t = new Stopwatch();
             t.Start();
-            Thread.Sleep(10000);
+
             calc.MaterialShearStrainRate();
             calc.SpecificHeatFluxes();
             calc.VolumeFlowRateOfMaterialFlowInTheChannel();
