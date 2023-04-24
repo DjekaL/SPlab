@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Don_tKnowHowToNameThis
 {
     public class Calc
     {
+        public readonly string? _material;
         public readonly double _R = 8.314;
         public readonly double _W = 0.20;
         public readonly double _H = 0.005;
@@ -28,9 +30,16 @@ namespace Don_tKnowHowToNameThis
         private double qAlpha = 0;
         private double F = 0;
         private double Qch = 0;
-        private int Q = 0;
-        public Calc(double W, double H, double L, double step, double p, double c, double T0, double Vu, double Tu, double mu0, double Ea, double Tr, double n, double alphaU)
+
+        public List<double> zCoords = new List<double>();
+        public List<double> temperature = new List<double>();
+        public List<double> viscosity = new List<double>();
+        public int Q = 0;
+        public double LostTime = 0;
+        public double Lostmem = 0;
+        public Calc(string mat, double W, double H, double L, double step, double p, double c, double T0, double Vu, double Tu, double mu0, double Ea, double Tr, double n, double alphaU)
         {
+            _material = mat;
             _W = W;
             _H = H;
             _L = L;
@@ -66,8 +75,12 @@ namespace Don_tKnowHowToNameThis
             F = 0.125 * Math.Pow(_H / _W, 2) - 0.625 * (_H / _W) + 1;
             Qch = _H * _W * _Vu * F / 2;
         }
-        public void TemperatureAndViscosity(Calc calc, List<double> zCoord, List<double> temperature, List<double> viscosity)
+        public void TemperatureAndViscosity(Calc calc, List<double> zCoord, List<double> temperature, List<double> viscosity, ref double time, ref double mem)
         {
+            mem = GC.GetTotalMemory(false);
+            Stopwatch t = new Stopwatch();
+            t.Start();
+
             calc.MaterialShearStrainRate();
             calc.SpecificHeatFluxes();
             calc.VolumeFlowRateOfMaterialFlowInTheChannel();
@@ -79,6 +92,15 @@ namespace Don_tKnowHowToNameThis
                 double n = calc.Viscosity(T);
                 viscosity.Add(Math.Round(n, 1));
             }
+            t.Stop();
+            time = t.ElapsedMilliseconds;
+            mem = (GC.GetTotalMemory(false) - mem) / 1024.0;
+            Lostmem = mem;
+            LostTime = time;
+            calc.Efficiency();
+            this.zCoords = zCoord;
+            this.temperature = temperature;
+            this.viscosity = viscosity;
         }
         private double Temperature(double z)
         {
@@ -95,10 +117,9 @@ namespace Don_tKnowHowToNameThis
 
             return n;
         }
-        public int Efficiency()
+        private void Efficiency()
         {
             Q = (int)Math.Round(_p * Qch * 3600, 0);
-            return Q;
         }
     }
 }
