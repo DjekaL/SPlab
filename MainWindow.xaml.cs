@@ -18,10 +18,11 @@ namespace Don_tKnowHowToNameThis
     {
         Calc calc = new Calc();
         string user;
+        DB db = new DB("localhost", 3306, "flowmodel", "root", "Ad1234567890");
         public MainWindow()
         {
             InitializeComponent();
-            Authorization authorization = new Authorization();
+            Authorization authorization = new Authorization(db);
             authorization.ShowDialog();
             user = authorization._res;
         }

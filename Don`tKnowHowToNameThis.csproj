@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="EPPlus" Version="6.2.2" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.701" />
+    <PackageReference Include="MySql.Data" Version="8.0.33" />
     <PackageReference Include="ToastNotifications" Version="2.5.1" />
     <PackageReference Include="ToastNotifications.Messages" Version="2.5.1" />
   </ItemGroup>

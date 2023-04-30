@@ -1,5 +1,7 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,14 +22,24 @@ namespace Don_tKnowHowToNameThis
     public partial class Authorization : Window
     {
         int _tryes = 1;
+        DB _db;
         public string _res { get; set; }
-        public Authorization()
+        public Authorization(DB db)
         {
             InitializeComponent();
+            _db = db;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            
+            DataTable table = new DataTable();
+            string query = $"SELECT category_cat_id FROM flowmodel.user where login = '{login.Text}' and password = '{password.Text}'";
+            MySqlDataAdapter adapter = new MySqlDataAdapter();
+            MySqlCommand command = new MySqlCommand(query, _db._connection);
+            _db._connection.Open();
+            adapter.SelectCommand = command;
+            command.ExecuteNonQuery();
             errText.Content = "";
             if (_tryes < 3)
             {
