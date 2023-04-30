@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Don_tKnowHowToNameThis" xmlns:SystemGesture="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Программный комплекс для иследования неизотермического течения аномально-вязких материалов" Height="500" Width="1100"
+        Title="Программный комплекс для иследования неизотермического течения аномально-вязких материалов" Height="600" Width="1100"
         Loaded="Window_Loaded">
     <Grid ShowGridLines="False">
         <Grid.RowDefinitions>
@@ -18,9 +18,17 @@
             <ColumnDefinition Width="150*"></ColumnDefinition>
             <ColumnDefinition Width="250*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Menu Grid.Row="0">
+        <Menu Grid.Row="0" Grid.ColumnSpan="4">
             <MenuItem x:Name="saveToFile" Header="Файл" Height="25px" Click="FileSave_Click"></MenuItem>
             <MenuItem x:Name="tableValueButton" Header="Таблица значений" Click="MenuItem_Click"></MenuItem>
+            <MenuItem Header="База данных">
+                <MenuItem Header="Добавить пользователя"></MenuItem>
+                <MenuItem Header="Добавить данные в новый набор значений мат. модели"></MenuItem>
+                <MenuItem Header="Обновить значения набора мат. модели"></MenuItem>
+                <MenuItem Header="Добавить новый материал"></MenuItem>
+                <MenuItem Header="Изменить существующий материал"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Сменить пользователя"></MenuItem>
         </Menu>
       
         <GroupBox Header="Входные параметры" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="2, 2, 2, 2">
@@ -145,10 +153,14 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition Height="0.2*"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                    <RowDefinition Height="21*"></RowDefinition>
+                    <RowDefinition Height="4.5*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <GroupBox Header="Эмпирические коэффициенты:" Grid.Row="0" Grid.ColumnSpan="3" Margin="2, 2, 2, 2">
+                <Label Grid.Column="0" Grid.Row="0" Content="Набор значений модели:" HorizontalAlignment="Left"  VerticalAlignment="Top" />
+                <ComboBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Width="140" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                </ComboBox>
+                <GroupBox Header="Эмпирические коэффициенты:" Grid.Row="1" Grid.ColumnSpan="3" Margin="2, 2, 2, 2">
                     <Grid Grid.Row="0" Grid.ColumnSpan="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1.3*"></ColumnDefinition>
@@ -213,7 +225,7 @@
                          Width="{Binding Path=ActualWidth, ElementName=WidthLabel}" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
                     </Grid>
                 </GroupBox>
-                <GroupBox Header="Параметры метода решения:" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Margin="2, 2, 2, 2">
+                <GroupBox Header="Параметры метода решения:" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Margin="2, 2, 2, 2">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1.3*"></ColumnDefinition>
