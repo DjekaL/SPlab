@@ -22,11 +22,11 @@
             <MenuItem x:Name="saveToFile" Header="Файл" Height="25px" Click="FileSave_Click"></MenuItem>
             <MenuItem x:Name="tableValueButton" Header="Таблица значений" Click="MenuItem_Click"></MenuItem>
             <MenuItem Header="База данных">
-                <MenuItem Header="Добавить пользователя"></MenuItem>
-                <MenuItem Header="Добавить данные в новый набор значений мат. модели"></MenuItem>
-                <MenuItem Header="Обновить значения набора мат. модели"></MenuItem>
-                <MenuItem Header="Добавить новый материал"></MenuItem>
-                <MenuItem Header="Изменить существующий материал"></MenuItem>
+                <MenuItem Header="Измененить пользователей" Click="ChangeUser_Click"></MenuItem>
+                <MenuItem Header="Изменить наборы значений мат. модели" Click="ChangeModel_Click"></MenuItem>
+                <MenuItem Header="Изменить материалы" Click="ChangeMaterial_Click"></MenuItem>
+                <MenuItem Header="Обновить выбранный набор значений мат. модели"></MenuItem>
+                <MenuItem Header="Обновить выбранный материал"></MenuItem>
             </MenuItem>
             <MenuItem Header="Сменить пользователя"></MenuItem>
         </Menu>
