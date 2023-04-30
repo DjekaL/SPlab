@@ -150,5 +150,20 @@ namespace Don_tKnowHowToNameThis
             else { fileWork = new FileWork(calc, fileName + ".xlsx"); }
             fileWork.SaveToExel();
         }
+
+        private void ChangeUser_Click(object sender, RoutedEventArgs e) {
+            EditUser window = new EditUser();
+            window.Show();
+        }
+
+        private void ChangeModel_Click(object sender, RoutedEventArgs e) {
+            EditMathModel window = new EditMathModel();
+            window.Show();
+        }
+
+        private void ChangeMaterial_Click(object sender, RoutedEventArgs e) {
+            EditMaterial window = new EditMaterial();
+            window.Show();
+        }
     }
 }
