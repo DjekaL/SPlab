@@ -73,12 +73,12 @@ namespace Don_tKnowHowToNameThis
             if (user == "denied") this.Close();
             List<string> materials = new List<string>();
             List<string> models = new List<string>();
-            db.InitialMaterial(materials, "SELECT title FROM flowmodel.material");
+            db.InitialComboBox(materials, "SELECT title FROM flowmodel.material");
             foreach (string item in materials)
             {
                 materialComboBox.Items.Add(item);
             }
-            db.InitialMaterial(models, "SELECT title FROM flowmodel.mat_model order by mat_model_id asc");
+            db.InitialComboBox(models, "SELECT title FROM flowmodel.mat_model order by mat_model_id asc");
             foreach (string item in models)
             {
                 modelComboBox.Items.Add(item);
@@ -133,9 +133,9 @@ namespace Don_tKnowHowToNameThis
         {
             if (materialComboBox.SelectedIndex == 0)
             {
-                p.Text = calc._p.ToString();
+               /* p.Text = calc._p.ToString();
                 c.Text = calc._c.ToString();
-                T0.Text = calc._T0.ToString();
+                T0.Text = calc._T0.ToString();*/
                 Vu.Text = calc._Vu.ToString();
                 Tu.Text = calc._Tu.ToString();
                 /*mu0.Text = calc._mu0.ToString();
@@ -150,9 +150,9 @@ namespace Don_tKnowHowToNameThis
             }
             else
             {
-                p.Text = "";
+               /* p.Text = "";
                 c.Text = "";
-                T0.Text = "";
+                T0.Text = "";*/
                 Vu.Text = "";
                 Tu.Text = "";
                 /*mu0.Text = "";
@@ -165,6 +165,22 @@ namespace Don_tKnowHowToNameThis
                 L.Text = "";
                 step.Text = "";
             }
+
+            List<string> matParams= new List<string>();
+            db.InitialMaterial(materialComboBox.SelectedItem.ToString(), ptext.Content.ToString(), ctext.Text, T0text.Text, matParams);
+            if (matParams.Count > 0)
+            {
+                p.Text = matParams[0];
+                c.Text = matParams[1];
+                T0.Text = matParams[2];
+            }
+            else
+            {
+                p.Text = "";
+                c.Text = "";
+                T0.Text = "";
+            }
+
         }
 
         private void FileSave_Click(object sender, RoutedEventArgs e)
@@ -221,6 +237,12 @@ namespace Don_tKnowHowToNameThis
                 n.Text = "";
                 alphaU.Text = "";
             }
+        }
+
+        private void ChangeMaterila_Click(object sender, RoutedEventArgs e)
+        {
+            db.UpdateMaterial(materialComboBox.SelectedItem.ToString(), ptext.Content.ToString(), Convert.ToDouble(p.Text), ctext.Text, Convert.ToDouble(c.Text), T0text.Text, Convert.ToDouble(T0.Text));
+            
         }
     }
 }

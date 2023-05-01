@@ -8,7 +8,7 @@
         Title="EditMaterial" Height="450" Width="800">
     <Grid>
         <TabControl>
-            <TabItem Header="Изменить существующий материал">
+            <TabItem Header="Изменить существующий материал" Loaded="UpdateMatrialTab_Loaded">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
@@ -22,32 +22,32 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" Content="Материал:" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <ComboBox Grid.Row="0" Grid.Column="1" Width="200" Height="30" FontSize="14"></ComboBox>
+                    <ComboBox x:Name="addMaterialCombo" Grid.Row="0" Grid.Column="1" Width="200" Height="30" FontSize="14" SelectionChanged="AddMaterial_SelectionChanged"></ComboBox>
                     <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
                         <Label.Content>
-                            <TextBlock TextWrapping="Wrap" FontSize="12">
-                            Плотность:
+                            <TextBlock x:Name="pName" TextWrapping="Wrap" FontSize="12">
+                            Плотность
                             </TextBlock>
                         </Label.Content>
                     </Label>
                     <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
                         <Label.Content>
-                            <TextBlock TextWrapping="Wrap" FontSize="12">
-                            Удельная теплоёмкость:
+                            <TextBlock x:Name="cName" TextWrapping="Wrap" FontSize="12">
+                            Удельная теплоёмкость
                             </TextBlock>
                         </Label.Content>
                     </Label>
                     <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
                         <Label.Content>
-                            <TextBlock TextWrapping="Wrap" FontSize="12">
-                            Температура плавления:
+                            <TextBlock x:Name="T0Name" TextWrapping="Wrap" FontSize="12">
+                            Температура плавления
                             </TextBlock>
                         </Label.Content>
                     </Label>
-                    <TextBox Grid.Row="1" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
-                    <TextBox Grid.Row="2" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
-                    <TextBox Grid.Row="3" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
-                    <Button Grid.ColumnSpan="2" Grid.Row="4" Width="200" Height="50" FontSize="16">Изменить материал</Button>
+                    <TextBox x:Name="p" Grid.Row="1" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
+                    <TextBox x:Name="c" Grid.Row="2" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
+                    <TextBox x:Name="T0" Grid.Row="3" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
+                    <Button Grid.ColumnSpan="2" Grid.Row="4" Width="200" Height="50" FontSize="16" Click="UpdateMaterial_Click">Изменить материал</Button>
                 </Grid>
             </TabItem>
             <TabItem Header="Добавить новый материал">
@@ -66,7 +66,7 @@
                     </Grid.ColumnDefinitions>
                     <Label Name="Errors" Grid.Row="0" Grid.ColumnSpan = "2" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="22"/>
                     <Label Grid.Row="1" Grid.Column="0" Content="Материал:" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
+                    <TextBox x:Name="addMaterial" Grid.Row="1" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
                     <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
                         <Label.Content>
                             <TextBlock TextWrapping="Wrap" FontSize="12">
@@ -88,13 +88,13 @@
                             </TextBlock>
                         </Label.Content>
                     </Label>
-                    <TextBox Grid.Row="2" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
-                    <TextBox Grid.Row="3" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
-                    <TextBox Grid.Row="4" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
-                    <Button Grid.ColumnSpan="2" Grid.Row="5" Width="200" Height="50" FontSize="16">Добавить материал</Button>
+                    <TextBox x:Name="addp" Grid.Row="2" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
+                    <TextBox x:Name="addc" Grid.Row="3" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
+                    <TextBox x:Name="addT0" Grid.Row="4" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
+                    <Button Grid.ColumnSpan="2" Grid.Row="5" Width="200" Height="50" FontSize="16" Click="InsertMaterial_Click">Добавить материал</Button>
                 </Grid>
             </TabItem>
-            <TabItem Header="Удалить материал">
+            <TabItem Header="Удалить материал" Loaded="DeleteMaterialTab_Loaded">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
@@ -105,8 +105,8 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" Content="Материал:" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <ComboBox Grid.Row="0" Grid.Column="1" Width="200" Height="50" FontSize="16"></ComboBox>
-                    <Button Grid.ColumnSpan="2" Grid.Row="1" Width="200" Height="50" FontSize="16">Удалить материал</Button>
+                    <ComboBox x:Name="dellMaterialCombo" Grid.Row="0" Grid.Column="1" Width="200" Height="50" FontSize="16"></ComboBox>
+                    <Button Grid.ColumnSpan="2" Grid.Row="1" Width="200" Height="50" FontSize="16" Click="DeleteMaterial_Click">Удалить материал</Button>
                 </Grid>
             </TabItem>
         </TabControl>

@@ -11,7 +11,7 @@ namespace Don_tKnowHowToNameThis
             string connString = "Server=" + host + ";Database=" + database + ";port=" + port + ";User Id=" + username + ";password=" + password;
             _connection = new MySqlConnection(connString);
         }
-        public void InitialMaterial(List<string> list, string query)
+        public void InitialComboBox(List<string> list, string query)
         {
             //string query = $"SELECT title FROM flowmodel.material";
             MySqlCommand command = new MySqlCommand(query, _connection);
@@ -184,8 +184,124 @@ namespace Don_tKnowHowToNameThis
             command.ExecuteNonQuery();
             _connection.Close();   
         }
+        public void UpdateMaterial(string materialName, string pName, double p, string cName, double c, string T0Name, double T0)
+        {
+            _connection.Open();
+            string query = $"update material_has_property " +
+                $"inner join material on material_id = material_material_id " +
+                $"inner join property on prop_id = property_prop_id " +
+                $"set value = {p.ToString().Replace(",", ".")} " +
+                $"where material.title = '{materialName}' and property.title = '{pName}'";
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            command.ExecuteNonQuery();
+            query = $"update material_has_property " +
+                $"inner join material on material_id = material_material_id " +
+                $"inner join property on prop_id = property_prop_id " +
+                $"set value = {c.ToString().Replace(",", ".")} " +
+                $"where material.title = '{materialName}' and property.title = '{cName}'";
+            command = new MySqlCommand(query, _connection);
+            command.ExecuteNonQuery();
+            query = $"update material_has_property " +
+                $"inner join material on material_id = material_material_id " +
+                $"inner join property on prop_id = property_prop_id " +
+                $"set value = {T0.ToString().Replace(",", ".")} " +
+                $"where material.title = '{materialName}' and property.title = '{T0Name}'";
+            command = new MySqlCommand(query, _connection);
+            command.ExecuteNonQuery();
+            _connection.Close();
+        }
+        public void DeleteMaterial(string materialName)
+        {
+            _connection.Open();
+            string query = $"select material_id from material where title = '{materialName}'";
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            string materialId = command.ExecuteScalar().ToString();
+
+            query = $"delete from material_has_property where material_material_id = {materialId}";
+            command = new MySqlCommand(query, _connection);
+            command.ExecuteNonQuery();
+            query = $"delete from material where title = '{materialName}'";
+            command = new MySqlCommand(query, _connection);
+            command.ExecuteNonQuery();
+            _connection.Close();
+        }
+        public void InitialMaterial(string materialComboBoxSelectedItem, string pName, string cName, string T0Name, List<string> matParams)
+        {
+            _connection.Open();
+            string query = $"select value from material_has_property " +
+                $"inner join material on material_id = material_material_id " +
+                $"inner join property on prop_id = property_prop_id " +
+                $"where material.title = '{materialComboBoxSelectedItem}' and property.title = '{pName}'";
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    matParams.Add(reader["value"].ToString());
+                }
+            }
+            query = $"select value from material_has_property " +
+                $"inner join material on material_id = material_material_id " +
+                $"inner join property on prop_id = property_prop_id " +
+                $"where material.title = '{materialComboBoxSelectedItem}' and property.title = '{cName}'";
+            command = new MySqlCommand(query, _connection);
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    matParams.Add(reader["value"].ToString());
+                }
+            }
+            query = $"select value from material_has_property " +
+                $"inner join material on material_id = material_material_id " +
+                $"inner join property on prop_id = property_prop_id " +
+                $"where material.title = '{materialComboBoxSelectedItem}' and property.title = '{T0Name}'";
+            command = new MySqlCommand(query, _connection);
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    matParams.Add(reader["value"].ToString());
+                }
+            }
+            _connection.Close();
+        }
+        public void InsertMaterial(string materialName, string pName, double p, string cName, double c, string T0Name, double T0)
+        {
+            _connection.Open();
+            string query = $"insert into material(title) value('{materialName}')";
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            command.ExecuteNonQuery();
+            query = $"select material_id from material where title = '{materialName}'";
+            command = new MySqlCommand(query, _connection);
+            string materialId = command.ExecuteScalar().ToString();
+
+            query = $"select prop_id from property where title = '{pName}'";
+            command = new MySqlCommand(query, _connection);
+            string tmp = command.ExecuteScalar().ToString();
+            query = $"insert into material_has_property(material_material_id, property_prop_id, value)  " +
+                $"value('{materialId}', '{tmp}', {p.ToString().Replace(",", ".")})";
+            command = new MySqlCommand(query, _connection);
+            command.ExecuteNonQuery();
+
+            query = $"select prop_id from property where title = '{cName}'";
+            command = new MySqlCommand(query, _connection);
+            tmp = command.ExecuteScalar().ToString();
+            query = $"insert into material_has_property(material_material_id, property_prop_id, value)  " +
+                $"value('{materialId}', '{tmp}', {c.ToString().Replace(",", ".")})";
+            command = new MySqlCommand(query, _connection);
+            command.ExecuteNonQuery();
+
+            query = $"select prop_id from property where title = '{T0Name}'";
+            command = new MySqlCommand(query, _connection);
+            tmp = command.ExecuteScalar().ToString();
+            query = $"insert into material_has_property(material_material_id, property_prop_id, value)  " +
+                $"value('{materialId}', '{tmp}', {T0.ToString().Replace(",", ".")})";
+            command = new MySqlCommand(query, _connection);
+            command.ExecuteNonQuery();
+
+
+            _connection.Close();
+        }
     }
-
-
-    
 }
