@@ -14,7 +14,7 @@ namespace Don_tKnowHowToNameThis
     {
         Calc calc = new Calc();
         string userCat;
-        string login;
+        string login = "";
         DB db = new DB("localhost", 3306, "flowmodel", "root", "Ad1234567890");
         Notification notification;
         public MainWindow()
@@ -27,37 +27,55 @@ namespace Don_tKnowHowToNameThis
             login = authorization._login;
         }
 
-
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             saveToFile.IsEnabled = false;
             target.Background = Brushes.LightPink;
-            materialComboBox.SelectedIndex = 0;
+            //materialComboBox.SelectedIndex = 0;
             if (userCat == "admin")
             {
                 notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом администратора");
+                baseEditor.IsEnabled = true;
+                baseEditor.Visibility = Visibility.Visible;
             }
             else
             {
                 if (userCat == "default")
                 {
                     notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом исследователя");
+                    baseEditor.IsEnabled = false;
+                    baseEditor.Visibility = Visibility.Collapsed;
                 }
             }
-            if (userCat == "denied") this.Close();
+            if (userCat == "denied")
+            {
+                if (login == "")
+                {
+                    this.Close();
+                }
+            }
             List<string> materials = new List<string>();
             List<string> models = new List<string>();
+            materialComboBox.Items.Clear();
             db.InitialComboBox(materials, "SELECT title FROM flowmodel.material", "title");
             foreach (string item in materials)
             {
                 materialComboBox.Items.Add(item);
             }
+            modelComboBox.Items.Clear();
             db.InitialComboBox(models, "SELECT title FROM flowmodel.mat_model order by mat_model_id asc", "title");
             foreach (string item in models)
             {
                 modelComboBox.Items.Add(item);
             }
+            p.Text = "";
+            c.Text = "";
+            Tu.Text = "";
+            mu0.Text = "";
+            Ea.Text = "";
+            Tr.Text = "";
+            n.Text = "";
+            alphaU.Text = "";
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -97,60 +115,36 @@ namespace Don_tKnowHowToNameThis
                 a.Background = Brushes.LightPink;
                 tableValueButton.IsEnabled = false;
             }
+            if (materialComboBox.SelectedItem == null || modelComboBox.SelectedItem == null || W.Text == "" || H.Text == "" || L.Text == "" || Vu.Text == "" || Tu.Text == "" || step.Text == "") tableValueButton.IsEnabled = false;
+            else tableValueButton.IsEnabled = true;
         }
 
         private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (materialComboBox.SelectedIndex == 0)
-            {
-                /*p.Text = calc._p.ToString();
-                c.Text = calc._c.ToString();
-                T0.Text = calc._T0.ToString();*/
-                Vu.Text = calc._Vu.ToString();
-                Tu.Text = calc._Tu.ToString();
-                /*mu0.Text = calc._mu0.ToString();
-                Ea.Text = calc._Ea.ToString();
-                Tr.Text = calc._Tr.ToString();
-                n.Text = calc._n.ToString();
-                alphaU.Text = calc._alphaU.ToString();*/
-                W.Text = calc._W.ToString();
-                H.Text = calc._H.ToString();
-                L.Text = calc._L.ToString();
-                step.Text = calc._step.ToString();
-            }
-            else
-            {
-                p.Text = "";
-                c.Text = "";
-                T0.Text = "";
-                Vu.Text = "";
-                Tu.Text = "";
-                mu0.Text = "";
-                Ea.Text = "";
-                Tr.Text = "";
-                n.Text = "";
-                alphaU.Text = "";
-                W.Text = "";
-                H.Text = "";
-                L.Text = "";
-                step.Text = "";
-            }
+            Vu.Text = calc._Vu.ToString();
+            Tu.Text = calc._Tu.ToString();
+            W.Text = calc._W.ToString();
+            H.Text = calc._H.ToString();
+            L.Text = calc._L.ToString();
+            step.Text = calc._step.ToString();
 
             List<string> matParams = new List<string>();
-            db.InitialMaterial(materialComboBox.SelectedItem.ToString(), ptext.Content.ToString(), ctext.Text, T0text.Text, matParams);
-            if (matParams.Count > 0)
+            if (materialComboBox.SelectedItem != null)
             {
-                p.Text = matParams[0];
-                c.Text = matParams[1];
-                T0.Text = matParams[2];
+                db.InitialMaterial(materialComboBox.SelectedItem.ToString(), ptext.Content.ToString(), ctext.Text, T0text.Text, matParams);
+                if (matParams.Count > 0)
+                {
+                    p.Text = matParams[0];
+                    c.Text = matParams[1];
+                    T0.Text = matParams[2];
+                }
+                else
+                {
+                    p.Text = "";
+                    c.Text = "";
+                    T0.Text = "";
+                }
             }
-            else
-            {
-                p.Text = "";
-                c.Text = "";
-                T0.Text = "";
-            }
-
         }
 
         private void FileSave_Click(object sender, RoutedEventArgs e)
@@ -198,22 +192,25 @@ namespace Don_tKnowHowToNameThis
         private void modelComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             List<string> modelCoefffs = new List<string>();
-            db.InitialModel(modelComboBox.SelectedItem.ToString(), mu0text.Text, Eatext.Text, Trtext.Text, ntext.Text, alphaUtext.Text, modelCoefffs);
-            if (modelCoefffs.Count > 0)
+            if (modelComboBox.SelectedItem != null)
             {
-                mu0.Text = modelCoefffs[0];
-                Ea.Text = modelCoefffs[1];
-                Tr.Text = modelCoefffs[2];
-                n.Text = modelCoefffs[3];
-                alphaU.Text = modelCoefffs[4];
-            }
-            else
-            {
-                mu0.Text = "";
-                Ea.Text = "";
-                Tr.Text = "";
-                n.Text = "";
-                alphaU.Text = "";
+                db.InitialModel(modelComboBox.SelectedItem.ToString(), mu0text.Text, Eatext.Text, Trtext.Text, ntext.Text, alphaUtext.Text, modelCoefffs);
+                if (modelCoefffs.Count > 0)
+                {
+                    mu0.Text = modelCoefffs[0];
+                    Ea.Text = modelCoefffs[1];
+                    Tr.Text = modelCoefffs[2];
+                    n.Text = modelCoefffs[3];
+                    alphaU.Text = modelCoefffs[4];
+                }
+                else
+                {
+                    mu0.Text = "";
+                    Ea.Text = "";
+                    Tr.Text = "";
+                    n.Text = "";
+                    alphaU.Text = "";
+                }
             }
         }
 
@@ -228,6 +225,15 @@ namespace Don_tKnowHowToNameThis
             {
                 notification.Notifier().ShowError("Возникла ошибка при сохранении свойст материфла.");
             }
+        }
+
+        private void ChangeProfile_Click(object sender, RoutedEventArgs e)
+        {
+            Authorization authorization = new Authorization(db);
+            authorization.ShowDialog();
+            userCat = authorization._res;
+            login = authorization._login;
+            Window_Loaded(sender, e);
         }
     }
 }

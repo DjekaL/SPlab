@@ -32,18 +32,18 @@ namespace Don_tKnowHowToNameThis
         });
         }
 
-/*        public void NotifDispose()
+        public void NotifDispose()
         {
             DispatcherTimer timer = new DispatcherTimer();
             timer.Tick += new EventHandler(timer_Tick);
 
-            timer.Interval = new TimeSpan(0, 15, 5);
+            timer.Interval = new TimeSpan(0, 10, 5);
 
             timer.Start();
         }
         private void timer_Tick(object sender, EventArgs e)
         {
-            notifier.Dispose();
-        }*/
+            Notifier().Dispose();
+        }
     }
 }
