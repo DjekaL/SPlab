@@ -32,7 +32,7 @@ namespace Don_tKnowHowToNameThis {
         {
             modelComboBox.Items.Clear();
             List<string> models = new List<string>();
-            _db.InitialComboBox(models, "SELECT title FROM flowmodel.mat_model order by mat_model_id asc");
+            _db.InitialComboBox(models, "SELECT title FROM flowmodel.mat_model order by mat_model_id asc", "title");
             foreach (string item in models)
             {
                 modelComboBox.Items.Add(item);
@@ -73,7 +73,7 @@ namespace Don_tKnowHowToNameThis {
         {
             delModels.Items.Clear();
             List<string> models = new List<string>();
-            _db.InitialComboBox(models, "SELECT title FROM flowmodel.mat_model order by mat_model_id asc");
+            _db.InitialComboBox(models, "SELECT title FROM flowmodel.mat_model order by mat_model_id asc", "title");
             foreach (string item in models)
             {
                 delModels.Items.Add(item);

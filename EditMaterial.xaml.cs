@@ -34,7 +34,7 @@ namespace Don_tKnowHowToNameThis {
         {
             addMaterialCombo.Items.Clear();
             List<string> materials = new List<string>();
-            _db.InitialComboBox(materials, "SELECT title FROM flowmodel.material");
+            _db.InitialComboBox(materials, "SELECT title FROM flowmodel.material", "title");
             foreach (string item in materials)
             {
                 addMaterialCombo.Items.Add(item);
@@ -45,7 +45,7 @@ namespace Don_tKnowHowToNameThis {
         {
             dellMaterialCombo.Items.Clear();
             List<string> materials = new List<string>();
-            _db.InitialComboBox(materials, "SELECT title FROM flowmodel.material");
+            _db.InitialComboBox(materials, "SELECT title FROM flowmodel.material", "title");
             foreach (string item in materials)
             {
                 dellMaterialCombo.Items.Add(item);

@@ -17,14 +17,16 @@ namespace Don_tKnowHowToNameThis
     public partial class MainWindow : Window
     {
         Calc calc = new Calc();
-        string user;
+        string userCat;
+        string login;
         DB db = new DB("localhost", 3306, "flowmodel", "root", "Ad1234567890");
         public MainWindow()
         {
             InitializeComponent();
             Authorization authorization = new Authorization(db);
             authorization.ShowDialog();
-            user = authorization._res;
+            userCat = authorization._res;
+            login = authorization._login;
         }
 
         Notifier notifier = new Notifier(cfg =>
@@ -47,7 +49,7 @@ namespace Don_tKnowHowToNameThis
             saveToFile.IsEnabled = false;
             target.Background = Brushes.LightPink;
             materialComboBox.SelectedIndex = 0;
-            if (user == "1")
+            if (userCat == "admin")
             {
                 notifier.ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом администратора");
                 DispatcherTimer timer = new DispatcherTimer();
@@ -59,7 +61,7 @@ namespace Don_tKnowHowToNameThis
             }
             else
             {
-                if (user == "2")
+                if (userCat == "default")
                 {
                     notifier.ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом исследователя");
                     DispatcherTimer timer = new DispatcherTimer();
@@ -70,15 +72,15 @@ namespace Don_tKnowHowToNameThis
                     timer.Start();
                 }
             }
-            if (user == "denied") this.Close();
+            if (userCat == "denied") this.Close();
             List<string> materials = new List<string>();
             List<string> models = new List<string>();
-            db.InitialComboBox(materials, "SELECT title FROM flowmodel.material");
+            db.InitialComboBox(materials, "SELECT title FROM flowmodel.material", "title");
             foreach (string item in materials)
             {
                 materialComboBox.Items.Add(item);
             }
-            db.InitialComboBox(models, "SELECT title FROM flowmodel.mat_model order by mat_model_id asc");
+            db.InitialComboBox(models, "SELECT title FROM flowmodel.mat_model order by mat_model_id asc", "title");
             foreach (string item in models)
             {
                 modelComboBox.Items.Add(item);
@@ -196,7 +198,7 @@ namespace Don_tKnowHowToNameThis
 
         private void ChangeUser_Click(object sender, RoutedEventArgs e)
         {
-            EditUser window = new EditUser();
+            EditUser window = new EditUser(db, login);
             window.Show();
         }
 

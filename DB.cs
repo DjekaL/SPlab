@@ -11,7 +11,7 @@ namespace Don_tKnowHowToNameThis
             string connString = "Server=" + host + ";Database=" + database + ";port=" + port + ";User Id=" + username + ";password=" + password;
             _connection = new MySqlConnection(connString);
         }
-        public void InitialComboBox(List<string> list, string query)
+        public void InitialComboBox(List<string> list, string query, string type)
         {
             //string query = $"SELECT title FROM flowmodel.material";
             MySqlCommand command = new MySqlCommand(query, _connection);
@@ -20,25 +20,14 @@ namespace Don_tKnowHowToNameThis
             {
                 while (reader.Read())
                 {
-                    list.Add(reader["title"].ToString());
+                    list.Add(reader[type].ToString());
                 }
             }
 
-            /* _connection.Close();
-             query = $"SELECT title FROM flowmodel.mat_model order by mat_model_id asc";
-             command = new MySqlCommand(query, _connection);
-             _connection.Open();
-             using (MySqlDataReader reader = command.ExecuteReader())
-             {
-                 while (reader.Read())
-                 {
-                     models.Add(reader["title"].ToString());
-                 }
-             */
-            _connection.Close();
 
+            _connection.Close();
         }
-        public void UpdateModel(string modelComboBoxSelectedItem, string mu0text, int  mu0, string Eatext, int Ea, string Trtext, int Tr, string ntext, double n, string alphaUtext, int alphaU)
+        public void UpdateModel(string modelComboBoxSelectedItem, string mu0text, int mu0, string Eatext, int Ea, string Trtext, int Tr, string ntext, double n, string alphaUtext, int alphaU)
         {
             _connection.Open();
             string query = $"update mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id set value = {mu0} " +
@@ -182,7 +171,7 @@ namespace Don_tKnowHowToNameThis
             query = $"delete from mat_model where title = '{modelName}'";
             command = new MySqlCommand(query, _connection);
             command.ExecuteNonQuery();
-            _connection.Close();   
+            _connection.Close();
         }
         public void UpdateMaterial(string materialName, string pName, double p, string cName, double c, string T0Name, double T0)
         {
@@ -302,6 +291,58 @@ namespace Don_tKnowHowToNameThis
 
 
             _connection.Close();
+        }
+        public void DeleteUser(string login)
+        {
+            _connection.Open();
+            string query = $"delete from user where login = '{login}'";
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            command.ExecuteNonQuery();
+            _connection.Close();
+        }
+        public void InsertUser(string login, string password)
+        {
+            _connection.Open();
+            string query = $"insert into user(login, password, category_cat_id) value('{login}', '{password}', 2)";
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            command.ExecuteNonQuery();
+            _connection.Close();
+        }
+        public void ChangePassword(string login, string oldPas, string newPas)
+        {
+            _connection.Open();
+            string query = $"SELECT password FROM flowmodel.user where login = '{login}'";
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            string currentPas = command.ExecuteScalar().ToString();
+
+            if (currentPas == oldPas)
+            {
+                query = $"update user set password = '{newPas}' where login = '{login}'";
+                command = new MySqlCommand(query, _connection);
+                command.ExecuteNonQuery();
+            }
+            _connection.Close();
+        }
+        public string GetUserId(string login)
+        {
+            _connection.Open();
+            List<string> id = new List<string>();
+            string query = $"select user_id from user where login = '{login}'";
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    id.Add(reader["user_id"].ToString());
+                }
+            }
+            if(id.Count > 0)
+            {
+                _connection.Close();
+                return id[0];
+            }
+            _connection.Close();
+            return "";
         }
     }
 }

@@ -13,6 +13,7 @@ namespace Don_tKnowHowToNameThis
         int _tryes = 1;
         DB _db;
         public string _res { get; set; }
+        public string _login { get; set; }
         public Authorization(DB db)
         {
             InitializeComponent();
@@ -21,28 +22,26 @@ namespace Don_tKnowHowToNameThis
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string query = $"SELECT category_cat_id FROM flowmodel.user where login = '{login.Text}' and password = '{password.Text}'";
+            string query = $"SELECT user_cat FROM flowmodel.category inner join user on cat_id = category_cat_id where login = '{login.Text}' and password = '{password.Text}'";
             MySqlCommand command = new MySqlCommand(query, _db._connection);
             _db._connection.Open();
             string cat = "";
             using (MySqlDataReader reader = command.ExecuteReader())
             {
-
-                //adapter.SelectCommand = command;
                 while (reader.Read())
                 {
-                    cat = reader["category_cat_id"].ToString();
+                    cat = reader["user_cat"].ToString();
                 }
             }
            
             List<string> list = new List<string>();
-            query = $"SELECT cat_id FROM flowmodel.category";
+            query = $"SELECT user_cat FROM flowmodel.category";
             command = new MySqlCommand(query, _db._connection);
             using (MySqlDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    list.Add(reader["cat_id"].ToString());
+                    list.Add(reader["user_cat"].ToString());
                 }
             }
             _db._connection.Close();
@@ -53,6 +52,7 @@ namespace Don_tKnowHowToNameThis
                 {
                     this.Close();
                     _res = cat;
+                    _login = login.Text;
                 }
                 else
                 {
