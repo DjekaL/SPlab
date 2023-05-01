@@ -3,11 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Threading;
-using ToastNotifications;
-using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
-using ToastNotifications.Position;
 
 namespace Don_tKnowHowToNameThis
 {
@@ -20,29 +16,18 @@ namespace Don_tKnowHowToNameThis
         string userCat;
         string login;
         DB db = new DB("localhost", 3306, "flowmodel", "root", "Ad1234567890");
+        Notification notification;
         public MainWindow()
         {
             InitializeComponent();
+            notification = new Notification(this);
             Authorization authorization = new Authorization(db);
             authorization.ShowDialog();
             userCat = authorization._res;
             login = authorization._login;
         }
 
-        Notifier notifier = new Notifier(cfg =>
-        {
-            cfg.PositionProvider = new WindowPositionProvider(
-                parentWindow: Application.Current.MainWindow,
-                corner: Corner.TopRight,
-                offsetX: 10,
-                offsetY: 10);
 
-            cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
-                notificationLifetime: TimeSpan.FromSeconds(3),
-                maximumNotificationCount: MaximumNotificationCount.FromCount(5));
-
-            cfg.Dispatcher = Application.Current.Dispatcher;
-        });
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -51,25 +36,13 @@ namespace Don_tKnowHowToNameThis
             materialComboBox.SelectedIndex = 0;
             if (userCat == "admin")
             {
-                notifier.ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом администратора");
-                DispatcherTimer timer = new DispatcherTimer();
-                timer.Tick += new EventHandler(timer_Tick);
-
-                timer.Interval = new TimeSpan(0, 10, 5);
-
-                timer.Start();
+                notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом администратора");
             }
             else
             {
                 if (userCat == "default")
                 {
-                    notifier.ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом исследователя");
-                    DispatcherTimer timer = new DispatcherTimer();
-                    timer.Tick += new EventHandler(timer_Tick);
-
-                    timer.Interval = new TimeSpan(0, 10, 5);
-
-                    timer.Start();
+                    notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом исследователя");
                 }
             }
             if (userCat == "denied") this.Close();
@@ -85,13 +58,8 @@ namespace Don_tKnowHowToNameThis
             {
                 modelComboBox.Items.Add(item);
             }
+        }
 
-            
-        }
-        private void timer_Tick(object sender, EventArgs e)
-        {
-            notifier.Dispose();
-        }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             calc = new Calc(materialComboBox.Text, Convert.ToDouble(W.Text), Convert.ToDouble(H.Text), Convert.ToDouble(L.Text), Convert.ToDouble(step.Text), Convert.ToDouble(p.Text), Convert.ToDouble(c.Text),
@@ -135,7 +103,7 @@ namespace Don_tKnowHowToNameThis
         {
             if (materialComboBox.SelectedIndex == 0)
             {
-               /* p.Text = calc._p.ToString();
+                /*p.Text = calc._p.ToString();
                 c.Text = calc._c.ToString();
                 T0.Text = calc._T0.ToString();*/
                 Vu.Text = calc._Vu.ToString();
@@ -152,23 +120,23 @@ namespace Don_tKnowHowToNameThis
             }
             else
             {
-               /* p.Text = "";
+                p.Text = "";
                 c.Text = "";
-                T0.Text = "";*/
+                T0.Text = "";
                 Vu.Text = "";
                 Tu.Text = "";
-                /*mu0.Text = "";
+                mu0.Text = "";
                 Ea.Text = "";
                 Tr.Text = "";
                 n.Text = "";
-                alphaU.Text = "";*/
+                alphaU.Text = "";
                 W.Text = "";
                 H.Text = "";
                 L.Text = "";
                 step.Text = "";
             }
 
-            List<string> matParams= new List<string>();
+            List<string> matParams = new List<string>();
             db.InitialMaterial(materialComboBox.SelectedItem.ToString(), ptext.Content.ToString(), ctext.Text, T0text.Text, matParams);
             if (matParams.Count > 0)
             {
@@ -216,7 +184,15 @@ namespace Don_tKnowHowToNameThis
 
         private void ChangeModelKit_Click(object sender, RoutedEventArgs e)
         {
-            db.UpdateModel(modelComboBox.SelectedItem.ToString(), mu0text.Text, int.Parse(mu0.Text), Eatext.Text, int.Parse(Ea.Text), Trtext.Text, int.Parse(Tr.Text), ntext.Text, Convert.ToDouble(n.Text), alphaUtext.Text, int.Parse(alphaU.Text));
+            try
+            {
+                db.UpdateModel(modelComboBox.SelectedItem.ToString(), mu0text.Text, int.Parse(mu0.Text), Eatext.Text, int.Parse(Ea.Text), Trtext.Text, int.Parse(Tr.Text), ntext.Text, Convert.ToDouble(n.Text), alphaUtext.Text, int.Parse(alphaU.Text));
+                notification.Notifier().ShowSuccess("Коэффициенты модели успешно изменены!");
+            }
+            catch
+            {
+                notification.Notifier().ShowError("Возникла ошибка при изменении коэффициентво модели.");
+            }
         }
 
         private void modelComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -243,8 +219,15 @@ namespace Don_tKnowHowToNameThis
 
         private void ChangeMaterila_Click(object sender, RoutedEventArgs e)
         {
-            db.UpdateMaterial(materialComboBox.SelectedItem.ToString(), ptext.Content.ToString(), Convert.ToDouble(p.Text), ctext.Text, Convert.ToDouble(c.Text), T0text.Text, Convert.ToDouble(T0.Text));
-            
+            try
+            {
+                db.UpdateMaterial(materialComboBox.SelectedItem.ToString(), ptext.Content.ToString(), Convert.ToDouble(p.Text), ctext.Text, Convert.ToDouble(c.Text), T0text.Text, Convert.ToDouble(T0.Text));
+                notification.Notifier().ShowSuccess("Свойства материала успешно сохранены!");
+            }
+            catch
+            {
+                notification.Notifier().ShowError("Возникла ошибка при сохранении свойст материфла.");
+            }
         }
     }
 }

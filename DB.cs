@@ -27,18 +27,18 @@ namespace Don_tKnowHowToNameThis
 
             _connection.Close();
         }
-        public void UpdateModel(string modelComboBoxSelectedItem, string mu0text, int mu0, string Eatext, int Ea, string Trtext, int Tr, string ntext, double n, string alphaUtext, int alphaU)
+        public void UpdateModel(string modelComboBoxSelectedItem, string mu0text, double mu0, string Eatext, double Ea, string Trtext, double Tr, string ntext, double n, string alphaUtext, double alphaU)
         {
             _connection.Open();
-            string query = $"update mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id set value = {mu0} " +
+            string query = $"update mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id set value = {mu0.ToString().Replace(",", ".")} " +
                 $"where mat_model.title = '{modelComboBoxSelectedItem}' and mat_coef.title = '{mu0text}'";
             MySqlCommand command = new MySqlCommand(query, _connection);
             command.ExecuteNonQuery();
-            query = $"update mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id set value = {Ea} " +
+            query = $"update mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id set value = {Ea.ToString().Replace(",", ".")} " +
                 $"where mat_model.title = '{modelComboBoxSelectedItem}' and mat_coef.title = '{Eatext}'";
             command = new MySqlCommand(query, _connection);
             command.ExecuteNonQuery();
-            query = $"update mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id set value = {Tr} " +
+            query = $"update mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id set value = {Tr.ToString().Replace(",", ".")} " +
                 $"where mat_model.title = '{modelComboBoxSelectedItem}' and mat_coef.title = '{Trtext}'";
             command = new MySqlCommand(query, _connection);
             command.ExecuteNonQuery();
@@ -46,7 +46,7 @@ namespace Don_tKnowHowToNameThis
                 $"where mat_model.title = '{modelComboBoxSelectedItem}' and mat_coef.title = '{ntext}'";
             command = new MySqlCommand(query, _connection);
             command.ExecuteNonQuery();
-            query = $"update mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id set value = {alphaU} " +
+            query = $"update mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id set value = {alphaU.ToString().Replace(",", ".")} " +
                 $"where mat_model.title = '{modelComboBoxSelectedItem}' and mat_coef.title = '{alphaUtext}'";
             command = new MySqlCommand(query, _connection);
             command.ExecuteNonQuery();
@@ -107,7 +107,7 @@ namespace Don_tKnowHowToNameThis
             }
             _connection.Close();
         }
-        public void InsertModel(string modelName, string mu0text, int mu0, string Eatext, int Ea, string Trtext, int Tr, string ntext, double n, string alphaUtext, int alphaU)
+        public void InsertModel(string modelName, string mu0text, double mu0, string Eatext, double Ea, string Trtext, double Tr, string ntext, double n, string alphaUtext, double alphaU)
         {
             _connection.Open();
             string query = $"insert into mat_model(title) value('{modelName}')";
@@ -121,7 +121,7 @@ namespace Don_tKnowHowToNameThis
             command = new MySqlCommand(query, _connection);
             string tmp = command.ExecuteScalar().ToString();
             query = $"insert into mat_set(mat_coef_id, mat_model_id, value)  " +
-                $"value('{tmp}', '{modelId}', {mu0})";
+                $"value('{tmp}', '{modelId}', {mu0.ToString().Replace(",", ".")})";
             command = new MySqlCommand(query, _connection);
             command.ExecuteNonQuery();
 
@@ -129,7 +129,7 @@ namespace Don_tKnowHowToNameThis
             command = new MySqlCommand(query, _connection);
             tmp = command.ExecuteScalar().ToString();
             query = $"insert into mat_set(mat_coef_id, mat_model_id, value)  " +
-                $"value('{tmp}', '{modelId}', {Ea})";
+                $"value('{tmp}', '{modelId}', {Ea.ToString().Replace(",", ".")})";
             command = new MySqlCommand(query, _connection);
             command.ExecuteNonQuery();
 
@@ -137,7 +137,7 @@ namespace Don_tKnowHowToNameThis
             command = new MySqlCommand(query, _connection);
             tmp = command.ExecuteScalar().ToString();
             query = $"insert into mat_set(mat_coef_id, mat_model_id, value)  " +
-                $"value('{tmp}', '{modelId}', {Tr})";
+                $"value('{tmp}', '{modelId}', {Tr.ToString().Replace(",", ".")})";
             command = new MySqlCommand(query, _connection);
             command.ExecuteNonQuery();
 
@@ -153,7 +153,7 @@ namespace Don_tKnowHowToNameThis
             command = new MySqlCommand(query, _connection);
             tmp = command.ExecuteScalar().ToString();
             query = $"insert into mat_set(mat_coef_id, mat_model_id, value)  " +
-                $"value('{tmp}', '{modelId}', {alphaU})";
+                $"value('{tmp}', '{modelId}', {alphaU.ToString().Replace(",", ".")})";
             command = new MySqlCommand(query, _connection);
             command.ExecuteNonQuery();
             _connection.Close();
@@ -308,7 +308,7 @@ namespace Don_tKnowHowToNameThis
             command.ExecuteNonQuery();
             _connection.Close();
         }
-        public void ChangePassword(string login, string oldPas, string newPas)
+        public bool ChangePassword(string login, string oldPas, string newPas)
         {
             _connection.Open();
             string query = $"SELECT password FROM flowmodel.user where login = '{login}'";
@@ -320,20 +320,25 @@ namespace Don_tKnowHowToNameThis
                 query = $"update user set password = '{newPas}' where login = '{login}'";
                 command = new MySqlCommand(query, _connection);
                 command.ExecuteNonQuery();
+                _connection.Close();
+                return true;
             }
-            _connection.Close();
+            else
+            {
+                _connection.Close();
+                return false;
+            }
         }
-        public string GetUserId(string login)
+        public string GetId(string query, string type)
         {
             _connection.Open();
             List<string> id = new List<string>();
-            string query = $"select user_id from user where login = '{login}'";
             MySqlCommand command = new MySqlCommand(query, _connection);
             using (MySqlDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    id.Add(reader["user_id"].ToString());
+                    id.Add(reader[type].ToString());
                 }
             }
             if(id.Count > 0)

@@ -8,7 +8,7 @@
         Title="EditUser" Height="508" Width="800">
     <Grid>
         <TabControl>
-            <TabItem Header="Добавить учетную запись исследователя">
+            <TabItem x:Name="addNewUser1" Header="Добавить учетную запись исследователя" Loaded="addNewUser1_Loaded">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
@@ -24,11 +24,11 @@
                     <Label Grid.Row="1" Grid.Column="0" Content="Логин:" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <Label Grid.Row="2" Grid.Column="0" Content="Пароль:" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <TextBox x:Name="addNewLogin" Grid.Row="1" Grid.Column="1" Width="200" Height="50" FontSize="22" TextChanged="addNewLogin_TextChanged"></TextBox>
-                    <TextBox x:Name="addNewPassword" Grid.Row="2" Grid.Column="1" Width="200" Height="50" FontSize="22"></TextBox>
+                    <TextBox x:Name="addNewPassword" Grid.Row="2" Grid.Column="1" Width="200" Height="50" FontSize="22" TextChanged="addNewLogin_TextChanged"></TextBox>
                     <Button x:Name="addNewUser" Grid.ColumnSpan="2" Grid.Row="3" Width="200" Height="50" FontSize="16" Click="addNewUser_Click">Добавить пользователя</Button>
                 </Grid>
             </TabItem>
-            <TabItem Header="Изменить пароль" Loaded="ChangePassword_Loaded">
+            <TabItem x:Name="changPas" Header="Изменить пароль" Loaded="ChangePassword_Loaded">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
@@ -41,10 +41,10 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <Label Content="Новый пароль:" FontSize="22" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBox x:Name="oldPas" Grid.Row="1" Grid.Column="1" Width="200" Height="50" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBox>
-                    <Button x:Name="changePas" Grid.ColumnSpan="2" Grid.Row="3" Width="200" Height="50" FontSize="16" Click="changePas_Click">Поменять пароль</Button>
+                    <TextBox x:Name="oldPas" Grid.Row="1" Grid.Column="1" Width="200" Height="50" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextChanged="PasChanfe_Changed"></TextBox>
+                    <Button x:Name="changePasButton" Grid.ColumnSpan="2" Grid.Row="3" Width="200" Height="50" FontSize="16" Click="changePas_Click">Поменять пароль</Button>
                     <Label Content="Страрый пароль:" Grid.Column="0" Grid.Row="1" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBox x:Name="newPas" Grid.Row="2" Grid.Column="1" Width="200" Height="50" FontSize="22"/>
+                    <TextBox x:Name="newPas" Grid.Row="2" Grid.Column="1" Width="200" Height="50" FontSize="22" TextChanged="PasChanfe_Changed"/>
                     <Label x:Name="currenrtUser" Content="Текущий пользователь: " FontSize="22" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                 </Grid>
             </TabItem>
@@ -59,8 +59,8 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" Content="Пользователь:" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <ComboBox x:Name="dellUserComboBox" Grid.Row="0" Grid.Column="1" Width="200" Height="50" FontSize="16"></ComboBox>
-                    <Button x:Name="dellUser" Grid.ColumnSpan="2" Grid.Row="1" Width="200" Height="50" FontSize="16" Click="dellUser_Click">Удалить пользователя</Button>
+                    <ComboBox x:Name="dellUserComboBox" Grid.Row="0" Grid.Column="1" Width="200" Height="50" FontSize="16" SelectionChanged="dellUserComboBox_SelectionChanged"></ComboBox>
+                    <Button x:Name="dellUserButton" Grid.ColumnSpan="2" Grid.Row="1" Width="200" Height="50" FontSize="16" Click="dellUser_Click">Удалить пользователя</Button>
                 </Grid>
             </TabItem>
         </TabControl>

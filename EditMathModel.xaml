@@ -62,15 +62,15 @@
                             </TextBlock>
                         </Label.Content>
                     </Label>
-                    <TextBox x:Name="mu0" Grid.Row="1" Grid.Column="3" Width="200" Height="30" FontSize="14" Margin="99,14,98,14"></TextBox>
-                    <TextBox x:Name="Ea" Grid.Row="2" Grid.Column="3" Width="200" Height="30" FontSize="14" Margin="99,14,98,14"></TextBox>
-                    <TextBox x:Name="Tr" Grid.Row="3" Grid.Column="3" Width="200" Height="30" FontSize="14" Margin="99,14,98,14"></TextBox>
-                    <TextBox x:Name="n" Grid.Row="4" Grid.Column="3" Width="200" Height="30" FontSize="14" Margin="99,14,98,14"></TextBox>
-                    <TextBox x:Name="alphaU" Grid.Row="5" Grid.Column="3" Width="200" Height="30" FontSize="14" Margin="99,14,98,14"></TextBox>
-                    <Button Grid.ColumnSpan="2" Grid.Row="6" Width="200" Height="50" FontSize="16" Click="Button_Click" Grid.Column="2" Margin="79,4,297,4">Изменить набор</Button>
+                    <TextBox x:Name="mu0" Grid.Row="1" Grid.Column="3" Width="200" Height="30" FontSize="14" Margin="99,14,98,14" TextChanged="CheckKitChanges"></TextBox>
+                    <TextBox x:Name="Ea" Grid.Row="2" Grid.Column="3" Width="200" Height="30" FontSize="14" Margin="99,14,98,14" TextChanged="CheckKitChanges"></TextBox>
+                    <TextBox x:Name="Tr" Grid.Row="3" Grid.Column="3" Width="200" Height="30" FontSize="14" Margin="99,14,98,14" TextChanged="CheckKitChanges"></TextBox>
+                    <TextBox x:Name="n" Grid.Row="4" Grid.Column="3" Width="200" Height="30" FontSize="14" Margin="99,14,98,14" TextChanged="CheckKitChanges"></TextBox>
+                    <TextBox x:Name="alphaU" Grid.Row="5" Grid.Column="3" Width="200" Height="30" FontSize="14" Margin="99,14,98,14" TextChanged="CheckKitChanges"></TextBox>
+                    <Button x:Name="changeKitButton" Grid.ColumnSpan="2" Grid.Row="6" Width="200" Height="50" FontSize="16" Click="Button_Click" Grid.Column="2" Margin="79,4,297,4">Изменить набор</Button>
                 </Grid>
             </TabItem>
-            <TabItem Header="Добавить новый набор">
+            <TabItem Header="Добавить новый набор" Loaded="TabItem_Loaded_2">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
@@ -123,13 +123,13 @@
                             </TextBlock>
                         </Label.Content>
                     </Label>
-                    <TextBox x:Name="kitName" Grid.Row="1" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
-                    <TextBox x:Name="mu01" Grid.Row="2" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
-                    <TextBox x:Name="Ea1" Grid.Row="3" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
-                    <TextBox x:Name="Tr1" Grid.Row="4" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
-                    <TextBox x:Name="n1" Grid.Row="5" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
-                    <TextBox x:Name="alphaU1" Grid.Row="6" Grid.Column="1" Width="200" Height="30" FontSize="14"></TextBox>
-                    <Button Grid.ColumnSpan="2" Grid.Row="7" Width="200" Height="50" FontSize="16" Click="Button_Click_1">Добавить набор</Button>
+                    <TextBox x:Name="kitName" Grid.Row="1" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="kitName_TextChanged"></TextBox>
+                    <TextBox x:Name="mu01" Grid.Row="2" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="CheckInputChange"></TextBox>
+                    <TextBox x:Name="Ea1" Grid.Row="3" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="CheckInputChange"></TextBox>
+                    <TextBox x:Name="Tr1" Grid.Row="4" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="CheckInputChange"></TextBox>
+                    <TextBox x:Name="n1" Grid.Row="5" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="CheckInputChange"></TextBox>
+                    <TextBox x:Name="alphaU1" Grid.Row="6" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="CheckInputChange"></TextBox>
+                    <Button x:Name="addNewKitButton" Grid.ColumnSpan="2" Grid.Row="7" Width="200" Height="50" FontSize="16" Click="Button_Click_1">Добавить набор</Button>
                 </Grid>
             </TabItem>
             <TabItem Header="Удалить набор значений" Loaded="TabItem_Loaded_1">
@@ -143,8 +143,8 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" Content="Набор:" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <ComboBox x:Name="delModels" Grid.Row="0" Grid.Column="1" Width="200" Height="50" FontSize="16"></ComboBox>
-                    <Button Grid.ColumnSpan="2" Grid.Row="1" Width="200" Height="50" FontSize="16" Click="Button_Click_2">Удалить набор</Button>
+                    <ComboBox x:Name="delModels" Grid.Row="0" Grid.Column="1" Width="200" Height="50" FontSize="16" SelectionChanged="delModels_SelectionChanged"></ComboBox>
+                    <Button x:Name="dellKitButton" Grid.ColumnSpan="2" Grid.Row="1" Width="200" Height="50" FontSize="16" Click="Button_Click_2">Удалить набор</Button>
                 </Grid>
             </TabItem>
         </TabControl>

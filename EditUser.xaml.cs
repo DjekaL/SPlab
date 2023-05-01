@@ -1,39 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using ToastNotifications.Messages;
 
-namespace Don_tKnowHowToNameThis {
+namespace Don_tKnowHowToNameThis
+{
     /// <summary>
     /// Interaction logic for EditUser.xaml
     /// </summary>
-    public partial class EditUser : Window {
+    public partial class EditUser : Window
+    {
         DB _db;
         string _login;
-        public EditUser(DB db, string login) {
+        Notification notification;
+        public EditUser(DB db, string login)
+        {
             InitializeComponent();
             _db = db;
             _login = login;
+            notification = new Notification(this);
         }
 
         private void dellUser_Click(object sender, RoutedEventArgs e)
         {
-            _db.DeleteUser(dellUserComboBox.SelectedItem.ToString());
+            try
+            {
+                _db.DeleteUser(dellUserComboBox.SelectedItem.ToString());
+                notification.Notifier().ShowSuccess("Учетная запись успешно удолена!");
+            }
+            catch
+            {
+                notification.Notifier().ShowError("Возникла ошибка при удолении учетной записи.");
+            }
             dellUser_Loaded(sender, e);
         }
 
         private void addNewUser_Click(object sender, RoutedEventArgs e)
         {
-            _db.InsertUser(addNewLogin.Text, addNewPassword.Text);
+            try
+            {
+                _db.InsertUser(addNewLogin.Text, addNewPassword.Text);
+                notification.Notifier().ShowSuccess("Учетная запись успешно создана!");
+            }
+            catch
+            {
+                notification.Notifier().ShowError("Возникла ошибка при создании учетной записи.");
+            }
             dellUser_Loaded(sender, e);
             addNewLogin.Text = "";
             addNewPassword.Text = "";
@@ -48,21 +61,35 @@ namespace Don_tKnowHowToNameThis {
             {
                 dellUserComboBox.Items.Add(item);
             }
+            if (dellUserComboBox.SelectedItem == null) dellUserButton.IsEnabled = false;
+            else dellUserButton.IsEnabled = true;
         }
 
         private void changePas_Click(object sender, RoutedEventArgs e)
         {
-            _db.ChangePassword(_login, oldPas.Text, newPas.Text);
+            try
+            {
+                if(_db.ChangePassword(_login, oldPas.Text, newPas.Text))
+                {
+                    notification.Notifier().ShowSuccess("Пароль успешно изменен!");
+                }
+                else notification.Notifier().ShowError("Старый пароль введён некорректно!");
+            }
+            catch
+            {
+                notification.Notifier().ShowError("Возникла ошибка при изменении пароля.");
+            }
         }
 
         private void ChangePassword_Loaded(object sender, RoutedEventArgs e)
         {
             currenrtUser.Content += _login.ToString();
+            changePasButton.IsEnabled = false;
         }
 
         private void addNewLogin_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string tmp = _db.GetUserId(addNewLogin.Text);
+            string tmp = _db.GetId($"select user_id from user where login = '{addNewLogin.Text}'", "user_id");
             if (tmp != "")
             {
                 Errors.Content = "Пользователь с таким логином уже существует.";
@@ -76,6 +103,31 @@ namespace Don_tKnowHowToNameThis {
                 addNewUser.IsEnabled = true;
                 addNewLogin.Background = Brushes.White;
             }
+            if(addNewLogin.Text == "" || addNewPassword.Text == "") addNewUser.IsEnabled = false;
+            else addNewUser.IsEnabled = true;
+        }
+
+        private void dellUserComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dellUserComboBox.SelectedItem == null) dellUserButton.IsEnabled = false;
+            else dellUserButton.IsEnabled = true;
+        }
+
+        private void PasChanfe_Changed(object sender, TextChangedEventArgs e)
+        {
+            if (oldPas.Text == "" || newPas.Text == "")
+            {
+                changePasButton.IsEnabled = false;
+            }
+            else
+            {
+                changePasButton.IsEnabled = true;
+            }
+        }
+
+        private void addNewUser1_Loaded(object sender, RoutedEventArgs e)
+        {
+            addNewUser.IsEnabled = false;
         }
     }
 }
