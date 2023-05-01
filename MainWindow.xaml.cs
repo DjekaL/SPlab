@@ -141,7 +141,7 @@ namespace Don_tKnowHowToNameThis
             FileWork fileWork;
             if (fileName.Contains(".xlsx")) { fileWork = new FileWork(calc, fileName); }
             else { fileWork = new FileWork(calc, fileName + ".xlsx"); }
-            fileWork.SaveToExel();
+            fileWork.SaveToExсel();
         }
 
         private void ChangeUser_Click(object sender, RoutedEventArgs e) {
