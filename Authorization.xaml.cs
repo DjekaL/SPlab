@@ -69,5 +69,10 @@ namespace Don_tKnowHowToNameThis
                 authoBut.IsEnabled = false;
             }
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _res = "denied";
+        }
     }
 }
