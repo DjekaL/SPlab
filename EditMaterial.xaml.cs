@@ -17,7 +17,8 @@ namespace Don_tKnowHowToNameThis {
     /// Interaction logic for EditMaterial.xaml
     /// </summary>
     public partial class EditMaterial : Window {
-        public EditMaterial() {
+        
+        public EditMaterial(DB db) {
             InitializeComponent();
         }
     }

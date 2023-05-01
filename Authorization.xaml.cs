@@ -1,18 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
-using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Don_tKnowHowToNameThis
 {
@@ -32,21 +21,38 @@ namespace Don_tKnowHowToNameThis
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
-            DataTable table = new DataTable();
             string query = $"SELECT category_cat_id FROM flowmodel.user where login = '{login.Text}' and password = '{password.Text}'";
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
             MySqlCommand command = new MySqlCommand(query, _db._connection);
             _db._connection.Open();
-            adapter.SelectCommand = command;
-            command.ExecuteNonQuery();
+            string cat = "";
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+
+                //adapter.SelectCommand = command;
+                while (reader.Read())
+                {
+                    cat = reader["category_cat_id"].ToString();
+                }
+            }
+           
+            List<string> list = new List<string>();
+            query = $"SELECT cat_id FROM flowmodel.category";
+            command = new MySqlCommand(query, _db._connection);
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    list.Add(reader["cat_id"].ToString());
+                }
+            }
+            _db._connection.Close();
             errText.Content = "";
             if (_tryes < 3)
             {
-                if (login.Text == "da" && password.Text == "da")
+                if (list.Contains(cat))
                 {
                     this.Close();
-                    _res = "lox";
+                    _res = cat;
                 }
                 else
                 {
@@ -60,6 +66,7 @@ namespace Don_tKnowHowToNameThis
             {
                 errText.Foreground = Brushes.DarkRed;
                 errText.Content = "Превышено количество попыток авторизации! \rПопробуйте еще раз позже.";
+                authoBut.IsEnabled = false;
             }
         }
     }

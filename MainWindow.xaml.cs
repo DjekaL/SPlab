@@ -47,9 +47,9 @@ namespace Don_tKnowHowToNameThis
             saveToFile.IsEnabled = false;
             target.Background = Brushes.LightPink;
             materialComboBox.SelectedIndex = 0;
-            if (user == "lox")
+            if (user == "1")
             {
-                notifier.ShowSuccess("Привет лох!");
+                notifier.ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом администратора");
                 DispatcherTimer timer = new DispatcherTimer();
                 timer.Tick += new EventHandler(timer_Tick);
 
@@ -57,7 +57,34 @@ namespace Don_tKnowHowToNameThis
 
                 timer.Start();
             }
+            else
+            {
+                if (user == "2")
+                {
+                    notifier.ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом исследователя");
+                    DispatcherTimer timer = new DispatcherTimer();
+                    timer.Tick += new EventHandler(timer_Tick);
+
+                    timer.Interval = new TimeSpan(0, 10, 5);
+
+                    timer.Start();
+                }
+            }
             if (user == "denied") this.Close();
+            List<string> materials = new List<string>();
+            List<string> models = new List<string>();
+            db.InitialMaterial(materials, "SELECT title FROM flowmodel.material");
+            foreach (string item in materials)
+            {
+                materialComboBox.Items.Add(item);
+            }
+            db.InitialMaterial(models, "SELECT title FROM flowmodel.mat_model order by mat_model_id asc");
+            foreach (string item in models)
+            {
+                modelComboBox.Items.Add(item);
+            }
+
+            
         }
         private void timer_Tick(object sender, EventArgs e)
         {
@@ -111,11 +138,11 @@ namespace Don_tKnowHowToNameThis
                 T0.Text = calc._T0.ToString();
                 Vu.Text = calc._Vu.ToString();
                 Tu.Text = calc._Tu.ToString();
-                mu0.Text = calc._mu0.ToString();
+                /*mu0.Text = calc._mu0.ToString();
                 Ea.Text = calc._Ea.ToString();
                 Tr.Text = calc._Tr.ToString();
                 n.Text = calc._n.ToString();
-                alphaU.Text = calc._alphaU.ToString();
+                alphaU.Text = calc._alphaU.ToString();*/
                 W.Text = calc._W.ToString();
                 H.Text = calc._H.ToString();
                 L.Text = calc._L.ToString();
@@ -128,11 +155,11 @@ namespace Don_tKnowHowToNameThis
                 T0.Text = "";
                 Vu.Text = "";
                 Tu.Text = "";
-                mu0.Text = "";
+                /*mu0.Text = "";
                 Ea.Text = "";
                 Tr.Text = "";
                 n.Text = "";
-                alphaU.Text = "";
+                alphaU.Text = "";*/
                 W.Text = "";
                 H.Text = "";
                 L.Text = "";
@@ -151,19 +178,49 @@ namespace Don_tKnowHowToNameThis
             fileWork.SaveToExel();
         }
 
-        private void ChangeUser_Click(object sender, RoutedEventArgs e) {
+        private void ChangeUser_Click(object sender, RoutedEventArgs e)
+        {
             EditUser window = new EditUser();
             window.Show();
         }
 
-        private void ChangeModel_Click(object sender, RoutedEventArgs e) {
-            EditMathModel window = new EditMathModel();
+        private void ChangeModel_Click(object sender, RoutedEventArgs e)
+        {
+            EditMathModel window = new EditMathModel(db);
             window.Show();
         }
 
-        private void ChangeMaterial_Click(object sender, RoutedEventArgs e) {
-            EditMaterial window = new EditMaterial();
+        private void ChangeMaterial_Click(object sender, RoutedEventArgs e)
+        {
+            EditMaterial window = new EditMaterial(db);
             window.Show();
+        }
+
+        private void ChangeModelKit_Click(object sender, RoutedEventArgs e)
+        {
+            db.UpdateModel(modelComboBox.SelectedItem.ToString(), mu0text.Text, int.Parse(mu0.Text), Eatext.Text, int.Parse(Ea.Text), Trtext.Text, int.Parse(Tr.Text), ntext.Text, Convert.ToDouble(n.Text), alphaUtext.Text, int.Parse(alphaU.Text));
+        }
+
+        private void modelComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            List<string> modelCoefffs = new List<string>();
+            db.InitialModel(modelComboBox.SelectedItem.ToString(), mu0text.Text, Eatext.Text, Trtext.Text, ntext.Text, alphaUtext.Text, modelCoefffs);
+            if (modelCoefffs.Count > 0)
+            {
+                mu0.Text = modelCoefffs[0];
+                Ea.Text = modelCoefffs[1];
+                Tr.Text = modelCoefffs[2];
+                n.Text = modelCoefffs[3];
+                alphaU.Text = modelCoefffs[4];
+            }
+            else
+            {
+                mu0.Text = "";
+                Ea.Text = "";
+                Tr.Text = "";
+                n.Text = "";
+                alphaU.Text = "";
+            }
         }
     }
 }

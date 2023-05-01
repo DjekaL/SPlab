@@ -9,7 +9,7 @@
     <Grid>
         <TextBox x:Name="login" HorizontalAlignment="Left" Margin="150,50,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="password" HorizontalAlignment="Left" Margin="150,90,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="350,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.101,-0.624" Click="Button_Click"/>
+        <Button x:Name="authoBut" Content="Button" HorizontalAlignment="Left" Margin="350,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.101,-0.624" Click="Button_Click"/>
         <Label Content="Логин" HorizontalAlignment="Left" Margin="150,30,0,0" VerticalAlignment="Top"/>
         <Label Content="Пароль" HorizontalAlignment="Left" Margin="150,70,0,0" VerticalAlignment="Top"/>
         <Label x:Name="errText" Content="" HorizontalAlignment="Left" Margin="244,126,0,0" VerticalAlignment="Top"/>
