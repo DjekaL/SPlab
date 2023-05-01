@@ -15,7 +15,7 @@ namespace Don_tKnowHowToNameThis
         Calc calc = new Calc();
         string userCat;
         string login = "";
-        DB db = new DB("localhost", 3306, "flowmodel", "root", "Ad1234567890");
+        DB db = new DB("localhost", 3306, "flowmodel", "root", "root");
         Notification notification;
         public MainWindow()
         {
@@ -34,7 +34,7 @@ namespace Don_tKnowHowToNameThis
             //materialComboBox.SelectedIndex = 0;
             if (userCat == "admin")
             {
-                notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом администратора");
+                notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались в аккаунт администратора");
                 baseEditor.IsEnabled = true;
                 baseEditor.Visibility = Visibility.Visible;
             }
@@ -42,7 +42,7 @@ namespace Don_tKnowHowToNameThis
             {
                 if (userCat == "default")
                 {
-                    notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом исследователя");
+                    notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались в аккаунт исследователя");
                     baseEditor.IsEnabled = false;
                     baseEditor.Visibility = Visibility.Collapsed;
                 }
@@ -223,7 +223,7 @@ namespace Don_tKnowHowToNameThis
             }
             catch
             {
-                notification.Notifier().ShowError("Возникла ошибка при сохранении свойст материфла.");
+                notification.Notifier().ShowError("Возникла ошибка при сохранении свойств материала.");
             }
         }
 

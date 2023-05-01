@@ -48,7 +48,7 @@
                     <Label x:Name="currenrtUser" Content="Текущий пользователь: " FontSize="22" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Удалить учетную записьисследователя" Loaded="dellUser_Loaded">
+            <TabItem Header="Удалить учетную запись исследователя" Loaded="dellUser_Loaded">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
