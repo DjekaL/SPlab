@@ -21,14 +21,14 @@
         <Menu Grid.Row="0" Grid.ColumnSpan="4">
             <MenuItem x:Name="saveToFile" Header="Файл" Height="25px" Click="FileSave_Click"></MenuItem>
             <MenuItem x:Name="tableValueButton" Header="Таблица значений" Click="MenuItem_Click"></MenuItem>
-            <MenuItem Header="База данных">
+            <MenuItem x:Name="baseEditor" Header="База данных">
                 <MenuItem Header="Измененить пользователей" Click="ChangeUser_Click"></MenuItem>
                 <MenuItem Header="Изменить наборы значений мат. модели" Click="ChangeModel_Click"></MenuItem>
                 <MenuItem Header="Изменить материалы" Click="ChangeMaterial_Click"></MenuItem>
-                <MenuItem Header="Обновить выбранный набор значений мат. модели"></MenuItem>
-                <MenuItem Header="Обновить выбранный материал"></MenuItem>
+                <MenuItem Header="Обновить выбранный набор значений мат. модели" Click="ChangeModelKit_Click"></MenuItem>
+                <MenuItem Header="Обновить выбранный материал" Click="ChangeMaterila_Click"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Сменить пользователя"></MenuItem>
+            <MenuItem Header="Сменить пользователя" Click="ChangeProfile_Click"></MenuItem>
         </Menu>
       
         <GroupBox Header="Входные параметры" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="2, 2, 2, 2">
@@ -43,8 +43,7 @@
                 </Grid.RowDefinitions>
                 <Label x:Name="target" Grid.Column="0" Grid.Row="0" Content="Материал:" HorizontalAlignment="Left"  VerticalAlignment="Top" />
                 <ComboBox x:Name="materialComboBox" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Height="26" Width="230" SelectionChanged="ComboBox_SelectionChanged" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Top" >
-                    <SystemGesture:String>Полиэтилен низкой плотности</SystemGesture:String>
-                    <SystemGesture:String>da</SystemGesture:String>
+                    
                 </ComboBox>
                 <GroupBox Header="Геометрические параметры:" Grid.Column="0" Grid.Row="1" Margin="2, 2, 2, 2">
                     <Grid>
@@ -87,18 +86,18 @@
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
-                        <Label Grid.Column="0" Grid.Row="0" Content="Плотность:"/>
+                        <Label x:Name="ptext" Grid.Column="0" Grid.Row="0" Content="Плотность"/>
                         <Label Grid.Column="0" Grid.Row="1">
                             <Label.Content>
-                                <TextBlock TextWrapping="Wrap">
-                            Удельная теплоёмкость:
+                                <TextBlock x:Name="ctext" TextWrapping="Wrap">
+                            Удельная теплоёмкость
                                 </TextBlock>
                             </Label.Content>
                         </Label>
                         <Label Grid.Column="0" Grid.Row="2">
                             <Label.Content>
-                                <TextBlock TextWrapping="Wrap">
-                            Температура плавления:
+                                <TextBlock x:Name="T0text" TextWrapping="Wrap">
+                            Температура плавления
                                 </TextBlock>
                             </Label.Content>
                         </Label>
@@ -161,7 +160,7 @@
                     <RowDefinition Height="4.5*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Label Grid.Column="0" Grid.Row="0" Content="Набор значений модели:" HorizontalAlignment="Left"  VerticalAlignment="Top" />
-                <ComboBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Width="140" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <ComboBox x:Name="modelComboBox" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Width="140" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionChanged="modelComboBox_SelectionChanged" >
                 </ComboBox>
                 <GroupBox Header="Эмпирические коэффициенты:" Grid.Row="1" Grid.ColumnSpan="3" Margin="2, 2, 2, 2">
                     <Grid Grid.Row="0" Grid.ColumnSpan="3">
@@ -179,36 +178,36 @@
                         </Grid.RowDefinitions>
                         <Label Grid.Column="0" Grid.Row="0">
                             <Label.Content>
-                                <TextBlock TextWrapping="Wrap">
-                            Коэффициент консистенции при температуре приведения:
+                                <TextBlock x:Name="mu0text" TextWrapping="Wrap">
+                            Коэффициент консистенции при температуре приведения
                                 </TextBlock>
                             </Label.Content>
                         </Label>
                         <Label Grid.Column="0" Grid.Row="1">
                             <Label.Content>
-                                <TextBlock TextWrapping="Wrap">
-                            Энергия активации вязкого течения материала:
+                                <TextBlock x:Name="Eatext" TextWrapping="Wrap">
+                            Энергия активации вязкого течения материала
                                 </TextBlock>
                             </Label.Content>
                         </Label>
                         <Label Grid.Column="0" Grid.Row="2">
                             <Label.Content>
-                                <TextBlock TextWrapping="Wrap">
-                            Температура приведения:
+                                <TextBlock x:Name="Trtext" TextWrapping="Wrap">
+                            Температура приведения
                                 </TextBlock>
                             </Label.Content>
                         </Label>
                         <Label Grid.Column="0" Grid.Row="3">
                             <Label.Content>
-                                <TextBlock TextWrapping="Wrap">
-                            Индекс течения:
+                                <TextBlock x:Name="ntext" TextWrapping="Wrap">
+                            Индекс течения
                                 </TextBlock>
                             </Label.Content>
                         </Label>
                         <Label Grid.Column="0" Grid.Row="4">
                             <Label.Content>
-                                <TextBlock TextWrapping="Wrap">
-                            Коэффициент теплоотдачи от крышки:
+                                <TextBlock x:Name="alphaUtext" TextWrapping="Wrap">
+                            Коэффициент теплоотдачи от крышки
                                 </TextBlock>
                             </Label.Content>
                         </Label>
