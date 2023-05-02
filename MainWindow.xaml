@@ -27,6 +27,7 @@
                 <MenuItem Header="Изменить материалы" Click="ChangeMaterial_Click"></MenuItem>
                 <MenuItem Header="Обновить выбранный набор значений мат. модели" Click="ChangeModelKit_Click"></MenuItem>
                 <MenuItem Header="Обновить выбранный материал" Click="ChangeMaterila_Click"></MenuItem>
+                <MenuItem Header="Создать резервную копию" Click="CopyDataBase_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="Сменить пользователя" Click="ChangeProfile_Click"></MenuItem>
         </Menu>

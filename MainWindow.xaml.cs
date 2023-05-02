@@ -235,5 +235,10 @@ namespace Don_tKnowHowToNameThis
             login = authorization._login;
             Window_Loaded(sender, e);
         }
+
+        private void CopyDataBase_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
