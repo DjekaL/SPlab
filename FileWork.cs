@@ -15,7 +15,7 @@ namespace Don_tKnowHowToNameThis
             _path = fileName;
             _calc = calc;
         }
-        public void SaveToExel()
+        public void SaveToExсel()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
