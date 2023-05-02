@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 using ToastNotifications.Messages;
@@ -15,7 +16,7 @@ namespace Don_tKnowHowToNameThis
         Calc calc = new Calc();
         string userCat;
         string login = "";
-        DB db = new DB("localhost", 3306, "flowmodel", "root", "root");
+        DB db = new DB("localhost", 3306, "flowmodel", "root", "Ad1234567890");
         Notification notification;
         public MainWindow()
         {
@@ -34,7 +35,7 @@ namespace Don_tKnowHowToNameThis
             //materialComboBox.SelectedIndex = 0;
             if (userCat == "admin")
             {
-                notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались в аккаунт администратора");
+                notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом администратора");
                 baseEditor.IsEnabled = true;
                 baseEditor.Visibility = Visibility.Visible;
             }
@@ -42,7 +43,7 @@ namespace Don_tKnowHowToNameThis
             {
                 if (userCat == "default")
                 {
-                    notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались в аккаунт исследователя");
+                    notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом исследователя");
                     baseEditor.IsEnabled = false;
                     baseEditor.Visibility = Visibility.Collapsed;
                 }
@@ -223,7 +224,7 @@ namespace Don_tKnowHowToNameThis
             }
             catch
             {
-                notification.Notifier().ShowError("Возникла ошибка при сохранении свойств материала.");
+                notification.Notifier().ShowError("Возникла ошибка при сохранении свойст материфла.");
             }
         }
 
@@ -238,7 +239,7 @@ namespace Don_tKnowHowToNameThis
 
         private void CopyDataBase_Click(object sender, RoutedEventArgs e)
         {
-
+            Process.Start("cmd.exe /C \"mysqldump -uroot -pAd1234567890 flowmodel > flowmodel.sql\"");
         }
     }
 }
