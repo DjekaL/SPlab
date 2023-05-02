@@ -14,15 +14,17 @@ namespace Don_tKnowHowToNameThis
         DB _db;
         public string _res { get; set; }
         public string _login { get; set; }
-        public Authorization(DB db)
+        public bool _autho { get; set; }
+        public Authorization(DB db, string login)
         {
             InitializeComponent();
             _db = db;
+            _login = login;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string query = $"SELECT user_cat FROM flowmodel.category inner join user on cat_id = category_cat_id where login = '{login.Text}' and password = '{password.Text}'";
+            string query = $"SELECT user_cat FROM flowmodel.category inner join user on cat_id = category_cat_id where login = '{login.Text}' and password = '{password.Password}'";
             MySqlCommand command = new MySqlCommand(query, _db._connection);
             _db._connection.Open();
             string cat = "";
@@ -53,13 +55,13 @@ namespace Don_tKnowHowToNameThis
                     this.Close();
                     _res = cat;
                     _login = login.Text;
+                    _autho = true;
                 }
                 else
                 {
                     errText.Content = "Неверный логин или пароль!";
                     errText.Foreground = Brushes.Red;
                     _tryes++;
-                    _res = "denied";
                 }
             }
             else
@@ -67,6 +69,7 @@ namespace Don_tKnowHowToNameThis
                 errText.Foreground = Brushes.DarkRed;
                 errText.Content = "Превышено количество попыток авторизации! \rПопробуйте еще раз позже.";
                 authoBut.IsEnabled = false;
+                _res = "denied";
             }
         }
 

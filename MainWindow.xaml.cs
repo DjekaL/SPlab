@@ -16,26 +16,30 @@ namespace Don_tKnowHowToNameThis
         Calc calc = new Calc();
         string userCat;
         string login = "";
-        DB db = new DB("localhost", 3306, "flowmodel", "root", "Ad1234567890");
+        bool isAuthor = false;
+        DB db;
+        string user = "root";
+        string password = "Ad1234567890";
         Notification notification;
         public MainWindow()
         {
             InitializeComponent();
+            db = new DB("localhost", 3306, "flowmodel", user, password);
             notification = new Notification(this);
-            Authorization authorization = new Authorization(db);
+            Authorization authorization = new Authorization(db, login);
             authorization.ShowDialog();
             userCat = authorization._res;
             login = authorization._login;
+            isAuthor = authorization._autho;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             saveToFile.IsEnabled = false;
             target.Background = Brushes.LightPink;
-            //materialComboBox.SelectedIndex = 0;
             if (userCat == "admin")
             {
-                notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом администратора");
+                notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались в аккаунт администратора");
                 baseEditor.IsEnabled = true;
                 baseEditor.Visibility = Visibility.Visible;
             }
@@ -43,7 +47,7 @@ namespace Don_tKnowHowToNameThis
             {
                 if (userCat == "default")
                 {
-                    notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались по аккаунтом исследователя");
+                    notification.Notifier().ShowSuccess("Добро пожаловать. \rВы авторизовались в аккаунт исследователя");
                     baseEditor.IsEnabled = false;
                     baseEditor.Visibility = Visibility.Collapsed;
                 }
@@ -58,7 +62,7 @@ namespace Don_tKnowHowToNameThis
             List<string> materials = new List<string>();
             List<string> models = new List<string>();
             materialComboBox.Items.Clear();
-            db.InitialComboBox(materials, "SELECT title FROM flowmodel.material", "title");
+            db.InitialComboBox(materials, "SELECT title FROM flowmodel.material order by material_id asc", "title");
             foreach (string item in materials)
             {
                 materialComboBox.Items.Add(item);
@@ -77,8 +81,28 @@ namespace Don_tKnowHowToNameThis
             Tr.Text = "";
             n.Text = "";
             alphaU.Text = "";
+            materialComboBox.SelectedIndex = 0;
+            modelComboBox.SelectedIndex = 0;
         }
-
+        private void Window_Reload()
+        {
+            List<string> materials = new List<string>();
+            List<string> models = new List<string>();
+            materialComboBox.Items.Clear();
+            db.InitialComboBox(materials, "SELECT title FROM flowmodel.material order by material_id asc", "title");
+            foreach (string item in materials)
+            {
+                materialComboBox.Items.Add(item);
+            }
+            modelComboBox.Items.Clear();
+            db.InitialComboBox(models, "SELECT title FROM flowmodel.mat_model order by mat_model_id asc", "title");
+            foreach (string item in models)
+            {
+                modelComboBox.Items.Add(item);
+            }
+            materialComboBox.SelectedIndex = 0;
+            modelComboBox.SelectedIndex = 0;
+        }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             calc = new Calc(materialComboBox.Text, Convert.ToDouble(W.Text), Convert.ToDouble(H.Text), Convert.ToDouble(L.Text), Convert.ToDouble(step.Text), Convert.ToDouble(p.Text), Convert.ToDouble(c.Text),
@@ -89,14 +113,15 @@ namespace Don_tKnowHowToNameThis
             List<double> temperature = new List<double>();
             List<double> viscosity = new List<double>();
             double timeLost = 0;
-            double memLost = 0;
+            double memLost = GC.GetTotalMemory(false); ;
+            Stopwatch t = new Stopwatch();
+            t.Start();
 
             calc.TemperatureAndViscosity(calc, zCoord, temperature, viscosity, ref timeLost, ref memLost);
 
-            Table table = new Table(calc);
+            Table table = new Table(calc, t, memLost);
             table.Show();
             saveToFile.IsEnabled = true;
-
         }
 
         private void CheckInputChange(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -156,25 +181,36 @@ namespace Don_tKnowHowToNameThis
             FileWork fileWork;
             if (fileName.Contains(".xlsx")) { fileWork = new FileWork(calc, fileName); }
             else { fileWork = new FileWork(calc, fileName + ".xlsx"); }
-            fileWork.SaveToExсel();
+            try
+            {
+                fileWork.SaveToExсel();
+                notification.Notifier().ShowSuccess("Отчет о моделировании процесса сохранен!");
+            }
+            catch
+            {
+                notification.Notifier().ShowError("Возникла ошибка при сохранении отчета о моделировании процесса.");
+            }
         }
 
         private void ChangeUser_Click(object sender, RoutedEventArgs e)
         {
             EditUser window = new EditUser(db, login);
-            window.Show();
+            window.ShowDialog();
+            Window_Reload();
         }
 
         private void ChangeModel_Click(object sender, RoutedEventArgs e)
         {
             EditMathModel window = new EditMathModel(db);
-            window.Show();
+            window.ShowDialog();
+            Window_Reload();
         }
 
         private void ChangeMaterial_Click(object sender, RoutedEventArgs e)
         {
             EditMaterial window = new EditMaterial(db);
-            window.Show();
+            window.ShowDialog();
+            Window_Reload();
         }
 
         private void ChangeModelKit_Click(object sender, RoutedEventArgs e)
@@ -186,7 +222,7 @@ namespace Don_tKnowHowToNameThis
             }
             catch
             {
-                notification.Notifier().ShowError("Возникла ошибка при изменении коэффициентво модели.");
+                notification.Notifier().ShowError("Возникла ошибка при изменении коэффициентов модели.");
             }
         }
 
@@ -224,13 +260,13 @@ namespace Don_tKnowHowToNameThis
             }
             catch
             {
-                notification.Notifier().ShowError("Возникла ошибка при сохранении свойст материфла.");
+                notification.Notifier().ShowError("Возникла ошибка при сохранении свойств материала.");
             }
         }
 
         private void ChangeProfile_Click(object sender, RoutedEventArgs e)
         {
-            Authorization authorization = new Authorization(db);
+            Authorization authorization = new Authorization(db, login);
             authorization.ShowDialog();
             userCat = authorization._res;
             login = authorization._login;
@@ -239,7 +275,15 @@ namespace Don_tKnowHowToNameThis
 
         private void CopyDataBase_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("cmd.exe /C \"mysqldump -uroot -pAd1234567890 flowmodel > flowmodel.sql\"");
+            try
+            {
+                db.DataBaseExport(user, password);
+                notification.Notifier().ShowSuccess("Резервная копия успешно создана!");
+            }
+            catch
+            {
+                notification.Notifier().ShowError("Возникла ошибка при создании резервной копии.");
+            }
         }
     }
 }

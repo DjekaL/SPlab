@@ -1,5 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 
 namespace Don_tKnowHowToNameThis
 {
@@ -23,8 +26,6 @@ namespace Don_tKnowHowToNameThis
                     list.Add(reader[type].ToString());
                 }
             }
-
-
             _connection.Close();
         }
         public void UpdateModel(string modelComboBoxSelectedItem, string mu0text, double mu0, string Eatext, double Ea, string Trtext, double Tr, string ntext, double n, string alphaUtext, double alphaU)
@@ -349,9 +350,15 @@ namespace Don_tKnowHowToNameThis
             _connection.Close();
             return "";
         }
-        public void DataBaseExport()
+        public void DataBaseExport(string user, string password)
         {
-
+            string commands = @"cd C:\Program Files\MySQL\MySQL Server 8.0\bin && mysqldump.exe -h127.0.0.1 " +
+                @$"-u{user} -p{password} --add-drop-database --databases flowmodel > {Environment.CurrentDirectory}\dump.sql";
+            string batPath = Path.Combine(Path.GetTempPath(), "dump.bat");
+            File.WriteAllText(batPath, commands);
+            Process cmd = Process.Start(batPath);
+            cmd.WaitForExit();
+            File.Delete(batPath);
         }
     }
 }

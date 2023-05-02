@@ -77,9 +77,8 @@ namespace Don_tKnowHowToNameThis
         }
         public void TemperatureAndViscosity(Calc calc, List<double> zCoord, List<double> temperature, List<double> viscosity, ref double time, ref double mem)
         {
-            mem = GC.GetTotalMemory(false);
-            Stopwatch t = new Stopwatch();
-            t.Start();
+            
+            
 
             calc.MaterialShearStrainRate();
             calc.SpecificHeatFluxes();
@@ -92,9 +91,7 @@ namespace Don_tKnowHowToNameThis
                 double n = calc.Viscosity(T);
                 viscosity.Add(Math.Round(n, 1));
             }
-            t.Stop();
-            time = t.ElapsedMilliseconds;
-            mem = (GC.GetTotalMemory(false) - mem) / 1024.0;
+            
             Lostmem = mem;
             LostTime = time;
             calc.Efficiency();
