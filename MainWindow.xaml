@@ -25,7 +25,6 @@
                 <MenuItem Header="Измененить пользователей" Click="ChangeUser_Click"></MenuItem>
                 <MenuItem Header="Изменить наборы значений мат. модели" Click="ChangeModel_Click"></MenuItem>
                 <MenuItem Header="Изменить материалы" Click="ChangeMaterial_Click"></MenuItem>
-                <MenuItem Header="Обновить выбранный набор значений мат. модели" Click="ChangeModelKit_Click"></MenuItem>
                 <MenuItem Header="Обновить выбранный материал" Click="ChangeMaterila_Click"></MenuItem>
                 <MenuItem Header="Создать резервную копию" Click="CopyDataBase_Click"></MenuItem>
             </MenuItem>
@@ -156,14 +155,10 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="2*"></RowDefinition>
                     <RowDefinition Height="21*"></RowDefinition>
                     <RowDefinition Height="4.5*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Label Grid.Column="0" Grid.Row="0" Content="Набор значений модели:" HorizontalAlignment="Left"  VerticalAlignment="Top" />
-                <ComboBox x:Name="modelComboBox" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Width="140" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionChanged="modelComboBox_SelectionChanged" >
-                </ComboBox>
-                <GroupBox Header="Эмпирические коэффициенты:" Grid.Row="1" Grid.ColumnSpan="3" Margin="2, 2, 2, 2">
+                <GroupBox Header="Эмпирические коэффициенты:" Grid.Row="0" Grid.ColumnSpan="3" Margin="2, 2, 2, 2">
                     <Grid Grid.Row="0" Grid.ColumnSpan="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1.3*"></ColumnDefinition>

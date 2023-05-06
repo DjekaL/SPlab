@@ -358,6 +358,19 @@ namespace Don_tKnowHowToNameThis
             _connection.Close();
             return "";
         }
+        public string GetModelTitleFromMaterial(string material) {
+            string title = "";
+            _connection.Open();
+            string query = $"SELECT mat_model.title FROM material INNER JOIN mat_model ON material_model = mat_model_id WHERE material.title = '{material}'";
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            using (MySqlDataReader reader = command.ExecuteReader()) {
+                while (reader.Read()) {
+                    title = reader["title"].ToString();
+                }
+            }
+            _connection.Close();
+            return title;
+        }
         public void DataBaseExport(string user, string password)
         {
             string commands = @"cd C:\Program Files\MySQL\MySQL Server 8.0\bin && mysqldump.exe -h127.0.0.1 " +

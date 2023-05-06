@@ -67,12 +67,6 @@ namespace Don_tKnowHowToNameThis
             {
                 materialComboBox.Items.Add(item);
             }
-            modelComboBox.Items.Clear();
-            db.InitialComboBox(models, "SELECT title FROM flowmodel.mat_model order by mat_model_id asc", "title");
-            foreach (string item in models)
-            {
-                modelComboBox.Items.Add(item);
-            }
             p.Text = "";
             c.Text = "";
             Tu.Text = "";
@@ -82,7 +76,6 @@ namespace Don_tKnowHowToNameThis
             n.Text = "";
             alphaU.Text = "";
             materialComboBox.SelectedIndex = 0;
-            modelComboBox.SelectedIndex = 0;
         }
         private void Window_Reload()
         {
@@ -94,14 +87,7 @@ namespace Don_tKnowHowToNameThis
             {
                 materialComboBox.Items.Add(item);
             }
-            modelComboBox.Items.Clear();
-            db.InitialComboBox(models, "SELECT title FROM flowmodel.mat_model order by mat_model_id asc", "title");
-            foreach (string item in models)
-            {
-                modelComboBox.Items.Add(item);
-            }
             materialComboBox.SelectedIndex = 0;
-            modelComboBox.SelectedIndex = 0;
         }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -141,7 +127,7 @@ namespace Don_tKnowHowToNameThis
                 a.Background = Brushes.LightPink;
                 tableValueButton.IsEnabled = false;
             }
-            if (materialComboBox.SelectedItem == null || modelComboBox.SelectedItem == null || W.Text == "" || H.Text == "" || L.Text == "" || Vu.Text == "" || Tu.Text == "" || step.Text == "") tableValueButton.IsEnabled = false;
+            if (materialComboBox.SelectedItem == null /*|| modelComboBox.SelectedItem == null*/ || W.Text == "" || H.Text == "" || L.Text == "" || Vu.Text == "" || Tu.Text == "" || step.Text == "") tableValueButton.IsEnabled = false;
             else tableValueButton.IsEnabled = true;
         }
 
@@ -156,9 +142,12 @@ namespace Don_tKnowHowToNameThis
 
             List<string> matParams = new List<string>();
             List<string> units = new List<string>();
+            List<string> modelCoefffs = new List<string>();
             if (materialComboBox.SelectedItem != null)
             {
-                db.InitialMaterial(materialComboBox.SelectedItem.ToString(), ptext.Content.ToString(), ctext.Text, T0text.Text, matParams, units);
+                string material = materialComboBox.SelectedItem.ToString();
+                string model = db.GetModelTitleFromMaterial(material);
+                db.InitialMaterial(material, ptext.Content.ToString(), ctext.Text, T0text.Text, matParams, units);
                 if (matParams.Count > 0)
                 {
                     p.Text = matParams[0];
@@ -170,6 +159,21 @@ namespace Don_tKnowHowToNameThis
                     p.Text = "";
                     c.Text = "";
                     T0.Text = "";
+                }
+                db.InitialModel(model, mu0text.Text, Eatext.Text, Trtext.Text, ntext.Text, alphaUtext.Text, modelCoefffs, units);
+                if (modelCoefffs.Count > 0) {
+                    mu0.Text = modelCoefffs[0];
+                    Ea.Text = modelCoefffs[1];
+                    Tr.Text = modelCoefffs[2];
+                    n.Text = modelCoefffs[3];
+                    alphaU.Text = modelCoefffs[4];
+                }
+                else {
+                    mu0.Text = "";
+                    Ea.Text = "";
+                    Tr.Text = "";
+                    n.Text = "";
+                    alphaU.Text = "";
                 }
             }
         }
@@ -214,50 +218,14 @@ namespace Don_tKnowHowToNameThis
             Window_Reload();
         }
 
-        private void ChangeModelKit_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                db.UpdateModel(modelComboBox.SelectedItem.ToString(), mu0text.Text, int.Parse(mu0.Text), Eatext.Text, int.Parse(Ea.Text), Trtext.Text, int.Parse(Tr.Text), ntext.Text, Convert.ToDouble(n.Text), alphaUtext.Text, int.Parse(alphaU.Text));
-                notification.Notifier().ShowSuccess("Коэффициенты модели успешно изменены!");
-            }
-            catch
-            {
-                notification.Notifier().ShowError("Возникла ошибка при изменении коэффициентов модели.");
-            }
-        }
-
-        private void modelComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            List<string> modelCoefffs = new List<string>();
-            List<string> units = new List<string>();
-            if (modelComboBox.SelectedItem != null)
-            {
-                db.InitialModel(modelComboBox.SelectedItem.ToString(), mu0text.Text, Eatext.Text, Trtext.Text, ntext.Text, alphaUtext.Text, modelCoefffs, units);
-                if (modelCoefffs.Count > 0)
-                {
-                    mu0.Text = modelCoefffs[0];
-                    Ea.Text = modelCoefffs[1];
-                    Tr.Text = modelCoefffs[2];
-                    n.Text = modelCoefffs[3];
-                    alphaU.Text = modelCoefffs[4];
-                }
-                else
-                {
-                    mu0.Text = "";
-                    Ea.Text = "";
-                    Tr.Text = "";
-                    n.Text = "";
-                    alphaU.Text = "";
-                }
-            }
-        }
-
         private void ChangeMaterila_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                db.UpdateMaterial(materialComboBox.SelectedItem.ToString(), ptext.Content.ToString(), Convert.ToDouble(p.Text), ctext.Text, Convert.ToDouble(c.Text), T0text.Text, Convert.ToDouble(T0.Text));
+                string material = materialComboBox.SelectedItem.ToString();
+                string model = db.GetModelTitleFromMaterial(material);
+                db.UpdateMaterial(material, ptext.Content.ToString(), Convert.ToDouble(p.Text), ctext.Text, Convert.ToDouble(c.Text), T0text.Text, Convert.ToDouble(T0.Text));
+                db.UpdateModel(model, mu0text.Text, int.Parse(mu0.Text), Eatext.Text, int.Parse(Ea.Text), Trtext.Text, int.Parse(Tr.Text), ntext.Text, Convert.ToDouble(n.Text), alphaUtext.Text, int.Parse(alphaU.Text));
                 notification.Notifier().ShowSuccess("Свойства материала успешно сохранены!");
             }
             catch
