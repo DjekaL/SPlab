@@ -25,7 +25,10 @@ namespace Don_tKnowHowToNameThis
         {
             try
             {
-                _db.DeleteMaterial(dellMaterialCombo.SelectedItem.ToString());
+                string material = dellMaterialCombo.SelectedItem.ToString();
+                string model = _db.GetModelTitleFromMaterial(material);
+                _db.DeleteMaterial(material);
+                _db.DeleteModel(model);
                 notification.Notifier().ShowSuccess("Материал успешно удален!");
             }
             catch
