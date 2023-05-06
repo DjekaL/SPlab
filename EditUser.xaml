@@ -43,7 +43,7 @@
                     <Label Content="Новый пароль:" FontSize="22" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <TextBox x:Name="oldPas" Grid.Row="1" Grid.Column="1" Width="200" Height="50" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextChanged="PasChanfe_Changed"></TextBox>
                     <Button x:Name="changePasButton" Grid.ColumnSpan="2" Grid.Row="3" Width="200" Height="50" FontSize="16" Click="changePas_Click">Поменять пароль</Button>
-                    <Label Content="Страрый пароль:" Grid.Column="0" Grid.Row="1" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Label Content="Старый пароль:" Grid.Column="0" Grid.Row="1" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <TextBox x:Name="newPas" Grid.Row="2" Grid.Column="1" Width="200" Height="50" FontSize="22" TextChanged="PasChanfe_Changed"/>
                     <Label x:Name="currenrtUser" Content="Текущий пользователь: " FontSize="22" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                 </Grid>

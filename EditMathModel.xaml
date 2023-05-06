@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Don_tKnowHowToNameThis"
         mc:Ignorable="d"
-        Title="EditMathModel" Height="468" Width="830">
+        Title="EditMathModel" Height="490" Width="830">
     <Grid>
         <TabControl>
             <TabItem Header="Изменить существующий набор" Loaded="TabItem_Loaded">
