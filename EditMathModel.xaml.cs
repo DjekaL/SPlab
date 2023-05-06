@@ -126,11 +126,11 @@ namespace Don_tKnowHowToNameThis
             try
             {
                 _db.DeleteModel(delModels.SelectedItem.ToString());
-                notification.Notifier().ShowSuccess("Модель коэффициентов успешно удолена!");
+                notification.Notifier().ShowSuccess("Модель коэффициентов успешно удалена!");
             }
             catch
             {
-                notification.Notifier().ShowError("Возникла ошибка при удолении модели коэффициентво.");
+                notification.Notifier().ShowError("Возникла ошибка при удалении модели коэффициентво.");
             }
             TabItem_Loaded(sender, e);
             TabItem_Loaded_1(sender, e);

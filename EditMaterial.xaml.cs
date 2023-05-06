@@ -26,11 +26,11 @@ namespace Don_tKnowHowToNameThis
             try
             {
                 _db.DeleteMaterial(dellMaterialCombo.SelectedItem.ToString());
-                notification.Notifier().ShowSuccess("Материал успешно удолен!");
+                notification.Notifier().ShowSuccess("Материал успешно удален!");
             }
             catch
             {
-                notification.Notifier().ShowError("Возникла ошибка при удолении метериала.");
+                notification.Notifier().ShowError("Возникла ошибка при удалении метериала.");
             }
             UpdateMatrialTab_Loaded(sender, e);
             DeleteMaterialTab_Loaded(sender, e);
