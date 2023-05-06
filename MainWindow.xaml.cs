@@ -19,7 +19,7 @@ namespace Don_tKnowHowToNameThis
         bool isAuthor = false;
         DB db;
         string user = "root";
-        string password = "Ad1234567890";
+        string password = "root";
         Notification notification;
         public MainWindow()
         {
@@ -155,9 +155,10 @@ namespace Don_tKnowHowToNameThis
             step.Text = calc._step.ToString();
 
             List<string> matParams = new List<string>();
+            List<string> units = new List<string>();
             if (materialComboBox.SelectedItem != null)
             {
-                db.InitialMaterial(materialComboBox.SelectedItem.ToString(), ptext.Content.ToString(), ctext.Text, T0text.Text, matParams);
+                db.InitialMaterial(materialComboBox.SelectedItem.ToString(), ptext.Content.ToString(), ctext.Text, T0text.Text, matParams, units);
                 if (matParams.Count > 0)
                 {
                     p.Text = matParams[0];
@@ -229,9 +230,10 @@ namespace Don_tKnowHowToNameThis
         private void modelComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             List<string> modelCoefffs = new List<string>();
+            List<string> units = new List<string>();
             if (modelComboBox.SelectedItem != null)
             {
-                db.InitialModel(modelComboBox.SelectedItem.ToString(), mu0text.Text, Eatext.Text, Trtext.Text, ntext.Text, alphaUtext.Text, modelCoefffs);
+                db.InitialModel(modelComboBox.SelectedItem.ToString(), mu0text.Text, Eatext.Text, Trtext.Text, ntext.Text, alphaUtext.Text, modelCoefffs, units);
                 if (modelCoefffs.Count > 0)
                 {
                     mu0.Text = modelCoefffs[0];

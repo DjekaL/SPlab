@@ -78,14 +78,18 @@ namespace Don_tKnowHowToNameThis
         private void AddMaterial_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             List<string> matParams = new List<string>();
+            List<string> units = new List<string>();
             if (addMaterialCombo.SelectedItem != null)
             {
-                _db.InitialMaterial(addMaterialCombo.SelectedItem.ToString(), pName.Text, cName.Text, T0Name.Text, matParams);
+                _db.InitialMaterial(addMaterialCombo.SelectedItem.ToString(), pName.Text, cName.Text, T0Name.Text, matParams, units);
                 if (matParams.Count > 0)
                 {
                     p.Text = matParams[0];
                     c.Text = matParams[1];
                     T0.Text = matParams[2];
+                    pUnit.Text = units[0];
+                    cUnit.Text = units[1];
+                    T0Unit.Text = units[2];
                 }
                 else
                 {

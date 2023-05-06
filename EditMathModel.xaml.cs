@@ -51,9 +51,10 @@ namespace Don_tKnowHowToNameThis
         private void modelComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             List<string> modelCoefffs = new List<string>();
+            List<string> units = new List<string>();
             if (modelComboBox.SelectedItem != null)
             {
-                _db.InitialModel(modelComboBox.SelectedItem.ToString(), mu0text.Text, Eatext.Text, Trtext.Text, ntext.Text, alphaUtext.Text, modelCoefffs);
+                _db.InitialModel(modelComboBox.SelectedItem.ToString(), mu0text.Text, Eatext.Text, Trtext.Text, ntext.Text, alphaUtext.Text, modelCoefffs, units);
                 if (modelCoefffs.Count > 0)
                 {
                     mu0.Text = modelCoefffs[0];
@@ -61,6 +62,11 @@ namespace Don_tKnowHowToNameThis
                     Tr.Text = modelCoefffs[2];
                     n.Text = modelCoefffs[3];
                     alphaU.Text = modelCoefffs[4];
+                    mu0Unit.Text = units[0];
+                    EaUnit.Text = units[1];
+                    TrUnit.Text = units[2];
+                    nUnit.Text = units[3];
+                    alphaUUnit.Text = units[4];
                 }
                 else
                 {
