@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 using ToastNotifications.Messages;
 
 namespace Don_tKnowHowToNameThis
@@ -273,6 +274,55 @@ namespace Don_tKnowHowToNameThis
                 }
             }
             return false;
+        }
+
+        private void addPropTabItem_Loaded(object sender, RoutedEventArgs e) {
+            List<string> units = new List<string>();
+            unitComboBox.Items.Clear();
+            _db.GetUnits(units);
+            foreach (string item in units) {
+                unitComboBox.Items.Add(item);
+            }
+            unitComboBox.SelectedIndex = 0;
+            addPropBtn.IsEnabled = false;
+        }
+
+        private void propText_TextChanged(object sender, TextChangedEventArgs e) {
+            if(string.IsNullOrEmpty(propText.Text)) { 
+                addPropBtn.IsEnabled = false;
+            } else {
+                addPropBtn.IsEnabled = true;
+            }
+        }
+
+        private void unitText_TextChanged(object sender, TextChangedEventArgs e) {
+            if(string.IsNullOrEmpty(unitText.Text)) {
+                addUnitBtn.IsEnabled = false;
+            } else {
+                addUnitBtn.IsEnabled = true;
+            }
+        }
+
+        private void addUnitBtn_Click(object sender, RoutedEventArgs e) {
+            bool isError = _db.InsertUnit(unitText.Text);
+            if (isError) {
+                notification.Notifier().ShowError("Возникла ошибка при добавлении единицы измерения.");
+            }
+            else {
+                notification.Notifier().ShowSuccess("Eдиница измерения успешно добавлена!");
+                addPropTabItem_Loaded(sender, e);
+            }
+        }
+
+        private void addPropBtn_Click(object sender, RoutedEventArgs e) {
+            bool isError = _db.InsertProperty(unitComboBox.SelectedItem.ToString(), propText.Text);
+            if (isError ) {
+                notification.Notifier().ShowError("Возникла ошибка при добавлении свойства.");
+            }
+            else {
+                notification.Notifier().ShowSuccess("Свойство успешно добавлено!");
+                AddMaterial_Loaded(sender, e);
+            }
         }
     }
 }

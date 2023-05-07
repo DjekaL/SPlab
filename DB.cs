@@ -307,6 +307,49 @@ namespace Don_tKnowHowToNameThis
             }
             _connection.Close();
         }
+        public void GetUnits(List<string> units) {
+            _connection.Open();
+            string query = $"SELECT unit_title FROM unit";
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            using (MySqlDataReader reader = command.ExecuteReader()) {
+                while (reader.Read()) {
+                    units.Add(reader["unit_title"].ToString());
+                }
+            }
+            _connection.Close();
+        }
+        public bool InsertUnit(string unit) {
+            _connection.Open();
+            bool isError = false;
+            try {
+                string query = $"insert into unit(unit_title) values('{unit}')";
+                MySqlCommand command = new MySqlCommand(query, _connection);
+                command.ExecuteNonQuery();
+            }
+            catch {
+                isError = true;
+            }
+            finally {
+                _connection.Close();
+            }
+            return isError;
+        }
+        public bool InsertProperty(string unit, string property) {
+            _connection.Open();
+            bool isError = false;
+            try {
+                string query = $"insert into property(unit, title) values('{unit}', '{property}')";
+                MySqlCommand command = new MySqlCommand(query, _connection);
+                command.ExecuteNonQuery();
+            }
+            catch {
+                isError = true;
+            }
+            finally { 
+                _connection.Close();
+            }
+            return isError;
+        }
         public void GetCoeffs(List<string> coeffTitles, List<int> coeffIds, List<string> coeffUnits) {
             _connection.Open();
             string query = $"SELECT mat_id, title, unit FROM mat_coef";
