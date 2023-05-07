@@ -253,13 +253,6 @@ namespace Don_tKnowHowToNameThis
             Window_Reload();
         }
 
-        private void ChangeModel_Click(object sender, RoutedEventArgs e)
-        {
-            EditMathModel window = new EditMathModel(db);
-            window.ShowDialog();
-            Window_Reload();
-        }
-
         private void ChangeMaterial_Click(object sender, RoutedEventArgs e)
         {
             EditMaterial window = new EditMaterial(db);

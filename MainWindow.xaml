@@ -23,7 +23,6 @@
             <MenuItem x:Name="tableValueButton" Header="Таблица значений" Click="MenuItem_Click"></MenuItem>
             <MenuItem x:Name="baseEditor" Header="База данных">
                 <MenuItem Header="Измененить пользователей" Click="ChangeUser_Click"></MenuItem>
-                <MenuItem Header="Изменить наборы значений мат. модели" Click="ChangeModel_Click"></MenuItem>
                 <MenuItem Header="Изменить материалы" Click="ChangeMaterial_Click"></MenuItem>
                 <MenuItem Header="Обновить выбранный материал" Click="ChangeMaterila_Click"></MenuItem>
                 <MenuItem Header="Создать резервную копию" Click="CopyDataBase_Click"></MenuItem>

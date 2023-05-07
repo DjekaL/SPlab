@@ -70,57 +70,6 @@ namespace Don_tKnowHowToNameThis
             }
             _connection.Close();
         }
-        public void InsertModel(string modelName, string mu0text, double mu0, string Eatext, double Ea, string Trtext, double Tr, string ntext, double n, string alphaUtext, double alphaU)
-        {
-            _connection.Open();
-            string query = $"insert into mat_model(title) value('{modelName}')";
-            MySqlCommand command = new MySqlCommand(query, _connection);
-            command.ExecuteNonQuery();
-            query = $"select mat_model_id from mat_model where title = '{modelName}'";
-            command = new MySqlCommand(query, _connection);
-            string modelId = command.ExecuteScalar().ToString();
-
-            query = $"select mat_id from mat_coef where title = '{mu0text}'";
-            command = new MySqlCommand(query, _connection);
-            string tmp = command.ExecuteScalar().ToString();
-            query = $"insert into mat_set(mat_coef_id, mat_model_id, value)  " +
-                $"value('{tmp}', '{modelId}', {mu0.ToString().Replace(",", ".")})";
-            command = new MySqlCommand(query, _connection);
-            command.ExecuteNonQuery();
-
-            query = $"select mat_id from mat_coef where title = '{Eatext}'";
-            command = new MySqlCommand(query, _connection);
-            tmp = command.ExecuteScalar().ToString();
-            query = $"insert into mat_set(mat_coef_id, mat_model_id, value)  " +
-                $"value('{tmp}', '{modelId}', {Ea.ToString().Replace(",", ".")})";
-            command = new MySqlCommand(query, _connection);
-            command.ExecuteNonQuery();
-
-            query = $"select mat_id from mat_coef where title = '{Trtext}'";
-            command = new MySqlCommand(query, _connection);
-            tmp = command.ExecuteScalar().ToString();
-            query = $"insert into mat_set(mat_coef_id, mat_model_id, value)  " +
-                $"value('{tmp}', '{modelId}', {Tr.ToString().Replace(",", ".")})";
-            command = new MySqlCommand(query, _connection);
-            command.ExecuteNonQuery();
-
-            query = $"select mat_id from mat_coef where title = '{ntext}'";
-            command = new MySqlCommand(query, _connection);
-            tmp = command.ExecuteScalar().ToString();
-            query = $"insert into mat_set(mat_coef_id, mat_model_id, value)  " +
-                $"value('{tmp}', '{modelId}', {n.ToString().Replace(",", ".")})";
-            command = new MySqlCommand(query, _connection);
-            command.ExecuteNonQuery();
-
-            query = $"select mat_id from mat_coef where title = '{alphaUtext}'";
-            command = new MySqlCommand(query, _connection);
-            tmp = command.ExecuteScalar().ToString();
-            query = $"insert into mat_set(mat_coef_id, mat_model_id, value)  " +
-                $"value('{tmp}', '{modelId}', {alphaU.ToString().Replace(",", ".")})";
-            command = new MySqlCommand(query, _connection);
-            command.ExecuteNonQuery();
-            _connection.Close();
-        }
         public void DeleteModel(string modelName)
         {
             _connection.Open();

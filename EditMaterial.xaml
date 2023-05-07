@@ -55,30 +55,6 @@
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" Content="Материал:" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <TextBox x:Name="addMaterial" Grid.Row="0" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="addMaterial_TextChanged"></TextBox>
-                    <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
-                        <Label.Content>
-                            <TextBlock TextWrapping="Wrap" FontSize="12">
-                            Плотность:
-                            </TextBlock>
-                        </Label.Content>
-                    </Label>
-                    <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
-                        <Label.Content>
-                            <TextBlock TextWrapping="Wrap" FontSize="12">
-                            Удельная теплоёмкость:
-                            </TextBlock>
-                        </Label.Content>
-                    </Label>
-                    <Label Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
-                        <Label.Content>
-                            <TextBlock TextWrapping="Wrap" FontSize="12">
-                            Температура плавления:
-                            </TextBlock>
-                        </Label.Content>
-                    </Label>
-                    <TextBox x:Name="addp" Grid.Row="3" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="CheckInputChange"></TextBox>
-                    <TextBox x:Name="addc" Grid.Row="3" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="CheckInputChange"></TextBox>
-                    <TextBox x:Name="addT0" Grid.Row="4" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="CheckInputChange"></TextBox>
                     <Button x:Name="addNewMaterialButton" Grid.ColumnSpan="3" Grid.Row="5" Width="200" Height="50" FontSize="16" Click="InsertMaterial_Click" Grid.Column="0">Добавить материал</Button>
                     <DataGrid x:Name="newPropTable" Grid.Row="1" Grid.ColumnSpan="2" Margin="10, 10, 10, 10" AutoGenerateColumns="False"
                               CanUserAddRows="True" RowEditEnding="addTable_RowEditEnding">

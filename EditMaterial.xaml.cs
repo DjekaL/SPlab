@@ -146,48 +146,6 @@ namespace Don_tKnowHowToNameThis
             UpdateMatrialTab_Loaded(sender, e);
             DeleteMaterialTab_Loaded(sender, e);
         }
-
-        private void matParamsChanged(object sender, TextChangedEventArgs e)
-        {
-            System.Windows.Controls.TextBox a = (System.Windows.Controls.TextBox)e.Source;
-            double temp;
-            if (double.TryParse(a.Text, out temp) && temp > 0)
-            {
-                a.Foreground = Brushes.Black;
-                a.Background = Brushes.White;
-                changeMatParamsButton.IsEnabled = true;
-            }
-            else
-            {
-                a.Foreground = Brushes.DarkRed;
-                a.Background = Brushes.LightPink;
-                changeMatParamsButton.IsEnabled = false;
-            }
-        }
-
-        private void CheckInputChange(object sender, TextChangedEventArgs e)
-        {
-            System.Windows.Controls.TextBox a = (System.Windows.Controls.TextBox)e.Source;
-            double temp;
-            if (double.TryParse(a.Text, out temp) && temp > 0)
-            {
-                a.Foreground = Brushes.Black;
-                a.Background = Brushes.White;
-                addNewMaterialButton.IsEnabled = true;
-            }
-            else
-            {
-                a.Foreground = Brushes.DarkRed;
-                a.Background = Brushes.LightPink;
-                addNewMaterialButton.IsEnabled = false;
-            }
-            if (addMaterial.Text == "" || addp.Text == "" || addc.Text == "" || addT0.Text == "")
-            {
-                addNewMaterialButton.IsEnabled = false;
-            }
-            else addNewMaterialButton.IsEnabled = true;
-        }
-
         private void dellMaterialCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (dellMaterialCombo.SelectedItem == null) dellMaterialButton.IsEnabled = false;
