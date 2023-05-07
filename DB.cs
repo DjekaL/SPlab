@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Windows.Media.Media3D;
+using System.Xml.Linq;
 
 namespace Don_tKnowHowToNameThis
 {
@@ -54,7 +56,7 @@ namespace Don_tKnowHowToNameThis
             command.ExecuteNonQuery();
             _connection.Close();
         }
-        public void InitialModel(string model, List<string> titles, List<double> values, List<string> units) {
+        public void InitialModel(string model, List<string> titles, List<string> values, List<string> units) {
             _connection.Open();
             string query = $"select value, unit, mat_coef.title from mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id " +
                 $"where mat_model.title = '{model}'";
@@ -62,7 +64,7 @@ namespace Don_tKnowHowToNameThis
             using (MySqlDataReader reader = command.ExecuteReader()) {
                 while (reader.Read()) {
                     titles.Add(reader["title"].ToString());
-                    values.Add(double.Parse(reader["value"].ToString()));
+                    values.Add(reader["value"].ToString());
                     units.Add(reader["unit"].ToString());
                 }
             }
@@ -160,7 +162,7 @@ namespace Don_tKnowHowToNameThis
             command.ExecuteNonQuery();
             _connection.Close();
         }
-        public void UpdatePropValue(string material, string propertyName, double value) {
+        public void UpdatePropValue(string material, string propertyName, string value) {
             _connection.Open();
             string query = $"update material_has_property " +
                 $"inner join material on material_id = material_material_id " +
@@ -171,7 +173,7 @@ namespace Don_tKnowHowToNameThis
             command.ExecuteNonQuery();
             _connection.Close();
         }
-        public void UpdateCoeffValue(string model, string coeffName, double value) {
+        public void UpdateCoeffValue(string model, string coeffName, string value) {
             _connection.Open();
             string query = $"update mat_set " +
                 $"inner join mat_coef on mat_id = mat_coef_id " +
@@ -197,7 +199,7 @@ namespace Don_tKnowHowToNameThis
             command.ExecuteNonQuery();
             _connection.Close();
         }
-        public void InitialMaterial(string material, List<string> titles, List<double> values, List<string> units) {
+        public void InitialMaterial(string material, List<string> titles, List<string> values, List<string> units) {
             _connection.Open();
             string query = $"select value, unit, property.title from material_has_property " +
                 $"inner join material on material_id = material_material_id " +
@@ -207,48 +209,61 @@ namespace Don_tKnowHowToNameThis
             using (MySqlDataReader reader = command.ExecuteReader()) {
                 while (reader.Read()) {
                     titles.Add(reader["title"].ToString());
-                    values.Add(double.Parse(reader["value"].ToString()));
+                    values.Add(reader["value"].ToString());
                     units.Add(reader["unit"].ToString());
                 }
             }
             _connection.Close();
         }
-        public void InsertMaterial(string materialName, string pName, double p, string cName, double c, string T0Name, double T0)
+        public bool InsertMaterial(string materialName, List<Property> materialProperties, List<Property> modelCoeffs)
         {
+            bool isErrors = true;
             _connection.Open();
-            string query = $"insert into material(title) value('{materialName}')";
-            MySqlCommand command = new MySqlCommand(query, _connection);
-            command.ExecuteNonQuery();
-            query = $"select material_id from material where title = '{materialName}'";
-            command = new MySqlCommand(query, _connection);
-            string materialId = command.ExecuteScalar().ToString();
+            MySqlTransaction transaction;
+            transaction = _connection.BeginTransaction();
+            string query = "";
+            MySqlCommand command = new MySqlCommand(query, _connection, transaction);
+            try {
+                query = $"insert into mat_model(title) values('{materialName}')";
+                command.CommandText = query;
+                command.ExecuteNonQuery();
 
-            query = $"select prop_id from property where title = '{pName}'";
-            command = new MySqlCommand(query, _connection);
-            string tmp = command.ExecuteScalar().ToString();
-            query = $"insert into material_has_property(material_material_id, property_prop_id, value)  " +
-                $"value('{materialId}', '{tmp}', {p.ToString().Replace(",", ".")})";
-            command = new MySqlCommand(query, _connection);
-            command.ExecuteNonQuery();
+                query = $"select mat_model_id from mat_model where title = '{materialName}'";
+                command.CommandText = query;
+                int modelId = int.Parse(command.ExecuteScalar().ToString());
 
-            query = $"select prop_id from property where title = '{cName}'";
-            command = new MySqlCommand(query, _connection);
-            tmp = command.ExecuteScalar().ToString();
-            query = $"insert into material_has_property(material_material_id, property_prop_id, value)  " +
-                $"value('{materialId}', '{tmp}', {c.ToString().Replace(",", ".")})";
-            command = new MySqlCommand(query, _connection);
-            command.ExecuteNonQuery();
+                query = $"insert into material(title, material_model) values('{materialName}', {modelId})";
+                command.CommandText = query;
+                command.ExecuteNonQuery();
 
-            query = $"select prop_id from property where title = '{T0Name}'";
-            command = new MySqlCommand(query, _connection);
-            tmp = command.ExecuteScalar().ToString();
-            query = $"insert into material_has_property(material_material_id, property_prop_id, value)  " +
-                $"value('{materialId}', '{tmp}', {T0.ToString().Replace(",", ".")})";
-            command = new MySqlCommand(query, _connection);
-            command.ExecuteNonQuery();
+                query = $"select material_id from material where title = '{materialName}'";
+                command.CommandText = query;
+                int materialId = int.Parse(command.ExecuteScalar().ToString());
 
+                foreach (Property property in materialProperties) {
+                    query = $"insert into material_has_property(material_material_id, property_prop_id, value) " +
+                        $"values({materialId}, {property.Id}, {property.Value.ToString().Replace(",", ".")})";
+                    command.CommandText = query;
+                    command.ExecuteNonQuery();
+                }
 
-            _connection.Close();
+                foreach (Property coeff in modelCoeffs) {
+                    query = $"insert into mat_set(mat_coef_id, mat_model_id, value) " +
+                        $"values({coeff.Id}, {modelId}, {coeff.Value.ToString().Replace(",", ".")})";
+                    command.CommandText = query;
+                    command.ExecuteNonQuery();
+                }
+                transaction.Commit();
+                isErrors = false;
+            }
+            catch {
+                transaction.Rollback();
+                isErrors = true;
+            }
+            finally {
+                _connection.Close();
+            }
+            return isErrors;
         }
         public void DeleteUser(string login)
         {
@@ -329,6 +344,32 @@ namespace Don_tKnowHowToNameThis
             Process cmd = Process.Start(batPath);
             cmd.WaitForExit();
             File.Delete(batPath);
+        }
+        public void GetProperties(List<string> propTitles, List<int> propIds, List<string> propUnits) {
+            _connection.Open();
+            string query = $"SELECT prop_id, title, unit FROM property";
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            using (MySqlDataReader reader = command.ExecuteReader()) {
+                while (reader.Read()) {
+                    propIds.Add(int.Parse(reader["prop_id"].ToString()));
+                    propTitles.Add(reader["title"].ToString());
+                    propUnits.Add(reader["unit"].ToString());
+                }
+            }
+            _connection.Close();
+        }
+        public void GetCoeffs(List<string> coeffTitles, List<int> coeffIds, List<string> coeffUnits) {
+            _connection.Open();
+            string query = $"SELECT mat_id, title, unit FROM mat_coef";
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            using (MySqlDataReader reader = command.ExecuteReader()) {
+                while (reader.Read()) {
+                    coeffIds.Add(int.Parse(reader["mat_id"].ToString()));
+                    coeffTitles.Add(reader["title"].ToString());
+                    coeffUnits.Add(reader["unit"].ToString());
+                }
+            }
+            _connection.Close();
         }
     }
 }

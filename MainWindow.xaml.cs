@@ -159,11 +159,11 @@ namespace Don_tKnowHowToNameThis
                 string model = db.GetModelTitleFromMaterial(material);
 
                 List<string> propTitles = new List<string>();
-                List<double> propValues = new List<double>();
+                List<string> propValues = new List<string>();
                 List<string> propUnits = new List<string>();
 
                 List<string> modelTitles = new List<string>();
-                List<double> modelValues = new List<double>();
+                List<string> modelValues = new List<string>();
                 List<string> modelUnits = new List<string>();
 
                 List<Property> materialProperties = new List<Property>();

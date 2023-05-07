@@ -24,15 +24,15 @@
                     <ComboBox Name="addMaterialCombo" Grid.Row="0" Grid.Column="1" Width="250" Height="30" FontSize="14" SelectionChanged="AddMaterial_SelectionChanged"></ComboBox>
                     <Button Name="changeMatParamsButton" Grid.ColumnSpan="3" Grid.Row="4" Width="200" Height="50" FontSize="16" Click="UpdateMaterial_Click">Изменить материал</Button>
                     <DataGrid x:Name="propTable" Grid.Row="1" Grid.ColumnSpan="2" Margin="10, 10, 10, 10" AutoGenerateColumns="False" 
-                              CellEditEnding="table_CellEditEnding" CanUserAddRows="False" CanUserDeleteRows="False">
+                              CellEditEnding="updateTable_CellEditEnding" CanUserAddRows="False" CanUserDeleteRows="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Path= Title}" Header="Свойство"  Width="2*" IsReadOnly="True"/>
                             <DataGridTextColumn Binding="{Binding Path= Value, UpdateSourceTrigger=PropertyChanged}" Header="Значение" Width="*"/>
                             <DataGridTextColumn Binding="{Binding Path= Unit}" Header="Единица измерения" Width="*" IsReadOnly="True"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <DataGrid x:Name="coefTable" Grid.Row="2" Grid.ColumnSpan="2" Margin="10, 10, 10, 10" AutoGenerateColumns="False"
-                              CellEditEnding="table_CellEditEnding" CanUserAddRows="False" CanUserDeleteRows="False">
+                    <DataGrid x:Name="coeffTable" Grid.Row="2" Grid.ColumnSpan="2" Margin="10, 10, 10, 10" AutoGenerateColumns="False"
+                              CellEditEnding="updateTable_CellEditEnding" CanUserAddRows="False" CanUserDeleteRows="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Path= Title}" Header="Эмпирический коэффициент мат. модели"  Width="2*" IsReadOnly="True"/>
                             <DataGridTextColumn Binding="{Binding Path= Value, UpdateSourceTrigger=PropertyChanged}" Header="Значение" Width="*"/>
@@ -44,22 +44,18 @@
             <TabItem Header="Добавить новый материал" Loaded="AddMaterial_Loaded">
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="0.4*"></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="0.4*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Label Name="Errors" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Grid.Column="1"/>
-                    <Label Grid.Row="1" Grid.Column="0" Content="Материал:" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBox x:Name="addMaterial" Grid.Row="1" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="addMaterial_TextChanged"></TextBox>
-                    <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
+                    <Label Grid.Row="0" Grid.Column="0" Content="Материал:" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBox x:Name="addMaterial" Grid.Row="0" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="addMaterial_TextChanged"></TextBox>
+                    <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
                         <Label.Content>
                             <TextBlock TextWrapping="Wrap" FontSize="12">
                             Плотность:
@@ -80,10 +76,26 @@
                             </TextBlock>
                         </Label.Content>
                     </Label>
-                    <TextBox x:Name="addp" Grid.Row="2" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="CheckInputChange"></TextBox>
+                    <TextBox x:Name="addp" Grid.Row="3" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="CheckInputChange"></TextBox>
                     <TextBox x:Name="addc" Grid.Row="3" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="CheckInputChange"></TextBox>
                     <TextBox x:Name="addT0" Grid.Row="4" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="CheckInputChange"></TextBox>
                     <Button x:Name="addNewMaterialButton" Grid.ColumnSpan="3" Grid.Row="5" Width="200" Height="50" FontSize="16" Click="InsertMaterial_Click" Grid.Column="0">Добавить материал</Button>
+                    <DataGrid x:Name="newPropTable" Grid.Row="1" Grid.ColumnSpan="2" Margin="10, 10, 10, 10" AutoGenerateColumns="False"
+                              CanUserAddRows="True" RowEditEnding="addTable_RowEditEnding">
+                        <DataGrid.Columns>
+                            <DataGridComboBoxColumn x:Name="propComboBox" SelectedItemBinding="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}" Header="Свойство"  Width="2*"/>
+                            <DataGridTextColumn Binding="{Binding Path= Value, UpdateSourceTrigger=PropertyChanged}" Header="Значение" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Path= Unit, UpdateSourceTrigger=PropertyChanged}" Header="Единица измерения" IsReadOnly="True" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <DataGrid x:Name="newCoeffTable" Grid.Row="2" Grid.ColumnSpan="2" Margin="10, 10, 10, 10" AutoGenerateColumns="False"
+                              CanUserAddRows="True" RowEditEnding="addTable_RowEditEnding">
+                        <DataGrid.Columns>
+                            <DataGridComboBoxColumn SelectedItemBinding="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}" x:Name="coeffComboBox" Header="Эмпирический коэффициент мат. модели"  Width="2*"/>
+                            <DataGridTextColumn Binding="{Binding Path= Value, UpdateSourceTrigger=PropertyChanged}" Header="Значение" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Path= Unit, UpdateSourceTrigger=PropertyChanged}" Header="Единица измерения" IsReadOnly="True" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
             </TabItem>
             <TabItem Header="Удалить материал" Loaded="DeleteMaterialTab_Loaded">
