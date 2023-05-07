@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace Don_tKnowHowToNameThis
 {
@@ -53,61 +54,15 @@ namespace Don_tKnowHowToNameThis
             command.ExecuteNonQuery();
             _connection.Close();
         }
-        public void InitialModel(string modelComboBoxSelectedItem, string mu0text, string Eatext, string Trtext, string ntext, string alphaUtext, List<string> modelCoeffs, List<string> units)
-        {
+        public void InitialModel(string model, List<string> titles, List<double> values, List<string> units) {
             _connection.Open();
-            string query = $"select value, unit from mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id " +
-                $"where mat_model.title = '{modelComboBoxSelectedItem}' and mat_coef.title = '{mu0text}'";
+            string query = $"select value, unit, mat_coef.title from mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id " +
+                $"where mat_model.title = '{model}'";
             MySqlCommand command = new MySqlCommand(query, _connection);
-            using (MySqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    modelCoeffs.Add(reader["value"].ToString());
-                    units.Add(reader["unit"].ToString());
-                }
-            }
-            query = $"select value, unit from mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id " +
-                $"where mat_model.title = '{modelComboBoxSelectedItem}' and mat_coef.title = '{Eatext}'";
-            command = new MySqlCommand(query, _connection);
-            using (MySqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    modelCoeffs.Add(reader["value"].ToString());
-                    units.Add(reader["unit"].ToString());
-                }
-            }
-            query = $"select value, unit from mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id " +
-                $"where mat_model.title = '{modelComboBoxSelectedItem}' and mat_coef.title = '{Trtext}'";
-            command = new MySqlCommand(query, _connection);
-            using (MySqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    modelCoeffs.Add(reader["value"].ToString());
-                    units.Add(reader["unit"].ToString());
-                }
-            }
-            query = $"select value, unit from mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id " +
-                $"where mat_model.title = '{modelComboBoxSelectedItem}' and mat_coef.title = '{ntext}'";
-            command = new MySqlCommand(query, _connection);
-            using (MySqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    modelCoeffs.Add(reader["value"].ToString());
-                    units.Add(reader["unit"].ToString());
-                }
-            }
-            query = $"select value, unit from mat_set inner join mat_coef on mat_id = mat_coef_id inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id " +
-                $"where mat_model.title = '{modelComboBoxSelectedItem}' and mat_coef.title = '{alphaUtext}'";
-            command = new MySqlCommand(query, _connection);
-            using (MySqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    modelCoeffs.Add(reader["value"].ToString());
+            using (MySqlDataReader reader = command.ExecuteReader()) {
+                while (reader.Read()) {
+                    titles.Add(reader["title"].ToString());
+                    values.Add(double.Parse(reader["value"].ToString()));
                     units.Add(reader["unit"].ToString());
                 }
             }
@@ -205,6 +160,28 @@ namespace Don_tKnowHowToNameThis
             command.ExecuteNonQuery();
             _connection.Close();
         }
+        public void UpdatePropValue(string material, string propertyName, double value) {
+            _connection.Open();
+            string query = $"update material_has_property " +
+                $"inner join material on material_id = material_material_id " +
+                $"inner join property on prop_id = property_prop_id " +
+                $"set value = {value.ToString().Replace(",", ".")} " +
+                $"where material.title = '{material}' and property.title = '{propertyName}'";
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            command.ExecuteNonQuery();
+            _connection.Close();
+        }
+        public void UpdateCoeffValue(string model, string coeffName, double value) {
+            _connection.Open();
+            string query = $"update mat_set " +
+                $"inner join mat_coef on mat_id = mat_coef_id " +
+                $"inner join mat_model on mat_model.mat_model_id = mat_set.mat_model_id " +
+                $"set value = {value.ToString().Replace(",", ".")} " +
+                $"where mat_model.title = '{model}' and mat_coef.title = '{coeffName}'";
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            command.ExecuteNonQuery();
+            _connection.Close();
+        }
         public void DeleteMaterial(string materialName)
         {
             _connection.Open();
@@ -220,45 +197,17 @@ namespace Don_tKnowHowToNameThis
             command.ExecuteNonQuery();
             _connection.Close();
         }
-        public void InitialMaterial(string materialComboBoxSelectedItem, string pName, string cName, string T0Name, List<string> matParams, List<string> units)
-        {
+        public void InitialMaterial(string material, List<string> titles, List<double> values, List<string> units) {
             _connection.Open();
-            string query = $"select value, unit from material_has_property " +
+            string query = $"select value, unit, property.title from material_has_property " +
                 $"inner join material on material_id = material_material_id " +
                 $"inner join property on prop_id = property_prop_id " +
-                $"where material.title = '{materialComboBoxSelectedItem}' and property.title = '{pName}'";
+                $"where material.title = '{material}'";
             MySqlCommand command = new MySqlCommand(query, _connection);
-            using (MySqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    matParams.Add(reader["value"].ToString());
-                    units.Add(reader["unit"].ToString());
-                }
-            }
-            query = $"select value, unit from material_has_property " +
-                $"inner join material on material_id = material_material_id " +
-                $"inner join property on prop_id = property_prop_id " +
-                $"where material.title = '{materialComboBoxSelectedItem}' and property.title = '{cName}'";
-            command = new MySqlCommand(query, _connection);
-            using (MySqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    matParams.Add(reader["value"].ToString());
-                    units.Add(reader["unit"].ToString());
-                }
-            }
-            query = $"select value, unit from material_has_property " +
-                $"inner join material on material_id = material_material_id " +
-                $"inner join property on prop_id = property_prop_id " +
-                $"where material.title = '{materialComboBoxSelectedItem}' and property.title = '{T0Name}'";
-            command = new MySqlCommand(query, _connection);
-            using (MySqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    matParams.Add(reader["value"].ToString());
+            using (MySqlDataReader reader = command.ExecuteReader()) {
+                while (reader.Read()) {
+                    titles.Add(reader["title"].ToString());
+                    values.Add(double.Parse(reader["value"].ToString()));
                     units.Add(reader["unit"].ToString());
                 }
             }

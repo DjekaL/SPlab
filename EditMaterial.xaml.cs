@@ -14,6 +14,8 @@ namespace Don_tKnowHowToNameThis
     {
         DB _db;
         Notification notification;
+        List<Property> materialProperties = new List<Property>();
+        List<Property> modelProperties = new List<Property>();
         public EditMaterial(DB db)
         {
             InitializeComponent();
@@ -44,12 +46,13 @@ namespace Don_tKnowHowToNameThis
             addMaterialCombo.Items.Clear();
             List<string> materials = new List<string>();
             _db.InitialComboBox(materials, "SELECT title FROM flowmodel.material", "title");
-            foreach (string item in materials)
-            {
+            foreach (string item in materials) {
                 addMaterialCombo.Items.Add(item);
             }
-            if (addMaterialCombo.SelectedItem == null) changeMatParamsButton.IsEnabled = false;
-            else changeMatParamsButton.IsEnabled = true;
+            if (addMaterialCombo.SelectedItem == null)
+                changeMatParamsButton.IsEnabled = false;
+            else
+                changeMatParamsButton.IsEnabled = true;
         }
 
         private void DeleteMaterialTab_Loaded(object sender, RoutedEventArgs e)
@@ -67,51 +70,63 @@ namespace Don_tKnowHowToNameThis
 
         private void UpdateMaterial_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                _db.UpdateMaterial(addMaterialCombo.SelectedItem.ToString(), pName.Text, Convert.ToDouble(p.Text), cName.Text, Convert.ToDouble(c.Text), T0Name.Text, Convert.ToDouble(T0.Text));
+            try {
+                string material = addMaterialCombo.SelectedItem.ToString();
+                string model = _db.GetModelTitleFromMaterial(material);
+                foreach (Property prop in materialProperties) {
+                    _db.UpdatePropValue(material, prop.Title, prop.Value);
+                }
+                foreach (Property coeff in modelProperties) {
+                    _db.UpdateCoeffValue(model, coeff.Title, coeff.Value);
+                }
                 notification.Notifier().ShowSuccess("Параметры материала успешно изменены!");
             }
-            catch
-            {
+            catch {
                 notification.Notifier().ShowError("Возникла ошибка при изменении параметров материала.");
             }
         }
 
         private void AddMaterial_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            List<string> matParams = new List<string>();
-            List<string> units = new List<string>();
-            if (addMaterialCombo.SelectedItem != null)
-            {
-                _db.InitialMaterial(addMaterialCombo.SelectedItem.ToString(), pName.Text, cName.Text, T0Name.Text, matParams, units);
-                if (matParams.Count > 0)
-                {
-                    p.Text = matParams[0];
-                    c.Text = matParams[1];
-                    T0.Text = matParams[2];
-                    pUnit.Text = units[0];
-                    cUnit.Text = units[1];
-                    T0Unit.Text = units[2];
+            materialProperties = new List<Property>();
+            modelProperties = new List<Property>();
+            if (addMaterialCombo.SelectedItem != null) {
+                string material = addMaterialCombo.SelectedItem.ToString();
+                string model = _db.GetModelTitleFromMaterial(material);
+
+                List<string> propTitles = new List<string>();
+                List<double> propValues = new List<double>();
+                List<string> propUnits = new List<string>();
+
+                List<string> modelTitles = new List<string>();
+                List<double> modelValues = new List<double>();
+                List<string> modelUnits = new List<string>();
+
+                _db.InitialMaterial(material, propTitles, propValues, propUnits);
+                _db.InitialModel(model, modelTitles, modelValues, modelUnits);
+
+                for (int i = 0; i < propTitles.Count; i++) {
+                    materialProperties.Add(new Property {
+                        Title = propTitles[i],
+                        Value = propValues[i],
+                        Unit = propUnits[i]
+                    });
                 }
-                else
-                {
-                    p.Text = "";
-                    c.Text = "";
-                    T0.Text = "";
+                for (int i = 0; i < modelTitles.Count; i++) {
+                    modelProperties.Add(new Property {
+                        Title = modelTitles[i],
+                        Value = modelValues[i],
+                        Unit = modelUnits[i]
+                    });
                 }
             }
-            else
-            {
-                p.Text = "";
-                c.Text = "";
-                T0.Text = "";
-            }
+            propTable.ItemsSource = materialProperties;
+            coefTable.ItemsSource = modelProperties;
         }
 
         private void InsertMaterial_Click(object sender, RoutedEventArgs e)
         {
-            try
+/*            try
             {
                 _db.InsertMaterial(addMaterial.Text, pName.Text, Convert.ToDouble(addp.Text), cName.Text, Convert.ToDouble(addc.Text), T0Name.Text, Convert.ToDouble(addT0.Text));
                 notification.Notifier().ShowSuccess("Материал успешно добавлен!");
@@ -125,7 +140,7 @@ namespace Don_tKnowHowToNameThis
                 notification.Notifier().ShowError("Возникла ошибка при добавлении материала.");
             }
             UpdateMatrialTab_Loaded(sender, e);
-            DeleteMaterialTab_Loaded(sender, e);
+            DeleteMaterialTab_Loaded(sender, e);*/
         }
 
         private void matParamsChanged(object sender, TextChangedEventArgs e)
@@ -195,6 +210,15 @@ namespace Don_tKnowHowToNameThis
                 Errors.Content = "";
                 addMaterial.IsEnabled = true;
                 addMaterial.Background = Brushes.White;
+            }
+        }
+
+        private void table_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e) {
+            bool errors = Validation.GetHasError(e.Row);
+            if (!errors) {
+                changeMatParamsButton.IsEnabled = true;
+            } else {
+                changeMatParamsButton.IsEnabled = false;
             }
         }
     }

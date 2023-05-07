@@ -145,35 +145,84 @@ namespace Don_tKnowHowToNameThis
             List<string> modelCoefffs = new List<string>();
             if (materialComboBox.SelectedItem != null)
             {
+                p.Text = "";
+                c.Text = "";
+                T0.Text = "";
+
+                mu0.Text = "";
+                Ea.Text = "";
+                Tr.Text = "";
+                n.Text = "";
+                alphaU.Text = "";
+
                 string material = materialComboBox.SelectedItem.ToString();
                 string model = db.GetModelTitleFromMaterial(material);
-                db.InitialMaterial(material, ptext.Content.ToString(), ctext.Text, T0text.Text, matParams, units);
-                if (matParams.Count > 0)
-                {
-                    p.Text = matParams[0];
-                    c.Text = matParams[1];
-                    T0.Text = matParams[2];
+
+                List<string> propTitles = new List<string>();
+                List<double> propValues = new List<double>();
+                List<string> propUnits = new List<string>();
+
+                List<string> modelTitles = new List<string>();
+                List<double> modelValues = new List<double>();
+                List<string> modelUnits = new List<string>();
+
+                List<Property> materialProperties = new List<Property>();
+                List<Property> modelProperties = new List<Property>();
+
+                db.InitialMaterial(material, propTitles, propValues, propUnits);
+                db.InitialModel(model, modelTitles, modelValues, modelUnits);
+
+                for (int i = 0; i < propTitles.Count; i++) {
+                    materialProperties.Add(new Property {
+                        Title = propTitles[i],
+                        Value = propValues[i],
+                        Unit = propUnits[i]
+                    });
                 }
-                else
-                {
-                    p.Text = "";
-                    c.Text = "";
-                    T0.Text = "";
+                for (int i = 0; i < modelTitles.Count; i++) {
+                    modelProperties.Add(new Property {
+                        Title = modelTitles[i],
+                        Value = modelValues[i],
+                        Unit = modelUnits[i]
+                    });
                 }
-                db.InitialModel(model, mu0text.Text, Eatext.Text, Trtext.Text, ntext.Text, alphaUtext.Text, modelCoefffs, units);
-                if (modelCoefffs.Count > 0) {
-                    mu0.Text = modelCoefffs[0];
-                    Ea.Text = modelCoefffs[1];
-                    Tr.Text = modelCoefffs[2];
-                    n.Text = modelCoefffs[3];
-                    alphaU.Text = modelCoefffs[4];
+
+                foreach (Property property in materialProperties) {
+                    if (property.Title == ptext.Content.ToString()) {
+                        p.Text = property.Value.ToString();
+                        continue;
+                    }
+                    if (property.Title == ctext.Text) {
+                        c.Text = property.Value.ToString();
+                        continue;
+                    }
+                    if (property.Title == T0text.Text) {
+                        T0.Text = property.Value.ToString();
+                        continue;
+                    }
                 }
-                else {
-                    mu0.Text = "";
-                    Ea.Text = "";
-                    Tr.Text = "";
-                    n.Text = "";
-                    alphaU.Text = "";
+
+                foreach (Property property in modelProperties) {
+                    if (property.Title == mu0text.Text) {
+                        mu0.Text = property.Value.ToString();
+                        continue;
+                    }
+                    if (property.Title == Eatext.Text) {
+                        Ea.Text = property.Value.ToString();
+                        continue;
+                    }
+                    if (property.Title == Trtext.Text) {
+                        Tr.Text = property.Value.ToString();
+                        continue;
+                    }
+                    if (property.Title == ntext.Text) {
+                        n.Text = property.Value.ToString();
+                        continue;
+                    }
+                    if (property.Title == alphaUtext.Text) {
+                        alphaU.Text = property.Value.ToString();
+                        continue;
+                    }
                 }
             }
         }

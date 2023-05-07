@@ -54,7 +54,7 @@ namespace Don_tKnowHowToNameThis
             List<string> units = new List<string>();
             if (modelComboBox.SelectedItem != null)
             {
-                _db.InitialModel(modelComboBox.SelectedItem.ToString(), mu0text.Text, Eatext.Text, Trtext.Text, ntext.Text, alphaUtext.Text, modelCoefffs, units);
+                //_db.InitialModel(modelComboBox.SelectedItem.ToString(), mu0text.Text, Eatext.Text, Trtext.Text, ntext.Text, alphaUtext.Text, modelCoefffs, units);
                 if (modelCoefffs.Count > 0)
                 {
                     mu0.Text = modelCoefffs[0];

@@ -11,62 +11,34 @@
             <TabItem Header="Изменить существующий материал" Loaded="UpdateMatrialTab_Loaded">
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="0.3*"></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="0.4*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" Content="Материал:" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <ComboBox x:Name="addMaterialCombo" Grid.Row="0" Grid.Column="1" Width="250" Height="30" FontSize="14" SelectionChanged="AddMaterial_SelectionChanged"></ComboBox>
-                    <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
-                        <Label.Content>
-                            <TextBlock x:Name="pName" TextWrapping="Wrap" FontSize="12">
-                            Плотность
-                            </TextBlock>
-                        </Label.Content>
-                    </Label>
-                    <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
-                        <Label.Content>
-                            <TextBlock x:Name="cName" TextWrapping="Wrap" FontSize="12">
-                            Удельная теплоёмкость
-                            </TextBlock>
-                        </Label.Content>
-                    </Label>
-                    <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
-                        <Label.Content>
-                            <TextBlock x:Name="T0Name" TextWrapping="Wrap" FontSize="12">
-                            Температура плавления
-                            </TextBlock>
-                        </Label.Content>
-                    </Label>
-                    <TextBox x:Name="p" Grid.Row="1" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="matParamsChanged"></TextBox>
-                    <TextBox x:Name="c" Grid.Row="2" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="matParamsChanged"></TextBox>
-                    <TextBox x:Name="T0" Grid.Row="3" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="matParamsChanged"></TextBox>
-                    <Label Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
-                        <Label.Content>
-                            <TextBlock x:Name="pUnit" TextWrapping="Wrap" FontSize="12">
-                            </TextBlock>
-                        </Label.Content>
-                    </Label>
-                    <Label Grid.Column="2" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
-                        <Label.Content>
-                            <TextBlock x:Name="cUnit" TextWrapping="Wrap" FontSize="12">
-                            </TextBlock>
-                        </Label.Content>
-                    </Label>
-                    <Label Grid.Column="2" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
-                        <Label.Content>
-                            <TextBlock x:Name="T0Unit" TextWrapping="Wrap" FontSize="12">
-                            </TextBlock>
-                        </Label.Content>
-                    </Label>
-                    <Button x:Name="changeMatParamsButton" Grid.ColumnSpan="3" Grid.Row="4" Width="200" Height="50" FontSize="16" Click="UpdateMaterial_Click">Изменить материал</Button>
+                    <ComboBox Name="addMaterialCombo" Grid.Row="0" Grid.Column="1" Width="250" Height="30" FontSize="14" SelectionChanged="AddMaterial_SelectionChanged"></ComboBox>
+                    <Button Name="changeMatParamsButton" Grid.ColumnSpan="3" Grid.Row="4" Width="200" Height="50" FontSize="16" Click="UpdateMaterial_Click">Изменить материал</Button>
+                    <DataGrid x:Name="propTable" Grid.Row="1" Grid.ColumnSpan="2" Margin="10, 10, 10, 10" AutoGenerateColumns="False" 
+                              CellEditEnding="table_CellEditEnding" CanUserAddRows="False" CanUserDeleteRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Path= Title}" Header="Свойство"  Width="2*" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding Path= Value, UpdateSourceTrigger=PropertyChanged}" Header="Значение" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Path= Unit}" Header="Единица измерения" Width="*" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <DataGrid x:Name="coefTable" Grid.Row="2" Grid.ColumnSpan="2" Margin="10, 10, 10, 10" AutoGenerateColumns="False"
+                              CellEditEnding="table_CellEditEnding" CanUserAddRows="False" CanUserDeleteRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Path= Title}" Header="Эмпирический коэффициент мат. модели"  Width="2*" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding Path= Value, UpdateSourceTrigger=PropertyChanged}" Header="Значение" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Path= Unit}" Header="Единица измерения" Width="*" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
             </TabItem>
             <TabItem Header="Добавить новый материал" Loaded="AddMaterial_Loaded">
