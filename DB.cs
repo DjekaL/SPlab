@@ -294,6 +294,15 @@ namespace Don_tKnowHowToNameThis
             cmd.WaitForExit();
             File.Delete(batPath);
         }
+        public void DataBaseImport()
+        {
+            string commands = @$"cd C:\Program Files\MySQL\MySQL Server 8.0\bin && mysql -uroot -proot flowmodel < {Environment.CurrentDirectory}\dump.sql";
+            string batPath = Path.Combine(Path.GetTempPath(), "dump.bat");
+            File.WriteAllText(batPath, commands);
+            Process cmd = Process.Start(batPath);
+            cmd.WaitForExit();
+            File.Delete(batPath);
+        }
         public void GetProperties(List<string> propTitles, List<int> propIds, List<string> propUnits) {
             _connection.Open();
             string query = $"SELECT prop_id, title, unit FROM property";

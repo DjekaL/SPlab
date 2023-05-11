@@ -297,5 +297,18 @@ namespace Don_tKnowHowToNameThis
                 notification.Notifier().ShowError("Возникла ошибка при создании резервной копии.");
             }
         }
+
+        private void UpdateDataBase_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                db.DataBaseImport();
+                notification.Notifier().ShowSuccess("Копия базы данных успешно загружена!");
+            }
+            catch
+            {
+                notification.Notifier().ShowError("Возникла ошибка при загрузке резервной копии.");
+            }
+        }
     }
 }
