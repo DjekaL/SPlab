@@ -1,7 +1,9 @@
 ﻿using Microsoft.Win32;
+using Org.BouncyCastle.Asn1.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using ToastNotifications.Messages;
@@ -302,13 +304,25 @@ namespace Don_tKnowHowToNameThis
         {
             try
             {
+                if (!CheckDumpExist())
+                {
+                    throw new Exception();
+                }
+
                 db.DataBaseImport();
                 notification.Notifier().ShowSuccess("Копия базы данных успешно загружена!");
+                Window_Reload();
             }
             catch
             {
-                notification.Notifier().ShowError("Возникла ошибка при загрузке резервной копии.");
+                notification.Notifier().ShowError("Возникла ошибка при загрузке резервной копии.\r\nВозможно резервной копии не существует.");
             }
+        }
+        private bool CheckDumpExist()
+        {
+            string v = $@"{Environment.CurrentDirectory}\dump.sql";
+            FileInfo file = new FileInfo(v);
+            return file.Exists;
         }
     }
 }
