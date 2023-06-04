@@ -325,5 +325,11 @@ namespace Don_tKnowHowToNameThis
             FileInfo file = new FileInfo(v);
             return file.Exists;
         }
+
+        private void Experiment_Click(object sender, RoutedEventArgs e)
+        {
+            Anton anton = new Anton(db);
+            anton.Show();
+        }
     }
 }

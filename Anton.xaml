@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Don_tKnowHowToNameThis"
         xmlns:Graph3d="clr-namespace:Plot3D"
         mc:Ignorable="d"
-        Title="Anton" Height="600" Width="1100">
+        Title="Anton" Height="600" Width="1100" Loaded="Window_Loaded">
     <Grid ShowGridLines="False">
         <Grid.RowDefinitions>
             <RowDefinition Height="30px"></RowDefinition>
@@ -19,7 +19,7 @@
             <ColumnDefinition Width="1*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Menu Grid.Row="0" Grid.ColumnSpan="4">
-            <MenuItem x:Name="Calculate" Header="Произвести вычисления"></MenuItem>
+            <MenuItem x:Name="Calculate" Header="Произвести вычисления" Click="Calculate_Click"></MenuItem>
         </Menu>
         <GroupBox Header="Входные параметры" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="2, 2, 2, 2">
             <Grid>
@@ -32,7 +32,7 @@
                 </Grid.RowDefinitions>
                 <Label x:Name="target" Grid.Column="0" Grid.Row="0" Content="Материал:" HorizontalAlignment="Left"  VerticalAlignment="Top" />
                 <ComboBox x:Name="materialComboBox" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Height="26" Width="230" 
-                          Visibility="Visible" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                          Visibility="Visible" HorizontalAlignment="Right" VerticalAlignment="Top" SelectionChanged="materialComboBox_SelectionChanged"/>
 
                 <GroupBox Header="Геометрические параметры:" Grid.Column="0" Grid.Row="1" Margin="2, 2, 2, 2">
                     <Grid>

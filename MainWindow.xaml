@@ -29,6 +29,7 @@
                 <MenuItem Header="Загрузить копию базы данных" Click="UpdateDataBase_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="Сменить пользователя" Click="ChangeProfile_Click"></MenuItem>
+            <MenuItem Header="Вычислительный эксперимент" Click="Experiment_Click"></MenuItem>
         </Menu>
       
         <GroupBox Header="Входные параметры" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="2, 2, 2, 2">

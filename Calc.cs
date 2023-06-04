@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.Bcpg;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -55,6 +56,21 @@ namespace Don_tKnowHowToNameThis
             _n = n;
             _alphaU = alphaU;
         }
+        public Calc(string mat, double W, double H, double L, double p, double c, double T0, double mu0, double Ea, double Tr, double n, double alphaU)
+        {
+            _material = mat;
+            _W = W;
+            _H = H;
+            _L = L;
+            _p = p;
+            _c = c;
+            _T0 = T0;
+            _mu0 = mu0;
+            _Ea = Ea;
+            _Tr = Tr;
+            _n = n;
+            _alphaU = alphaU;
+        }
 
         public Calc()
         {
@@ -77,9 +93,6 @@ namespace Don_tKnowHowToNameThis
         }
         public void TemperatureAndViscosity(Calc calc, List<double> zCoord, List<double> temperature, List<double> viscosity, ref double time, ref double mem)
         {
-            
-            
-
             calc.MaterialShearStrainRate();
             calc.SpecificHeatFluxes();
             calc.VolumeFlowRateOfMaterialFlowInTheChannel();
@@ -117,6 +130,13 @@ namespace Don_tKnowHowToNameThis
         private void Efficiency()
         {
             Q = (int)Math.Round(_p * Qch * 3600, 0);
+        }
+        public void Experiment(double iMin, double iMax, double iStep)
+        {
+            for (decimal i = Convert.ToDecimal(iMin); i <= Convert.ToDecimal(iMax); i += Convert.ToDecimal(iStep))
+            {
+
+            }
         }
     }
 }
