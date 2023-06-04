@@ -76,6 +76,8 @@
                     <RowDefinition Height="0.1*"></RowDefinition>
                     <RowDefinition Height="0.1*"></RowDefinition>
                     <RowDefinition Height="0.1*"></RowDefinition>
+                    <RowDefinition Height="0.1*"></RowDefinition>
+                    <RowDefinition Height="0.1*"></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" VerticalAlignment="Bottom">
@@ -98,12 +100,16 @@
                          Width="50" Margin="0,5,0,0"/>
                 <TextBox x:Name="VuHigh" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
                          Width="50" Margin="0,5,0,0"/>
-                <TextBox x:Name="TuLow" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                <TextBox x:Name="TuLow" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
                          Width="50" Margin="0,5,0,0"/>
-                <TextBox x:Name="TuHigh" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                <TextBox x:Name="TuHigh" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
                          Width="50" Margin="0,5,0,0"/>
                 <Label Content="–" Grid.ColumnSpan="2" VerticalAlignment="Top" Grid.Row="1" HorizontalAlignment="Center"></Label>
                 <Label Content="–" Grid.ColumnSpan="2" VerticalAlignment="Top" Grid.Row="3" HorizontalAlignment="Center"></Label>
+                <Label Content="Шаг по температуре:" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.Row="4" HorizontalAlignment="Left"></Label>
+                <Label Content="Шаг по скорости:" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.Row="5" HorizontalAlignment="Left"></Label>
+                <TextBox x:Name="TuStep" Grid.Column="3" Grid.Row="4" Width="50" Margin="0,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBox>
+                <TextBox x:Name="VuStep" Grid.Column="3" Grid.Row="5" Width="50" Margin="0,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBox>
             </Grid>
         </GroupBox>
         <GroupBox Grid.Column="3" Grid.Row="1" Header="Результаты">
