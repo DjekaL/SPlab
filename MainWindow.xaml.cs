@@ -22,11 +22,12 @@ namespace Don_tKnowHowToNameThis
         DB db;
         string user = "root";
         string password = "root";
+        string host = "127.0.0.1";
         Notification notification;
         public MainWindow()
         {
             InitializeComponent();
-            db = new DB("localhost", 3306, "flowmodel", user, password);
+            db = new DB(host, 3306, "flowmodel", user, password);
             notification = new Notification(this);
             Authorization authorization = new Authorization(db, login);
             authorization.ShowDialog();
@@ -291,7 +292,7 @@ namespace Don_tKnowHowToNameThis
         {
             try
             {
-                db.DataBaseExport(user, password);
+                db.DataBaseExport(user, password, host);
                 notification.Notifier().ShowSuccess("Резервная копия успешно создана!");
             }
             catch

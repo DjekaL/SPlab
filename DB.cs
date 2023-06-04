@@ -284,9 +284,9 @@ namespace Don_tKnowHowToNameThis
             _connection.Close();
             return title;
         }
-        public void DataBaseExport(string user, string password)
+        public void DataBaseExport(string user, string password, string host)
         {
-            string commands = @"cd C:\Program Files\MySQL\MySQL Server 8.0\bin && mysqldump.exe -h127.0.0.1 " +
+            string commands = @$"cd C:\Program Files\MySQL\MySQL Server 8.0\bin && mysqldump.exe -h{host} " +
                 @$"-u{user} -p{password} --add-drop-database --databases flowmodel > {Environment.CurrentDirectory}\dump.sql";
             string batPath = Path.Combine(Path.GetTempPath(), "dump.bat");
             File.WriteAllText(batPath, commands);
