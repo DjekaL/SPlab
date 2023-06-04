@@ -1,0 +1,120 @@
+﻿<Window x:Class="Don_tKnowHowToNameThis.Anton"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Don_tKnowHowToNameThis"
+        xmlns:Graph3d="clr-namespace:Plot3D"
+        mc:Ignorable="d"
+        Title="Anton" Height="600" Width="1100">
+    <Grid ShowGridLines="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30px"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            <ColumnDefinition Width="0.4*"></ColumnDefinition>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Menu Grid.Row="0" Grid.ColumnSpan="4">
+            <MenuItem x:Name="Calculate" Header="Произвести вычисления"></MenuItem>
+        </Menu>
+        <GroupBox Header="Входные параметры" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="2, 2, 2, 2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.3*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.1*"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label x:Name="target" Grid.Column="0" Grid.Row="0" Content="Материал:" HorizontalAlignment="Left"  VerticalAlignment="Top" />
+                <ComboBox x:Name="materialComboBox" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Height="26" Width="230" 
+                          Visibility="Visible" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+
+                <GroupBox Header="Геометрические параметры:" Grid.Column="0" Grid.Row="1" Margin="2, 2, 2, 2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80*"></ColumnDefinition>
+                            <ColumnDefinition Width="66*"></ColumnDefinition>
+                            <ColumnDefinition Width="35*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.Row="0" Name="WidthLabel" Content="Ширина:" Margin="0,0,4,0" HorizontalAlignment="Right"/>
+                        <Label Grid.Column="0" Content="Глубина:" Grid.Row="1" HorizontalAlignment="Right"/>
+                        <Label Grid.Column="0" Grid.Row="2" Content="Длина:" HorizontalAlignment="Right"/>
+                        <Label Grid.Column="2" Grid.Row="0" Content="м"/>
+                        <Label Grid.Column="2" Grid.Row="1" Content="м"/>
+                        <Label Grid.Column="2" Grid.Row="2" Content="м"/>
+                        <TextBox x:Name="W" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="66" Margin="0,5,0,0" Height="18" />
+                        <TextBox x:Name="H" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="66" Margin="0,5,0,0" Height="18"/>
+                        <TextBox x:Name="L" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="66" Margin="0,5,0,0" AutomationProperties.Name="L" Height="18"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Режимные параметры:" Grid.Row="1" Grid.Column="2" Margin="2, 2, 2, 2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.1*"></RowDefinition>
+                    <RowDefinition Height="0.1*"></RowDefinition>
+                    <RowDefinition Height="0.1*"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" VerticalAlignment="Bottom">
+                    <Label.Content>
+                        <TextBlock TextWrapping="Wrap">
+                            Скорость крышки:
+                        </TextBlock>
+                    </Label.Content>
+                </Label>
+                <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Bottom">
+                    <Label.Content>
+                        <TextBlock TextWrapping="Wrap" VerticalAlignment="Bottom">
+                                Температура крышки:
+                        </TextBlock>
+                    </Label.Content>
+                </Label>
+                <Label Name="VelocityMeasuresTextBox" Grid.Column="2" Grid.Row="1" Content="м/с"/>
+                <Label Grid.Column="2" Grid.Row="3" Content="°С"/>
+                <TextBox x:Name="VuLow" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="50" Margin="0,5,0,0"/>
+                <TextBox x:Name="VuHigh" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="50" Margin="0,5,0,0"/>
+                <TextBox x:Name="TuLow" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="50" Margin="0,5,0,0"/>
+                <TextBox x:Name="TuHigh" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="50" Margin="0,5,0,0"/>
+                <Label Content="–" Grid.ColumnSpan="2" VerticalAlignment="Top" Grid.Row="1" HorizontalAlignment="Center"></Label>
+                <Label Content="–" Grid.ColumnSpan="2" VerticalAlignment="Top" Grid.Row="3" HorizontalAlignment="Center"></Label>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Column="3" Grid.Row="1" Header="Результаты">
+            <TabControl Margin="5, 5, 5, 5">
+                <TabItem Header="Таблица"></TabItem>
+                <TabItem Header="График-Рафик">
+                    <WindowsFormsHost>
+                        <Graph3d:Graph3D x:Name="Graph3d"/>
+                    </WindowsFormsHost>
+                </TabItem>
+            </TabControl>
+        </GroupBox>
+    </Grid>
+</Window>
