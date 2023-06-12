@@ -238,6 +238,11 @@ namespace Don_tKnowHowToNameThis
                 || TuLow.Text == "" || TuHigh.Text == "" || TuStep.Text == "") Calculate.IsEnabled = false;
             else Calculate.IsEnabled = true;
         }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
 }
