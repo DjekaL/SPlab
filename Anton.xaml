@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dataGrid2D="http://gu.se/DataGrid2D"
         xmlns:local="clr-namespace:Don_tKnowHowToNameThis"
-        xmlns:Graph3d="clr-namespace:Plot3D"
+        xmlns:Graph3d="clr-namespace:Plot3D" xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         mc:Ignorable="d"
-        Title="Anton" Height="600" Width="1100" Loaded="Window_Loaded">
+        Title="Вычислительный эксперимент" Height="600" Width="1100" Loaded="Window_Loaded">
     <Grid ShowGridLines="False">
         <Grid.RowDefinitions>
             <RowDefinition Height="30px"></RowDefinition>
@@ -56,11 +57,11 @@
                         <Label Grid.Column="2" Grid.Row="1" Content="м"/>
                         <Label Grid.Column="2" Grid.Row="2" Content="м"/>
                         <TextBox x:Name="W" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
-                         Width="66" Margin="0,5,0,0" Height="18" />
+                         Width="66" Margin="0,5,0,0" Height="18" TextChanged="CheckInputChange" />
                         <TextBox x:Name="H" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
-                         Width="66" Margin="0,5,0,0" Height="18"/>
+                         Width="66" Margin="0,5,0,0" Height="18" TextChanged="CheckInputChange"/>
                         <TextBox x:Name="L" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
-                         Width="66" Margin="0,5,0,0" AutomationProperties.Name="L" Height="18"/>
+                         Width="66" Margin="0,5,0,0" AutomationProperties.Name="L" Height="18" TextChanged="CheckInputChange"/>
                     </Grid>
                 </GroupBox>
             </Grid>
@@ -96,26 +97,30 @@
                 </Label>
                 <Label Name="VelocityMeasuresTextBox" Grid.Column="2" Grid.Row="1" Content="м/с"/>
                 <Label Grid.Column="2" Grid.Row="3" Content="°С"/>
-                <TextBox x:Name="VuLow" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
-                         Width="50" Margin="0,5,0,0"/>
-                <TextBox x:Name="VuHigh" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
-                         Width="50" Margin="0,5,0,0"/>
-                <TextBox x:Name="TuLow" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
-                         Width="50" Margin="0,5,0,0"/>
-                <TextBox x:Name="TuHigh" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
-                         Width="50" Margin="0,5,0,0"/>
+                <TextBox x:Name="VuLow" Grid.Column="0" Text="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="50" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
+                <TextBox x:Name="VuHigh" Grid.Column="1" Grid.Row="1" Text="2" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="50" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
+                <TextBox x:Name="TuLow" Grid.Column="0" Grid.Row="3" Text="140" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="50" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
+                <TextBox x:Name="TuHigh" Grid.Column="1" Grid.Row="3" Text="160" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Width="50" Margin="0,5,0,0" TextChanged="CheckInputChange"/>
                 <Label Content="–" Grid.ColumnSpan="2" VerticalAlignment="Top" Grid.Row="1" HorizontalAlignment="Center"></Label>
                 <Label Content="–" Grid.ColumnSpan="2" VerticalAlignment="Top" Grid.Row="3" HorizontalAlignment="Center"></Label>
                 <Label Content="Шаг по температуре:" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.Row="4" HorizontalAlignment="Left"></Label>
                 <Label Content="Шаг по скорости:" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.Row="5" HorizontalAlignment="Left"></Label>
-                <TextBox x:Name="TuStep" Grid.Column="3" Grid.Row="4" Width="50" Margin="0,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBox>
-                <TextBox x:Name="VuStep" Grid.Column="3" Grid.Row="5" Width="50" Margin="0,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBox>
+                <TextBox x:Name="TuStep" Grid.Column="3" Text="1" Grid.Row="4" Width="50" Margin="0,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" TextChanged="CheckInputChange"></TextBox>
+                <TextBox x:Name="VuStep" Grid.Column="3" Text="0,2" Grid.Row="5" Width="50" Margin="0,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" TextChanged="CheckInputChange"></TextBox>
             </Grid>
         </GroupBox>
         <GroupBox Grid.Column="3" Grid.Row="1" Header="Результаты">
             <TabControl Margin="5, 5, 5, 5">
-                <TabItem Header="Таблица"></TabItem>
-                <TabItem Header="График-Рафик">
+                <TabItem Header="Таблица">
+                    <WindowsFormsHost>
+                        <forms:DataGridView x:Name="matrix" AutoSizeRowsMode="AllCells" AllowUserToAddRows="False"/>
+                    </WindowsFormsHost>
+                </TabItem>
+                <TabItem Header="График производительности">
                     <WindowsFormsHost>
                         <Graph3d:Graph3D x:Name="Graph3d"/>
                     </WindowsFormsHost>

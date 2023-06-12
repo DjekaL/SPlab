@@ -1,8 +1,5 @@
-﻿using Org.BouncyCastle.Bcpg;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 
 namespace Don_tKnowHowToNameThis
 {
@@ -17,8 +14,8 @@ namespace Don_tKnowHowToNameThis
         public readonly double _p = 920;
         public readonly double _c = 2300;
         public readonly double _T0 = 120;
-        public readonly double _Vu = 1.2;
-        public readonly double _Tu = 150;
+        public double _Vu = 1.2;
+        public double _Tu = 150;
         public readonly double _mu0 = 50000;
         public readonly double _Ea = 48000;
         public readonly double _Tr = 120;
@@ -104,7 +101,7 @@ namespace Don_tKnowHowToNameThis
                 double n = calc.Viscosity(T);
                 viscosity.Add(Math.Round(n, 1));
             }
-            
+
             Lostmem = mem;
             LostTime = time;
             calc.Efficiency();
@@ -127,16 +124,44 @@ namespace Don_tKnowHowToNameThis
 
             return n;
         }
-        private void Efficiency()
+        public void Efficiency()
         {
             Q = (int)Math.Round(_p * Qch * 3600, 0);
         }
-        public void Experiment(double iMin, double iMax, double iStep)
+        public void Experiment(double iMin, double iMax, double iStep, double jMin, double jMax, double jStep, List<List<string>> res)
         {
             for (decimal i = Convert.ToDecimal(iMin); i <= Convert.ToDecimal(iMax); i += Convert.ToDecimal(iStep))
             {
-
+                for (decimal j = Convert.ToDecimal(jMin); j <= Convert.ToDecimal(jMax); j += Convert.ToDecimal(jStep))
+                {
+                    this._Vu = (double)i;
+                    this._Tu = (double)j;
+                    this.MaterialShearStrainRate();
+                    this.SpecificHeatFluxes();
+                    this.VolumeFlowRateOfMaterialFlowInTheChannel();
+                    double T = Temperature(_L);
+                    double n = Viscosity(T);
+                    Efficiency();
+                    double Q = this.Q;
+                    res.Add(new List<string> { i.ToString(), j.ToString(), T.ToString(), n.ToString(), Q.ToString() });
+                }
             }
+        }
+        public void Experiment1(double Vu, double Tu, List<double> res)
+        {
+            this._Vu = Vu;
+            this._Tu = Tu;
+            this.MaterialShearStrainRate();
+            this.SpecificHeatFluxes();
+            this.VolumeFlowRateOfMaterialFlowInTheChannel();
+            double T = Math.Round(Temperature(_L), 2);
+            res.Add(T);
+            double n = Math.Round(Viscosity(T), 1);
+            res.Add(n);
+            Efficiency();
+            double Q = this.Q;
+            res.Add(Q);
+            //res = new List<double> {T, n, Q};
         }
     }
 }
