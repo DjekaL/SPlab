@@ -48,12 +48,12 @@
                             <RowDefinition Height="59*"></RowDefinition>
                             <RowDefinition Height="59*"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <Label Grid.Column="0" Grid.Row="0" Name="WidthLabel" Content="Ширина:" HorizontalAlignment="Left" Width="58"/>
-                        <Label Grid.Column="0" Content="Глубина:" HorizontalAlignment="Left" Width="57" Grid.Row="1"/>
-                        <Label Grid.Column="0" Grid.Row="2" Content="Длина:" HorizontalAlignment="Left" Width="47"/>
-                        <Label Grid.Column="2" Grid.Row="0" Content="м" Margin="0,13,0,46" Grid.RowSpan="2"/>
-                        <Label Grid.Column="2" Content="м" Grid.Row="1"/>
-                        <Label Grid.Column="2" Grid.Row="2" Content="м"/>
+                        <Label Grid.Column="0" Grid.Row="0" Name="WidthLabel" Content="Ширина:" HorizontalAlignment="Center" Width="58" VerticalAlignment="Center"/>
+                        <Label Grid.Column="0" Content="Глубина:" HorizontalAlignment="Center" Width="57" Grid.Row="1" VerticalAlignment="Center"/>
+                        <Label Grid.Column="0" Grid.Row="2" Content="Длина:" HorizontalAlignment="Center" Width="47" VerticalAlignment="Center"/>
+                        <Label Grid.Column="2" Grid.Row="0" Content="м" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Label Grid.Column="2" Content="м" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Label Grid.Column="2" Grid.Row="2" Content="м" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         <TextBox x:Name="W" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
                          Width="66" Height="18" TextChanged="CheckInputChange" />
                         <TextBox x:Name="H" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
@@ -79,16 +79,16 @@
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Label Grid.Column="0" VerticalAlignment="Center" Height="32" HorizontalAlignment="Center">
+                <Label Grid.Column="0" VerticalAlignment="Top" Height="32" HorizontalAlignment="Left">
                     <Label.Content>
-                        <TextBlock TextWrapping="Wrap" Height="29">
+                        <TextBlock TextWrapping="Wrap" Height="29" HorizontalAlignment="Left">
                             Скорость крышки:
                         </TextBlock>
                     </Label.Content>
                 </Label>
-                <Label Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" Height="32">
+                <Label Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" Height="32" HorizontalAlignment="Left">
                     <Label.Content>
-                        <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Center">
+                        <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left">
                                 Температура крышки:
                         </TextBlock>
                     </Label.Content>
