@@ -146,9 +146,14 @@
                             <forms:DataGridView x:Name="matrix" AutoSizeRowsMode="AllCells" AllowUserToAddRows="False"/>
                         </WindowsFormsHost>
                     </TabItem>
-                    <TabItem Header="График производительности">
+                    <TabItem Header="График температуры">
                         <WindowsFormsHost>
-                            <Graph3d:Graph3D x:Name="Graph3d"/>
+                            <Graph3d:Graph3D x:Name="Temp3d"/>
+                        </WindowsFormsHost>
+                    </TabItem>
+                    <TabItem Header="График вязкости">
+                        <WindowsFormsHost>
+                            <Graph3d:Graph3D x:Name="Visc3d"/>
                         </WindowsFormsHost>
                     </TabItem>
                 </TabControl>

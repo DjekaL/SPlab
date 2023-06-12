@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Plot3D;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Documents;
+using System.Xml.Linq;
 using static Plot3D.ColorSchema;
 using static Plot3D.Graph3D;
 
@@ -141,26 +142,34 @@ namespace Don_tKnowHowToNameThis
 
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
+            double timeLost = 0;
+            double memLost = GC.GetTotalMemory(false); ;
+            Stopwatch t = new Stopwatch();
+            t.Start();
             _calc = new Calc(materialComboBox.Text, Convert.ToDouble(W.Text), Convert.ToDouble(H.Text), Convert.ToDouble(L.Text), _p, _c,
                _T0, _mu0, _Ea, _Tr, _n, _alphaU);
             List<List<string>> res = new List<List<string>>();
-            List<List<double>> eff = new List<List<double>>();
+            List<List<double>> temp = new List<List<double>>();
+            List<List<double>> visc = new List<List<double>>();
             matrix.Columns.Clear();
             //_calc.Experiment(Convert.ToDouble(VuLow.Text), Convert.ToDouble(VuHigh.Text), Convert.ToDouble(VuStep.Text), Convert.ToDouble(TuLow.Text), Convert.ToDouble(TuHigh.Text), Convert.ToDouble(TuStep.Text), res);
             for (decimal i = Convert.ToDecimal(VuLow.Text); i <= Convert.ToDecimal(VuHigh.Text); i += Convert.ToDecimal(VuStep.Text))
             {
                 List<string> list = new List<string>();
-                List<double> eff1 = new List<double>();
+                List<double> tempTemp = new List<double>();
+                List<double> viscTemp = new List<double>();
 
                 for (decimal j = Convert.ToDecimal(TuLow.Text); j <= Convert.ToDecimal(TuHigh.Text); j += Convert.ToDecimal(TuStep.Text))
                 {
                     List<double> res1 = new List<double>();
                     _calc.Experiment1((double)i, (double)j, res1);
                     list.Add($"{res1[0]} °С; \n{res1[1]} Па*с; \n{res1[2]} кг/ч");
-                    eff1.Add(res1[2]);
+                    tempTemp.Add(res1[0]);
+                    viscTemp.Add(res1[1]);
                 }
                 res.Add(list);
-                eff.Add(eff1);
+                temp.Add(tempTemp);
+                visc.Add(viscTemp);
             }
             matrix.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             for (decimal j = Convert.ToDecimal(TuLow.Text); j <= Convert.ToDecimal(TuHigh.Text); j += Convert.ToDecimal(TuStep.Text))
@@ -185,38 +194,46 @@ namespace Don_tKnowHowToNameThis
                 matrix.Rows[i].HeaderCell.Value = string.Format((tmp).ToString(), "0");
                 tmp += Convert.ToDecimal(VuStep.Text);
             }
-            
-                double[][] arrays = eff.Select(a => a.ToArray()).ToArray();
-            set3d(arrays);
+
+            double[][] arrays = temp.Select(a => a.ToArray()).ToArray();
+            set3d(Temp3d, arrays);
+            Temp3d.AxisZ_Legend = "Температура продукта, °C";
+            arrays = visc.Select(a => a.ToArray()).ToArray();
+            Visc3d.AxisZ_Legend = "Вязкость продукта, Па*с";
+            set3d(Visc3d, arrays);
+
+            t.Stop();
+            timeLost = t.ElapsedMilliseconds;
+            memLost = Math.Abs((GC.GetTotalMemory(false) - memLost) / 1024);
+            RAM.Content = Math.Round(memLost, 0);
+            time.Content = timeLost.ToString();
         }
-        private void set3d(double[][] eff)
+        private void set3d(Graph3D name, double[][] eff)
         {
-            Graph3d.Raster = eRaster.Labels;
+            name.Raster = eRaster.Labels;
             System.Drawing.Color[] c_Colors = GetSchema(eSchema.Hot);
-            Graph3d.SetColorScheme(c_Colors, 3);
+            name.SetColorScheme(c_Colors, 3);
             int stepQuantity = eff.Length;
-            cPoint3D[,] points3d = new cPoint3D[stepQuantity, eff[0].Length];
+            cPoint3D[,] points3d = new cPoint3D[eff[0].Length, stepQuantity];
             int row = 0;
             int col = 0;
-            for (decimal i = Convert.ToDecimal(VuLow.Text); i <= Convert.ToDecimal(VuHigh.Text); i += Convert.ToDecimal(VuStep.Text))
+            for (decimal i = Convert.ToDecimal(TuLow.Text); i <= Convert.ToDecimal(TuHigh.Text); i += Convert.ToDecimal(TuStep.Text))
             {
                 _calc._Vu = (double)i;
-                for (decimal j = Convert.ToDecimal(TuLow.Text); j <= Convert.ToDecimal(TuHigh.Text); j += Convert.ToDecimal(TuStep.Text))
+                for (decimal j = Convert.ToDecimal(VuLow.Text); j <= Convert.ToDecimal(VuHigh.Text); j += Convert.ToDecimal(VuStep.Text))
                 {
                     _calc._Tu = (double)j;
                     _calc.Efficiency();
-                    points3d[row, col] = new cPoint3D((double)i, (double)j, eff[row][col]);
+                    points3d[row, col] = new cPoint3D((double)i, (double)j, eff[col][row]);
                     col++;
                 }
                 row++;
                 col = 0;
             }
-            Graph3d.AxisX_Legend = "Скорость крышки, м/с";
-            Graph3d.AxisY_Legend = "Температура крышки, °C";
-            Graph3d.AxisZ_Legend = "Производительность, кг/ч";
+            name.AxisX_Legend = "Скорость крышки, м/с";
+            name.AxisY_Legend = "Температура крышки, °C";
 
-
-            Graph3d.SetSurfacePoints(points3d, eNormalize.MaintainXY);
+            name.SetSurfacePoints(points3d, eNormalize.MaintainXY);
         }
         private void CheckInputChange(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
@@ -234,7 +251,7 @@ namespace Don_tKnowHowToNameThis
                 a.Background = Brushes.LightPink;
                 Calculate.IsEnabled = false;
             }
-            if (materialComboBox.SelectedItem == null /*|| modelComboBox.SelectedItem == null*/ || W.Text == "" || H.Text == "" || L.Text == "" ||  VuLow.Text == "" || VuHigh.Text == "" || VuStep.Text == ""
+            if (materialComboBox.SelectedItem == null /*|| modelComboBox.SelectedItem == null*/ || W.Text == "" || H.Text == "" || L.Text == "" || VuLow.Text == "" || VuHigh.Text == "" || VuStep.Text == ""
                 || TuLow.Text == "" || TuHigh.Text == "" || TuStep.Text == "") Calculate.IsEnabled = false;
             else Calculate.IsEnabled = true;
         }
