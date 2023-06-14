@@ -1,4 +1,5 @@
-﻿using Plot3D;
+﻿using Microsoft.Win32;
+using Plot3D;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,8 +8,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Xml.Linq;
+using ToastNotifications.Core;
 using static Plot3D.ColorSchema;
 using static Plot3D.Graph3D;
+using ToastNotifications.Messages;
 
 namespace Don_tKnowHowToNameThis
 {
@@ -19,6 +22,10 @@ namespace Don_tKnowHowToNameThis
     {
         DB _db;
         Calc _calc = new Calc();
+        Notification _notification;
+        List<string> _rows = new List<string>();
+        List<string> _columns = new List<string>();
+        List<List<string>> _resualt = new List<List<string>>();
 
         double _p;
         double _c;
@@ -32,6 +39,7 @@ namespace Don_tKnowHowToNameThis
         {
             InitializeComponent();
             _db = dB;
+            _notification = new Notification(this);
         }
 
         private void materialComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -138,10 +146,15 @@ namespace Don_tKnowHowToNameThis
             W.Text = _calc._W.ToString();
             H.Text = _calc._H.ToString();
             L.Text = _calc._L.ToString();
+            Save.IsEnabled = false;
         }
 
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
+            Save.IsEnabled = true;
+            _rows.Clear();
+            _columns.Clear();
+            _resualt.Clear();
             double timeLost = 0;
             double memLost = GC.GetTotalMemory(false); ;
             Stopwatch t = new Stopwatch();
@@ -171,9 +184,11 @@ namespace Don_tKnowHowToNameThis
                 temp.Add(tempTemp);
                 visc.Add(viscTemp);
             }
+            _resualt = res;
             matrix.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             for (decimal j = Convert.ToDecimal(TuLow.Text); j <= Convert.ToDecimal(TuHigh.Text); j += Convert.ToDecimal(TuStep.Text))
             {
+                _columns.Add(j.ToString());
                 matrix.Columns.Add("value", j.ToString());
             }
             int k = 0;
@@ -191,6 +206,7 @@ namespace Don_tKnowHowToNameThis
             decimal tmp = Convert.ToDecimal(VuLow.Text);
             for (int i = 0; i <= matrix.Rows.Count - 1; i++)
             {
+                _rows.Add(tmp.ToString());
                 matrix.Rows[i].HeaderCell.Value = string.Format((tmp).ToString(), "0");
                 tmp += Convert.ToDecimal(VuStep.Text);
             }
@@ -212,7 +228,7 @@ namespace Don_tKnowHowToNameThis
         {
             name.Raster = eRaster.Labels;
             System.Drawing.Color[] c_Colors = GetSchema(eSchema.Hot);
-            name.SetColorScheme(c_Colors, 3);
+            //name.SetColorScheme(c_Colors, 3);
             int stepQuantity = eff.Length;
             cPoint3D[,] points3d = new cPoint3D[eff[0].Length, stepQuantity];
             int row = 0;
@@ -230,8 +246,8 @@ namespace Don_tKnowHowToNameThis
                 row++;
                 col = 0;
             }
-            name.AxisX_Legend = "Скорость крышки, м/с";
-            name.AxisY_Legend = "Температура крышки, °C";
+            name.AxisX_Legend = "Температура крышки, °C";
+            name.AxisY_Legend = "Скорость крышки, м/с";
 
             name.SetSurfacePoints(points3d, eNormalize.MaintainXY);
         }
@@ -251,14 +267,28 @@ namespace Don_tKnowHowToNameThis
                 a.Background = Brushes.LightPink;
                 Calculate.IsEnabled = false;
             }
-            if (materialComboBox.SelectedItem == null /*|| modelComboBox.SelectedItem == null*/ || W.Text == "" || H.Text == "" || L.Text == "" || VuLow.Text == "" || VuHigh.Text == "" || VuStep.Text == ""
+            if (materialComboBox.SelectedItem == null || W.Text == "" || H.Text == "" || L.Text == "" || VuLow.Text == "" || VuHigh.Text == "" || VuStep.Text == ""
                 || TuLow.Text == "" || TuHigh.Text == "" || TuStep.Text == "") Calculate.IsEnabled = false;
             else Calculate.IsEnabled = true;
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-
+            SaveFileDialog sfd = new SaveFileDialog();
+            if (sfd.ShowDialog() == false) return;
+            string fileName = sfd.FileName;
+            FileWork fileWork;
+            if (fileName.Contains(".xlsx")) { fileWork = new FileWork(_calc, fileName); }
+            else { fileWork = new FileWork(_calc, fileName + ".xlsx"); }
+            try
+            {
+                fileWork.SaveToExсel(_rows, _columns, _resualt);
+                _notification.Notifier().ShowSuccess("Отчет о моделировании процесса сохранен!");
+            }
+            catch
+            {
+                _notification.Notifier().ShowError("Возникла ошибка при сохранении отчета о моделировании процесса.");
+            }
         }
     }
 
