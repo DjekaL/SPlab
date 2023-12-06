@@ -19,15 +19,15 @@ using System.Text;
 using System.Globalization;
 using System.Windows.Forms;
 using System.Diagnostics;
-using static Plot3D.Graph3D;
+using static Plot3D1.Graph3D1;
 
-namespace Plot3D
+namespace Plot3D1
 {
     /// <summary>
     /// ATTENTION: This class is not thread safe.
     /// Call all functions only from the GUI thread or use Control.Invoke()
     /// </summary>
-    public class Graph3D : UserControl
+    public class Graph3D1 : UserControl
     {
         #region enums
 
@@ -75,14 +75,14 @@ namespace Plot3D
         class cMouse
         {
             public eMouseAction me_Action;     // left mouse button action
-            public Point        mk_LastPos;    // last mouse location
-            public Point        mk_Offset;     // Offset for painting in OnPaint()
-            public TrackBar     mi_TrackRho;   // Rho trackbar (optional)
-            public TrackBar     mi_TrackTheta; // Theta trackbar (optional)
-            public TrackBar     mi_TrackPhi;   // Phi trackbar (optional)
-            public double       md_Rho   = VALUES_RHO  [2]; // 2 = Default value
-            public double       md_Theta = VALUES_THETA[2]; // 2 = Default value
-            public double       md_Phi   = VALUES_PHI  [2]; // 2 = Default value
+            public Point mk_LastPos;    // last mouse location
+            public Point mk_Offset;     // Offset for painting in OnPaint()
+            public TrackBar mi_TrackRho;   // Rho trackbar (optional)
+            public TrackBar mi_TrackTheta; // Theta trackbar (optional)
+            public TrackBar mi_TrackPhi;   // Phi trackbar (optional)
+            public double md_Rho = VALUES_RHO[2]; // 2 = Default value
+            public double md_Theta = VALUES_THETA[2]; // 2 = Default value
+            public double md_Phi = VALUES_PHI[2]; // 2 = Default value
 
             public void AssignTrackbar(eMouseAction e_Trackbar, TrackBar i_Trackbar, EventHandler i_OnScroll)
             {
@@ -93,22 +93,22 @@ namespace Plot3D
                 switch (e_Trackbar)
                 {
                     case eMouseAction.Rho:
-                        d_Values      = VALUES_RHO;
-                        mi_TrackRho   = i_Trackbar;
+                        d_Values = VALUES_RHO;
+                        mi_TrackRho = i_Trackbar;
                         break;
                     case eMouseAction.Theta:
-                        d_Values      = VALUES_THETA;
+                        d_Values = VALUES_THETA;
                         mi_TrackTheta = i_Trackbar;
                         break;
                     case eMouseAction.Phi:
-                        d_Values      = VALUES_PHI;
-                        mi_TrackPhi   = i_Trackbar;
+                        d_Values = VALUES_PHI;
+                        mi_TrackPhi = i_Trackbar;
                         break;
                 }
 
                 i_Trackbar.Minimum = (int)d_Values[0]; // 0 = Minimum
                 i_Trackbar.Maximum = (int)d_Values[1]; // 1 = Maximum
-                i_Trackbar.Value   = (int)d_Values[2]; // 2 = Default value
+                i_Trackbar.Value = (int)d_Values[2]; // 2 = Default value
                 i_Trackbar.Scroll += i_OnScroll;
             }
 
@@ -117,9 +117,9 @@ namespace Plot3D
             /// </summary>
             public void OnTrackBarScroll()
             {
-                if (mi_TrackRho   != null) md_Rho   = mi_TrackRho  .Value;
+                if (mi_TrackRho != null) md_Rho = mi_TrackRho.Value;
                 if (mi_TrackTheta != null) md_Theta = mi_TrackTheta.Value;
-                if (mi_TrackPhi   != null) md_Phi   = mi_TrackPhi  .Value;
+                if (mi_TrackPhi != null) md_Phi = mi_TrackPhi.Value;
             }
 
             public bool OnMouseWheel(int s32_Delta)
@@ -177,7 +177,7 @@ namespace Plot3D
             {
                 md_Phi = d_Phi;
                 if (md_Phi > 360.0) md_Phi -= 360.0; // continuous rotation
-                if (md_Phi <   0.0) md_Phi += 360.0; // continuous rotation
+                if (md_Phi < 0.0) md_Phi += 360.0; // continuous rotation
                 if (mi_TrackPhi != null)
                     mi_TrackPhi.Value = (int)md_Phi;
             }
@@ -221,7 +221,7 @@ namespace Plot3D
                     case eCoord.X: return md_X;
                     case eCoord.Y: return md_Y;
                     case eCoord.Z: return md_Z;
-                    default:       return 0;
+                    default: return 0;
                 }
             }
             public void SetValue(eCoord e_Coord, double d_Value)
@@ -295,7 +295,7 @@ namespace Plot3D
                 {
                     for (int Y = 0; Y < i_Points3D.GetLength(1); Y++)
                     {
-                        cPoint3D i_Point3D = i_Points3D[X,Y];
+                        cPoint3D i_Point3D = i_Points3D[X, Y];
 
                         md_MinX = Math.Min(md_MinX, i_Point3D.md_X);
                         md_MaxX = Math.Max(md_MaxX, i_Point3D.md_X);
@@ -330,12 +330,12 @@ namespace Plot3D
 
         private class cLine
         {
-            public eCoord     me_Line;    // main coordinate
-            public eCoord     me_Offset;  // secondary coordinate
-            public double     md_Label;   // Label for axis
-            public Pen        mi_Pen;
-            public double     md_Sort;
-            public double     md_Angle;
+            public eCoord me_Line;    // main coordinate
+            public eCoord me_Offset;  // secondary coordinate
+            public double md_Label;   // Label for axis
+            public Pen mi_Pen;
+            public double md_Sort;
+            public double md_Angle;
             public cPoint3D[] mi_Points3D = new cPoint3D[2] { new cPoint3D(), new cPoint3D() }; // start and end point of line
             public cPoint2D[] mi_Points2D = new cPoint2D[2] { new cPoint2D(), new cPoint2D() };
 
@@ -370,18 +370,18 @@ namespace Plot3D
         private class cPolygon
         {
             public PointF[] mk_Points;  // 4 polygon points
-            public double   md_FactorZ; // used to determine scheme color
-            private bool    mb_Valid;
+            public double md_FactorZ; // used to determine scheme color
+            private bool mb_Valid;
 
             public cPolygon(params cPoint2D[] i_Points2D)
             {
-                mb_Valid  = true;
+                mb_Valid = true;
                 mk_Points = new PointF[i_Points2D.Length];
 
-                for (int i=0; i<i_Points2D.Length; i++)
+                for (int i = 0; i < i_Points2D.Length; i++)
                 {
                     if (i_Points2D[i].IsValid) mk_Points[i] = i_Points2D[i].Coord;
-                    else                       mb_Valid = false;
+                    else mb_Valid = false;
                 }
             }
 
@@ -398,14 +398,14 @@ namespace Plot3D
 
         public class cScatter
         {
-            public  cPoint3D mi_Point3D;
-            public  PointF   mk_Point;   // upper left corner
-            public  Brush    mi_Brush;
-            public  Pen      mi_Pen;
-            public  double   md_FactorZ; // used to determine scheme color if mi_Brush == null
-            public  cScatter mi_Previous;
-            public  bool     mb_Combine; // draw line from previous to this
-            private bool     mb_Valid;
+            public cPoint3D mi_Point3D;
+            public PointF mk_Point;   // upper left corner
+            public Brush mi_Brush;
+            public Pen mi_Pen;
+            public double md_FactorZ; // used to determine scheme color if mi_Brush == null
+            public cScatter mi_Previous;
+            public bool mb_Combine; // draw line from previous to this
+            private bool mb_Valid;
 
             /// <summary>
             /// i_Brush == null --> use color from ColorScheme
@@ -414,7 +414,7 @@ namespace Plot3D
             public cScatter(double X, double Y, double Z, Brush i_Brush)
             {
                 mi_Point3D = new cPoint3D(X, Y, Z);
-                mi_Brush   = i_Brush;
+                mi_Brush = i_Brush;
             }
 
             public void SetPoint2D(cPoint2D i_Point2D)
@@ -441,27 +441,27 @@ namespace Plot3D
         {
             public cPolygon mi_Polygon;
             public cScatter mi_Scatter;
-            public cLine    mi_Line;
-            public double   md_Sort;    // sorting is important. Always draw from back to front.
-            private bool    mb_Valid;
+            public cLine mi_Line;
+            public double md_Sort;    // sorting is important. Always draw from back to front.
+            private bool mb_Valid;
 
             public cDrawObj(cPolygon i_Polygon, double d_Sort)
             {
                 mi_Polygon = i_Polygon;
-                mb_Valid   = i_Polygon.IsValid;
-                md_Sort    = d_Sort;
+                mb_Valid = i_Polygon.IsValid;
+                md_Sort = d_Sort;
             }
             public cDrawObj(cScatter i_Scatter, double d_Sort)
             {
                 mi_Scatter = i_Scatter;
-                mb_Valid   = i_Scatter.IsValid;
-                md_Sort    = d_Sort;
+                mb_Valid = i_Scatter.IsValid;
+                md_Sort = d_Sort;
             }
             public cDrawObj(cLine i_Line, double d_Sort)
             {
-                mi_Line    = i_Line;
-                mb_Valid   = i_Line.IsValid;
-                md_Sort    = d_Sort;
+                mi_Line = i_Line;
+                mb_Valid = i_Line.IsValid;
+                md_Sort = d_Sort;
             }
 
             public bool IsValid
@@ -479,8 +479,8 @@ namespace Plot3D
             public double md_SortXY;   // Sort order of raster in area XY  (red)
             public double md_SortXZ;   // Sort order of X axis and raster in area XZ (blue)
             public double md_SortYZ;   // Sort order of Y axis and raster in area YZ (green)
-            public int    ms32_Quadrant;
-            public bool   mb_BottomView;
+            public int ms32_Quadrant;
+            public bool mb_BottomView;
 
             public cQuadrant(double d_Phi, cLine i_AxisX, cLine i_AxisY, cLine i_AxisZ)
             {
@@ -505,16 +505,16 @@ namespace Plot3D
                     {
                         case 0: ms32_Quadrant = i_AxisX.md_Angle + 180.0 < i_AxisZ.md_Angle ? 1 : 0; break;
                         case 1: ms32_Quadrant = i_AxisY.md_Angle + 180.0 < i_AxisZ.md_Angle ? 2 : 1; break;
-                        case 2: ms32_Quadrant = i_AxisX.md_Angle         < i_AxisZ.md_Angle ? 3 : 2; break;
-                        case 3: ms32_Quadrant = i_AxisY.md_Angle         < i_AxisZ.md_Angle ? 0 : 3; break;
+                        case 2: ms32_Quadrant = i_AxisX.md_Angle < i_AxisZ.md_Angle ? 3 : 2; break;
+                        case 3: ms32_Quadrant = i_AxisY.md_Angle < i_AxisZ.md_Angle ? 0 : 3; break;
                     }
                 }
                 else // Top View
                 {
                     switch (s32_Section45)
                     {
-                        case 0: ms32_Quadrant = i_AxisX.md_Angle         > i_AxisZ.md_Angle ? 1 : 0; break;
-                        case 1: ms32_Quadrant = i_AxisY.md_Angle         > i_AxisZ.md_Angle ? 2 : 1; break;
+                        case 0: ms32_Quadrant = i_AxisX.md_Angle > i_AxisZ.md_Angle ? 1 : 0; break;
+                        case 1: ms32_Quadrant = i_AxisY.md_Angle > i_AxisZ.md_Angle ? 2 : 1; break;
                         case 2: ms32_Quadrant = i_AxisX.md_Angle + 180.0 > i_AxisZ.md_Angle ? 3 : 2; break;
                         case 3: ms32_Quadrant = i_AxisY.md_Angle + 180.0 > i_AxisZ.md_Angle ? 0 : 3; break;
                     }
@@ -550,33 +550,33 @@ namespace Plot3D
             private double md_FactY;
             private double md_OffsY;
             // ----------------
-            public double  md_NormalizeX;
-            public double  md_NormalizeY;
-            public double  md_NormalizeZ;
+            public double md_NormalizeX;
+            public double md_NormalizeY;
+            public double md_NormalizeZ;
 
             public void SetCoeficients(cMouse i_Mouse)
             {
-                md_Rho         =  i_Mouse.md_Rho;                           // Distance of viewer (zoom)
-                double d_Theta =  i_Mouse.md_Theta       * Math.PI / 180.0; // Height   of viewer (elevation)
-                double d_Phi   = (i_Mouse.md_Phi -180.0) * Math.PI / 180.0; // Rotation around center (-pi ... +pi)
+                md_Rho = i_Mouse.md_Rho;                           // Distance of viewer (zoom)
+                double d_Theta = i_Mouse.md_Theta * Math.PI / 180.0; // Height   of viewer (elevation)
+                double d_Phi = (i_Mouse.md_Phi - 180.0) * Math.PI / 180.0; // Rotation around center (-pi ... +pi)
 
-                md_sf   = Math.Sin(d_Phi);
-                md_cf   = Math.Cos(d_Phi);
-                md_st   = Math.Sin(d_Theta);
-                md_ct   = Math.Cos(d_Theta);
+                md_sf = Math.Sin(d_Phi);
+                md_cf = Math.Cos(d_Phi);
+                md_st = Math.Sin(d_Theta);
+                md_ct = Math.Cos(d_Theta);
                 md_Dist = 0.5; // Camera distance. Smaller values result in ugly stretched egdes when rotating.
             }
 
             public void SetSize(Size k_Size) // Control.ClientSize
             {
-                double d_Width  = k_Size.Width  * 0.0254 / 96.0; // 0.0254 m = 1 inch. Screen has 96 DPI
+                double d_Width = k_Size.Width * 0.0254 / 96.0; // 0.0254 m = 1 inch. Screen has 96 DPI
                 double d_Height = k_Size.Height * 0.0254 / 96.0;
 
                 // linear transformation coeficients
-                md_FactX =  k_Size.Width  / d_Width;
+                md_FactX = k_Size.Width / d_Width;
                 md_FactY = -k_Size.Height / d_Height;
-                
-                md_OffsX =  md_FactX * d_Width  / 2.0;
+
+                md_OffsX = md_FactX * d_Width / 2.0;
                 md_OffsY = -md_FactY * d_Height / 2.0;
             }
 
@@ -591,7 +591,7 @@ namespace Plot3D
                 // 3D coordinates with center point in the middle of the screen
                 // X positive to the right, X negative to the left
                 // Y positive to the top,   Y negative to the bottom
-                double xn = -md_sf *         X + md_cf         * Y;
+                double xn = -md_sf * X + md_cf * Y;
                 double yn = -md_cf * md_ct * X - md_sf * md_ct * Y + md_st * Z;
                 double zn = -md_cf * md_st * X - md_sf * md_st * Y - md_ct * Z + md_Rho;
 
@@ -619,9 +619,9 @@ namespace Plot3D
         // A movement of mouse by approx 1000 pixels on the screen results in getting from Min to Max or vice versa.
         //
         //                                                      MIN     MAX   DEFAULT  MOUSE FACTOR
-        static readonly double[] VALUES_RHO   = new double[] {  300,   1800,  1350,    2    };
-        static readonly double[] VALUES_THETA = new double[] {   10,    170,    70,    0.25 }; // degree
-        static readonly double[] VALUES_PHI   = new double[] {    0,    360,   230,    0.4  }; // degree  (continuous rotation)
+        static readonly double[] VALUES_RHO = new double[] { 300, 1800, 1350, 2 };
+        static readonly double[] VALUES_THETA = new double[] { 10, 170, 70, 0.25 }; // degree
+        static readonly double[] VALUES_PHI = new double[] { 0, 360, 230, 0.4 }; // degree  (continuous rotation)
 
         // The axis are 10% longer than the highest X,Y,Z value
         const double AXIS_EXCESS = 1.1;
@@ -635,25 +635,25 @@ namespace Plot3D
         // Calculate 3-dimensional Z value from X,Y values
         public delegate double delRendererFunction(double X, double Y);
 
-        eRaster        me_Raster         = eRaster.Off;
-        Pen[]          mi_AxisPens       = new Pen[3];
-        Pen[]          mi_RasterPens     = new Pen[3];
-        cTransform     mi_Transform      = new cTransform();
-        List<cDrawObj> mi_DrawObjects    = new List<cDrawObj>(); // cPolygon or cLine or cScatter
-        cMouse         mi_Mouse          = new cMouse();
-        Point          mk_Offset2D       = new Point();
-        String[]       ms_AxisLegends    = new String[3]; 
-        SolidBrush[]   mi_AxisBrushes    = new SolidBrush[3];
-        Pen            mi_PolyLinePen;
-        Pen            mi_BorderPen;
-        SolidBrush     mi_TopLegendBrush;
-        SolidBrush[]   mi_SchemeBrushes;
-        Pen[]          mi_SchemePens;
-        cPoint3D[,]    mi_PolyArr;
-        cScatter[]     mi_ScatterArr;
-        cMinMax3D      mi_MinMax;
-        cQuadrant      mi_Quadrant;
-        int            ms32_Points;
+        eRaster me_Raster = eRaster.Off;
+        Pen[] mi_AxisPens = new Pen[3];
+        Pen[] mi_RasterPens = new Pen[3];
+        cTransform mi_Transform = new cTransform();
+        List<cDrawObj> mi_DrawObjects = new List<cDrawObj>(); // cPolygon or cLine or cScatter
+        cMouse mi_Mouse = new cMouse();
+        Point mk_Offset2D = new Point();
+        String[] ms_AxisLegends = new String[3];
+        SolidBrush[] mi_AxisBrushes = new SolidBrush[3];
+        Pen mi_PolyLinePen;
+        Pen mi_BorderPen;
+        SolidBrush mi_TopLegendBrush;
+        SolidBrush[] mi_SchemeBrushes;
+        Pen[] mi_SchemePens;
+        cPoint3D[,] mi_PolyArr;
+        cScatter[] mi_ScatterArr;
+        cMinMax3D mi_MinMax;
+        cQuadrant mi_Quadrant;
+        int ms32_Points;
 
         /// <summary>
         /// Off:      draw no coordinate system
@@ -689,13 +689,13 @@ namespace Plot3D
             {
                 Debug.Assert(!InvokeRequired); // Do not call from other threads or use Invoke()
                 if (value.A == 0) mi_PolyLinePen = null; // transparent color
-                else              mi_PolyLinePen = new Pen(value);
+                else mi_PolyLinePen = new Pen(value);
                 Invalidate(); // repaint only
             }
             get
             {
                 if (mi_PolyLinePen != null) return mi_PolyLinePen.Color;
-                else                        return Color.Empty;
+                else return Color.Empty;
             }
         }
 
@@ -709,13 +709,13 @@ namespace Plot3D
             {
                 Debug.Assert(!InvokeRequired); // Do not call from other threads or use Invoke()
                 if (value.A == 0) mi_BorderPen = null; // transparent color
-                else              mi_BorderPen = new Pen(value);
+                else mi_BorderPen = new Pen(value);
                 Invalidate(); // repaint only
             }
             get
             {
                 if (mi_BorderPen != null) return mi_BorderPen.Color;
-                else                      return Color.Empty;
+                else return Color.Empty;
             }
         }
 
@@ -735,7 +735,7 @@ namespace Plot3D
             get
             {
                 if (mi_TopLegendBrush != null) return mi_TopLegendBrush.Color;
-                else                           return Color.Empty;
+                else return Color.Empty;
             }
         }
 
@@ -745,17 +745,17 @@ namespace Plot3D
         /// </summary>
         public String AxisX_Legend
         {
-            set { ms_AxisLegends[(int)eCoord.X] = value; Invalidate();}
+            set { ms_AxisLegends[(int)eCoord.X] = value; Invalidate(); }
             get { return ms_AxisLegends[(int)eCoord.X]; }
         }
         public String AxisY_Legend
         {
-            set { ms_AxisLegends[(int)eCoord.Y] = value; Invalidate();}
+            set { ms_AxisLegends[(int)eCoord.Y] = value; Invalidate(); }
             get { return ms_AxisLegends[(int)eCoord.Y]; }
         }
         public String AxisZ_Legend
         {
-            set { ms_AxisLegends[(int)eCoord.Z] = value; Invalidate();}
+            set { ms_AxisLegends[(int)eCoord.Z] = value; Invalidate(); }
             get { return ms_AxisLegends[(int)eCoord.Z]; }
         }
 
@@ -786,11 +786,11 @@ namespace Plot3D
         {
             Debug.Assert(!InvokeRequired); // Do not call from other threads or use Invoke()
             mi_SchemeBrushes = new SolidBrush[c_Colors.Length];
-            mi_SchemePens    = new Pen       [c_Colors.Length];
+            mi_SchemePens = new Pen[c_Colors.Length];
             for (int i = 0; i < mi_SchemeBrushes.Length; i++)
             {
                 mi_SchemeBrushes[i] = new SolidBrush(c_Colors[i]);
-                mi_SchemePens   [i] = new Pen(mi_SchemeBrushes[i], f_LineWidth);
+                mi_SchemePens[i] = new Pen(mi_SchemeBrushes[i], f_LineWidth);
             }
             Invalidate(); // repaint only
         }
@@ -812,20 +812,20 @@ namespace Plot3D
         public void AssignTrackBars(TrackBar i_Rho, TrackBar i_Theta, TrackBar i_Phi)
         {
             Debug.Assert(!InvokeRequired); // Do not call from other threads or use Invoke()
-            mi_Mouse.AssignTrackbar(eMouseAction.Rho,   i_Rho,   new EventHandler(OnTrackbarScroll));
+            mi_Mouse.AssignTrackbar(eMouseAction.Rho, i_Rho, new EventHandler(OnTrackbarScroll));
 #pragma warning disable CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
             mi_Mouse.AssignTrackbar(eMouseAction.Theta, i_Theta, new EventHandler(OnTrackbarScroll));
 #pragma warning restore CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
-            mi_Mouse.AssignTrackbar(eMouseAction.Phi,   i_Phi,   new EventHandler(OnTrackbarScroll));
+            mi_Mouse.AssignTrackbar(eMouseAction.Phi, i_Phi, new EventHandler(OnTrackbarScroll));
         }
 
         // ============================================================================
 
         // Constructor
-        public Graph3D()
+        public Graph3D1()
         {
             // avoid flicker
-            SetStyle(ControlStyles.AllPaintingInWmPaint,  true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
             // Load the default colors
@@ -835,15 +835,15 @@ namespace Plot3D
             SetAxisColor(eCoord.Y, Color.DarkGreen);
             SetAxisColor(eCoord.Z, Color.DarkRed);
 
-            mi_PolyLinePen    = new Pen       (Color.Black, 1);
-            mi_BorderPen      = new Pen       (Color.FromArgb(255,180,180,180), 1); // bright gray
-            mi_TopLegendBrush = new SolidBrush(Color.FromArgb(255,200,200,150));    // beige
+            mi_PolyLinePen = new Pen(Color.Black, 1);
+            mi_BorderPen = new Pen(Color.FromArgb(255, 180, 180, 180), 1); // bright gray
+            mi_TopLegendBrush = new SolidBrush(Color.FromArgb(255, 200, 200, 150));    // beige
 
             mi_Transform.SetCoeficients(mi_Mouse);
         }
 
         // ============================================================================
-   
+
         /// <summary>
         /// Here you can set a callback function delegate which will be called to calculate the 3D values.
         /// Use either SetFunction() or SetSurfacePoints() or SetScatterPoints() or SetScatterLines()
@@ -882,9 +882,9 @@ namespace Plot3D
             Debug.Assert(!InvokeRequired); // Do not call from other threads or use Invoke()
 
             mi_ScatterArr = null;
-            mi_PolyArr    = i_Points3D;
-            ms32_Points   = i_Points3D.Length;
-            mi_MinMax     = new cMinMax3D(i_Points3D);
+            mi_PolyArr = i_Points3D;
+            ms32_Points = i_Points3D.Length;
+            mi_MinMax = new cMinMax3D(i_Points3D);
             if (ms32_Points < 4)
                 throw new Exception("Insufficient 3D points specified");
 
@@ -904,10 +904,10 @@ namespace Plot3D
         {
             Debug.Assert(!InvokeRequired); // Do not call from other threads or use Invoke()
 
-            mi_PolyArr    = null;
+            mi_PolyArr = null;
             mi_ScatterArr = i_Scatter;
-            ms32_Points   = i_Scatter.Length;
-            mi_MinMax     = new cMinMax3D(i_Scatter);
+            ms32_Points = i_Scatter.Length;
+            mi_MinMax = new cMinMax3D(i_Scatter);
 
             NormalizeRanges(e_Normalize);
 
@@ -927,7 +927,7 @@ namespace Plot3D
             cScatter i_Prev = null;
             foreach (cScatter i_Scatter in i_ScatterArr)
             {
-                i_Scatter.mb_Combine  = true;
+                i_Scatter.mb_Combine = true;
                 i_Scatter.mi_Previous = i_Prev; // Build a single chained list
 
                 if (i_Scatter.mi_Brush != null)
@@ -975,10 +975,6 @@ namespace Plot3D
                     d_RangeY = d_RangeXYZ;
                     d_RangeZ = d_RangeXYZ;
                     break;
-                case eNormalize.Separate:
-                    double d_RangeXZ = (d_RangeX + d_RangeY + d_RangeZ) / 7;
-                    d_RangeZ = d_RangeXZ;
-                    break;
             }
 
             mi_Transform.md_NormalizeX = 250.0 / d_RangeX;
@@ -998,9 +994,9 @@ namespace Plot3D
         {
             Debug.Assert(!InvokeRequired); // Do not call from other threads or use Invoke()
 
-            mi_Mouse.SetRho  (d_Rho);
+            mi_Mouse.SetRho(d_Rho);
             mi_Mouse.SetTheta(d_Theta);
-            mi_Mouse.SetPhi  (d_Phi);
+            mi_Mouse.SetPhi(d_Phi);
 
             mi_Transform.SetCoeficients(mi_Mouse);
 
@@ -1041,7 +1037,7 @@ namespace Plot3D
                         i_Axis.me_Line = eCoord.X;
                         i_Axis.me_Offset = eCoord.Y; // Hide zero label at X axis (X,X invalid)
                         i_Axis.md_Label = mi_MinMax.md_MinY;
-                        
+
                         break;
                     case eCoord.Y: // Green
                         i_Axis.mi_Points3D[0].md_Y = mi_MinMax.md_MinY;
@@ -1055,7 +1051,7 @@ namespace Plot3D
                         i_Axis.me_Line = eCoord.Y;
                         i_Axis.me_Offset = eCoord.X; // Show zero label at Y axis
                         i_Axis.md_Label = mi_MinMax.md_MinX;
-                        
+
                         break;
                     case eCoord.Z: // Red
                         i_Axis.mi_Points3D[0].md_Z = mi_MinMax.md_MinZ;
@@ -1068,7 +1064,7 @@ namespace Plot3D
                         i_Axis.me_Line = eCoord.Y;
                         i_Axis.md_Label = mi_MinMax.md_MaxZ;
                         i_Axis.me_Offset = eCoord.Z; // Hide zero label at Z axis (Z,Z invalid)
-                        
+
                         break;
                 }
 
@@ -1193,30 +1189,30 @@ namespace Plot3D
             {
                 for (int Y = 0; Y < mi_PolyArr.GetLength(1); Y++)
                 {
-                    i_Points2D[X,Y] = mi_Transform.Project(mi_PolyArr[X,Y], mi_MinMax.mi_Center3D);
+                    i_Points2D[X, Y] = mi_Transform.Project(mi_PolyArr[X, Y], mi_MinMax.mi_Center3D);
                 }
             }
 
             // Create polygons
-            for (int X = 0; X < mi_PolyArr.GetLength(0) -1; X++)
+            for (int X = 0; X < mi_PolyArr.GetLength(0) - 1; X++)
             {
-                for (int Y = 0; Y < mi_PolyArr.GetLength(1) -1; Y++)
+                for (int Y = 0; Y < mi_PolyArr.GetLength(1) - 1; Y++)
                 {
-                    cPolygon i_Poly = new cPolygon(i_Points2D[X,   Y],
-                                                   i_Points2D[X,   Y+1],
-                                                   i_Points2D[X+1, Y+1],
-                                                   i_Points2D[X+1, Y]);
-                    
-                    double Z1 = mi_PolyArr[X,   Y]  .md_Z;
-                    double Z2 = mi_PolyArr[X,   Y+1].md_Z;
-                    double Z3 = mi_PolyArr[X+1, Y+1].md_Z;
-                    double Z4 = mi_PolyArr[X+1, Y]  .md_Z;
+                    cPolygon i_Poly = new cPolygon(i_Points2D[X, Y],
+                                                   i_Points2D[X, Y + 1],
+                                                   i_Points2D[X + 1, Y + 1],
+                                                   i_Points2D[X + 1, Y]);
+
+                    double Z1 = mi_PolyArr[X, Y].md_Z;
+                    double Z2 = mi_PolyArr[X, Y + 1].md_Z;
+                    double Z3 = mi_PolyArr[X + 1, Y + 1].md_Z;
+                    double Z4 = mi_PolyArr[X + 1, Y].md_Z;
                     double Zavrg = (Z1 + Z2 + Z3 + Z4) / 4.0;
 
                     i_Poly.md_FactorZ = (Zavrg - mi_MinMax.md_MinZ) / (mi_MinMax.md_MaxZ - mi_MinMax.md_MinZ);
 
                     // Polygons must be painted in correct order: from back to front. Order depends on rotation angle.
-                    double d_Sort = mi_Transform.ProjectXY(X +1, Y +1); // +1 because Z axis is at 0,0
+                    double d_Sort = mi_Transform.ProjectXY(X + 1, Y + 1); // +1 because Z axis is at 0,0
 
                     AddDrawObject(new cDrawObj(i_Poly, d_Sort));
                 }
@@ -1236,7 +1232,7 @@ namespace Plot3D
                     i_Scatter.md_FactorZ = (i_Scatter.mi_Point3D.md_Z - mi_MinMax.md_MinZ) / (mi_MinMax.md_MaxZ - mi_MinMax.md_MinZ);
 
                 // Scatter circles must be painted in correct order: from back to front. Order depends on rotation angle.
-                double d_Sort = mi_Transform.ProjectXY(i_Scatter.mi_Point3D.md_X + 1.0, 
+                double d_Sort = mi_Transform.ProjectXY(i_Scatter.mi_Point3D.md_X + 1.0,
                                                        i_Scatter.mi_Point3D.md_Y + 1.0); // +1 because Z axis is at 0,0
 
                 AddDrawObject(new cDrawObj(i_Scatter, d_Sort));
@@ -1249,7 +1245,7 @@ namespace Plot3D
         private void AddDrawObject(cDrawObj i_DrawObj)
         {
             int P;
-            for (P=0; P<mi_DrawObjects.Count; P++)
+            for (P = 0; P < mi_DrawObjects.Count; P++)
             {
                 if (mi_DrawObjects[P].md_Sort > i_DrawObj.md_Sort)
                     break;
@@ -1286,8 +1282,8 @@ namespace Plot3D
         private void SetAxisColor(eCoord e_Coord, Color c_Color)
         {
             mi_AxisBrushes[(int)e_Coord] = new SolidBrush(c_Color);            // Label text
-            mi_AxisPens   [(int)e_Coord] = new Pen(c_Color, 3);                // Main coordinate axis
-            mi_RasterPens [(int)e_Coord] = new Pen(BrightenColor(c_Color), 1); // Raster lines
+            mi_AxisPens[(int)e_Coord] = new Pen(c_Color, 3);                // Main coordinate axis
+            mi_RasterPens[(int)e_Coord] = new Pen(BrightenColor(c_Color), 1); // Raster lines
         }
 
         /// <summary>
@@ -1295,9 +1291,9 @@ namespace Plot3D
         /// </summary>
         private Color BrightenColor(Color c_Color)
         {
-            int s32_Red   = c_Color.R + (255 - c_Color.R) / 2;
+            int s32_Red = c_Color.R + (255 - c_Color.R) / 2;
             int s32_Green = c_Color.G + (255 - c_Color.G) / 2;
-            int s32_Blue  = c_Color.B + (255 - c_Color.B) / 2;
+            int s32_Blue = c_Color.B + (255 - c_Color.B) / 2;
 
             return Color.FromArgb(255, s32_Red, s32_Green, s32_Blue);
         }
@@ -1353,7 +1349,7 @@ namespace Plot3D
             {
                 CreateCoordinateSystem(i_Graph);
 
-                if (mi_PolyArr    != null) CreatePolygons();
+                if (mi_PolyArr != null) CreatePolygons();
                 if (mi_ScatterArr != null) CreateScatterDots();
             }
 
@@ -1362,13 +1358,13 @@ namespace Plot3D
             // Draw axis legends at bottom
             int X = 4;
             int Y = ClientSize.Height - Font.Height - 4;
-            for (int i=2; i>=0; i--)
+            for (int i = 2; i >= 0; i--)
             {
                 if (String.IsNullOrEmpty(ms_AxisLegends[i]))
                     continue;
 
                 String s_Disp = String.Format("{0}: {1}", (eCoord)i, ms_AxisLegends[i]);
-                i_Graph.DrawString(s_Disp, Font, mi_AxisBrushes[i], X,  Y);
+                i_Graph.DrawString(s_Disp, Font, mi_AxisBrushes[i], X, Y);
                 Y -= Font.Height;
             }
 
@@ -1376,23 +1372,23 @@ namespace Plot3D
             if (mi_TopLegendBrush != null)
             {
                 String[] s_Legend = new String[] { "Rotation:", "Elevation:", "Distance:" };
-                String[] s_Value  = new String[] { String.Format("{0:+#;-#;0}°", (int)mi_Mouse.md_Phi),
+                String[] s_Value = new String[] { String.Format("{0:+#;-#;0}°", (int)mi_Mouse.md_Phi),
                                                    String.Format("{0:+#;-#;0}°", (int)mi_Mouse.md_Theta),
                                                    String.Format("{0}",          (int)mi_Mouse.md_Rho) };
 
                 SizeF k_Size = i_Graph.MeasureString(s_Legend[1], Font); // measure the widest string
                 X = 4;
                 Y = 3;
-                for (int i=0; i<3; i++)
+                for (int i = 0; i < 3; i++)
                 {
-                    i_Graph.DrawString(s_Legend[i], Font, mi_TopLegendBrush, X,  Y);
-                    i_Graph.DrawString(s_Value [i], Font, mi_TopLegendBrush, X + k_Size.Width, Y);
+                    i_Graph.DrawString(s_Legend[i], Font, mi_TopLegendBrush, X, Y);
+                    i_Graph.DrawString(s_Value[i], Font, mi_TopLegendBrush, X + k_Size.Width, Y);
                     Y += Font.Height;
                 }
             }
 
             // Set X, Y offset which user has set by mouse dragging with SHIFT key pressed
-            i_Graph.TranslateTransform(mi_Mouse.mk_Offset.X + mk_Offset2D.X, 
+            i_Graph.TranslateTransform(mi_Mouse.mk_Offset.X + mk_Offset2D.X,
                                        mi_Mouse.mk_Offset.Y + mk_Offset2D.Y);
 
             SmoothingMode e_Smooth = SmoothingMode.Invalid;
@@ -1411,8 +1407,8 @@ namespace Plot3D
                         i_Graph.SmoothingMode = SmoothingMode.None;
                     }
 
-                    cPolygon i_Poly  = i_DrawObj.mi_Polygon;
-                    Brush    i_Brush = GetSchemeBrush(i_Poly.md_FactorZ);
+                    cPolygon i_Poly = i_DrawObj.mi_Polygon;
+                    Brush i_Brush = GetSchemeBrush(i_Poly.md_FactorZ);
                     i_Graph.FillPolygon(i_Brush, i_Poly.mk_Points);
 
                     if (mi_PolyLinePen != null)
@@ -1463,7 +1459,7 @@ namespace Plot3D
 
                     // ------------ Label ------------
 
-                    if (me_Raster == eRaster.Labels        && 
+                    if (me_Raster == eRaster.Labels &&
                         mi_Quadrant.mb_BottomView == false && // no label in bottom view
                         mi_Quadrant.ms32_Quadrant == 3)       // only in quadrant 3 showing labels makes sense
                     {
@@ -1488,7 +1484,7 @@ namespace Plot3D
                         else continue;
 
                         String s_Label = FormatLabel(i_Line.md_Label);
-                        Brush  i_Brush = mi_AxisBrushes[(int)i_Line.me_Offset];
+                        Brush i_Brush = mi_AxisBrushes[(int)i_Line.me_Offset];
                         i_Graph.DrawString(s_Label, Font, i_Brush, k_Pos, i_Align);
                     }
                 }
@@ -1512,7 +1508,7 @@ namespace Plot3D
 
             if (mi_DrawObjects.Count == 0)
                 return;
-           
+
             switch (Control.ModifierKeys)
             {
                 case Keys.None:

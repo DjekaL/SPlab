@@ -22,7 +22,7 @@ namespace Don_tKnowHowToNameThis
         DB db;
         string user = "root";
         string password = "root";
-        string host = "127.0.0.1";
+        string host = "192.168.51.179";
         Notification notification;
         public MainWindow()
         {

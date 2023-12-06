@@ -6,6 +6,7 @@
         xmlns:dataGrid2D="http://gu.se/DataGrid2D"
         xmlns:local="clr-namespace:Don_tKnowHowToNameThis"
         xmlns:Graph3d="clr-namespace:Plot3D" xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:Graph3d1="clr-namespace:Plot3D1"
         mc:Ignorable="d"
         Title="Вычислительный эксперимент" Height="600" Width="1100" Loaded="Window_Loaded">
     <Grid ShowGridLines="False">
@@ -36,7 +37,7 @@
                 <Label x:Name="target" Grid.Column="0" Content="Материал:" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="24" Width="67" />
                 <ComboBox x:Name="materialComboBox" Grid.Column="0" Height="26" Width="230" 
                           Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionChanged="materialComboBox_SelectionChanged"/>
-                <GroupBox Header="Геометрические параметры:" Grid.Column="0" Grid.Row="1" Margin="2,2,2,2">
+                <GroupBox Header="Геометрические параметры канала:" Grid.Column="0" Grid.Row="1" Margin="2,2,2,2">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="80*"></ColumnDefinition>
@@ -97,7 +98,7 @@
                 <Label Grid.Column="2" Grid.Row="3" Content="°С" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBox x:Name="VuLow" Text="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
                          Width="50" TextChanged="CheckInputChange" Height="18"/>
-                <TextBox x:Name="VuHigh" Grid.Column="1" Grid.Row="1" Text="2" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
+                <TextBox x:Name="VuHigh" Grid.Column="1" Grid.Row="1" Text="10" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
                          Width="50" TextChanged="CheckInputChange" Height="18"/>
                 <TextBox x:Name="TuLow" Grid.Row="3" Text="140" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
                          Width="50" TextChanged="CheckInputChange" Height="18"/>
@@ -115,7 +116,7 @@
                 <Label Grid.Column="2" Grid.Row="5" Content="°С" VerticalAlignment="Center" HorizontalAlignment="Left"/>
             </Grid>
         </GroupBox>
-        <GroupBox Grid.Column="2" Grid.Row="1" Header="Результаты" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="2,2,2,2">
+        <GroupBox Grid.Column="2" Grid.Row="1" Header="Выходные параметры" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="2,2,2,2">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.3*"/>
@@ -153,7 +154,7 @@
                     </TabItem>
                     <TabItem Header="График вязкости">
                         <WindowsFormsHost>
-                            <Graph3d:Graph3D x:Name="Visc3d"/>
+                            <Graph3d1:Graph3D1 x:Name="Visc3d"/>
                         </WindowsFormsHost>
                     </TabItem>
                 </TabControl>

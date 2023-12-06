@@ -11,7 +11,9 @@ using System.Xml.Linq;
 using ToastNotifications.Core;
 using static Plot3D.ColorSchema;
 using static Plot3D.Graph3D;
+using static Plot3D1.Graph3D1;
 using ToastNotifications.Messages;
+using Plot3D1;
 
 namespace Don_tKnowHowToNameThis
 {
@@ -215,8 +217,8 @@ namespace Don_tKnowHowToNameThis
             set3d(Temp3d, arrays);
             Temp3d.AxisZ_Legend = "Температура продукта, °C";
             arrays = visc.Select(a => a.ToArray()).ToArray();
+            set3d1(Visc3d, arrays);
             Visc3d.AxisZ_Legend = "Вязкость продукта, Па*с";
-            set3d(Visc3d, arrays);
 
             t.Stop();
             timeLost = t.ElapsedMilliseconds;
@@ -226,11 +228,11 @@ namespace Don_tKnowHowToNameThis
         }
         private void set3d(Graph3D name, double[][] eff)
         {
-            name.Raster = eRaster.Labels;
+            name.Raster = Plot3D.Graph3D.eRaster.Labels;
             System.Drawing.Color[] c_Colors = GetSchema(eSchema.Hot);
             //name.SetColorScheme(c_Colors, 3);
             int stepQuantity = eff.Length;
-            cPoint3D[,] points3d = new cPoint3D[eff[0].Length, stepQuantity];
+            Plot3D.Graph3D.cPoint3D[,] points3d = new Plot3D.Graph3D.cPoint3D[eff[0].Length, stepQuantity];
             int row = 0;
             int col = 0;
             for (decimal i = Convert.ToDecimal(TuLow.Text); i <= Convert.ToDecimal(TuHigh.Text); i += Convert.ToDecimal(TuStep.Text))
@@ -240,7 +242,37 @@ namespace Don_tKnowHowToNameThis
                 {
                     _calc._Tu = (double)j;
                     _calc.Efficiency();
-                    points3d[row, col] = new cPoint3D((double)i, (double)j, eff[col][row]);
+                    points3d[row, col] = new Plot3D.Graph3D.cPoint3D((double)i, (double)j, eff[col][row]);
+                    col++;
+                }
+                row++;
+                col = 0;
+            }
+            name.AxisX_Legend = "Температура крышки, °C";
+            name.AxisY_Legend = "Скорость крышки, м/с";
+            if (name == Temp3d)
+            {
+                Temp3d.SetSurfacePoints(points3d, Plot3D.Graph3D.eNormalize.Separate);
+            }
+            
+        }
+        private void set3d1(Graph3D1 name, double[][] eff)
+        {
+            name.Raster = Plot3D1.Graph3D1.eRaster.Labels;
+            System.Drawing.Color[] c_Colors = GetSchema(eSchema.Hot);
+            //name.SetColorScheme(c_Colors, 3);
+            int stepQuantity = eff.Length;
+            Plot3D1.Graph3D1.cPoint3D[,] points3d = new Plot3D1.Graph3D1.cPoint3D[eff[0].Length, stepQuantity];
+            int row = 0;
+            int col = 0;
+            for (decimal i = Convert.ToDecimal(TuLow.Text); i <= Convert.ToDecimal(TuHigh.Text); i += Convert.ToDecimal(TuStep.Text))
+            {
+                _calc._Vu = (double)i;
+                for (decimal j = Convert.ToDecimal(VuLow.Text); j <= Convert.ToDecimal(VuHigh.Text); j += Convert.ToDecimal(VuStep.Text))
+                {
+                    _calc._Tu = (double)j;
+                    _calc.Efficiency();
+                    points3d[row, col] = new Plot3D1.Graph3D1.cPoint3D((double)i, (double)j, eff[col][row]);
                     col++;
                 }
                 row++;
@@ -249,8 +281,9 @@ namespace Don_tKnowHowToNameThis
             name.AxisX_Legend = "Температура крышки, °C";
             name.AxisY_Legend = "Скорость крышки, м/с";
 
-            name.SetSurfacePoints(points3d, eNormalize.MaintainXY);
+            name.SetSurfacePoints(points3d, Plot3D1.Graph3D1.eNormalize.Separate);
         }
+        
         private void CheckInputChange(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             System.Windows.Controls.TextBox a = (System.Windows.Controls.TextBox)e.Source;
