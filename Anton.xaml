@@ -1,0 +1,164 @@
+﻿<Window x:Class="Don_tKnowHowToNameThis.Anton"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dataGrid2D="http://gu.se/DataGrid2D"
+        xmlns:local="clr-namespace:Don_tKnowHowToNameThis"
+        xmlns:Graph3d="clr-namespace:Plot3D" xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:Graph3d1="clr-namespace:Plot3D1"
+        mc:Ignorable="d"
+        Title="Вычислительный эксперимент" Height="600" Width="1100" Loaded="Window_Loaded">
+    <Grid ShowGridLines="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30px"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="250px"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            <ColumnDefinition Width="0.4*"></ColumnDefinition>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Menu Grid.Row="0" Grid.ColumnSpan="4">
+            <MenuItem x:Name="Calculate" Header="Произвести вычисления" Click="Calculate_Click"></MenuItem>
+            <MenuItem x:Name="Save" Header="Файл" Click="Save_Click"></MenuItem>
+        </Menu>
+        <GroupBox Header="Входные параметры" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="2,2,2,2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.3*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="12*"></RowDefinition>
+                    <RowDefinition Height="67*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label x:Name="target" Grid.Column="0" Content="Материал:" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="24" Width="67" />
+                <ComboBox x:Name="materialComboBox" Grid.Column="0" Height="26" Width="230" 
+                          Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionChanged="materialComboBox_SelectionChanged"/>
+                <GroupBox Header="Геометрические параметры канала:" Grid.Column="0" Grid.Row="1" Margin="2,2,2,2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80*"></ColumnDefinition>
+                            <ColumnDefinition Width="66*"></ColumnDefinition>
+                            <ColumnDefinition Width="35*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="58*"></RowDefinition>
+                            <RowDefinition Height="59*"></RowDefinition>
+                            <RowDefinition Height="59*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.Row="0" Name="WidthLabel" Content="Ширина:" HorizontalAlignment="Center" Width="58" VerticalAlignment="Center"/>
+                        <Label Grid.Column="0" Content="Глубина:" HorizontalAlignment="Center" Width="57" Grid.Row="1" VerticalAlignment="Center"/>
+                        <Label Grid.Column="0" Grid.Row="2" Content="Длина:" HorizontalAlignment="Center" Width="47" VerticalAlignment="Center"/>
+                        <Label Grid.Column="2" Grid.Row="0" Content="м" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Label Grid.Column="2" Content="м" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Label Grid.Column="2" Grid.Row="2" Content="м" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBox x:Name="W" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
+                         Width="66" Height="18" TextChanged="CheckInputChange" />
+                        <TextBox x:Name="H" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
+                         Width="66" Height="18" TextChanged="CheckInputChange"/>
+                        <TextBox x:Name="L" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
+                         Width="66" AutomationProperties.Name="L" Height="18" TextChanged="CheckInputChange"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Режимные параметры:" Grid.Row="2" Margin="2,2,2,2" Grid.ColumnSpan="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" VerticalAlignment="Top" Height="32" HorizontalAlignment="Left">
+                    <Label.Content>
+                        <TextBlock TextWrapping="Wrap" Height="29" HorizontalAlignment="Left">
+                            Скорость крышки:
+                        </TextBlock>
+                    </Label.Content>
+                </Label>
+                <Label Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" Height="32" HorizontalAlignment="Left">
+                    <Label.Content>
+                        <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left">
+                                Температура крышки:
+                        </TextBlock>
+                    </Label.Content>
+                </Label>
+                <Label Name="VelocityMeasuresTextBox" Grid.Column="2" Grid.Row="1" Content="м/с" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Grid.Column="2" Grid.Row="3" Content="°С" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox x:Name="VuLow" Text="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
+                         Width="50" TextChanged="CheckInputChange" Height="18"/>
+                <TextBox x:Name="VuHigh" Grid.Column="1" Grid.Row="1" Text="10" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
+                         Width="50" TextChanged="CheckInputChange" Height="18"/>
+                <TextBox x:Name="TuLow" Grid.Row="3" Text="140" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
+                         Width="50" TextChanged="CheckInputChange" Height="18"/>
+                <TextBox x:Name="TuHigh" Grid.Column="1" Grid.Row="3" Text="160" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
+                         Width="50" TextChanged="CheckInputChange" Height="18"/>
+                <Label Content="–" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Label Content="–" Grid.ColumnSpan="2" VerticalAlignment="Top" Grid.Row="3" HorizontalAlignment="Center"/>
+                <Label Content="Шаг по температуре:" VerticalAlignment="Top" Grid.Row="5" HorizontalAlignment="Left" Height="27" Width="125"/>
+                <Label Content="Шаг по скорости:" VerticalAlignment="Top" Grid.Row="4" HorizontalAlignment="Left" Height="26" Width="105"/>
+                <TextBox x:Name="TuStep" Grid.Column="1" Text="1" Grid.Row="5" Width="50" VerticalAlignment="Center" 
+                         HorizontalAlignment="Center" TextChanged="CheckInputChange" Height="18"/>
+                <TextBox x:Name="VuStep" Grid.Column="1" Text="0,2" Grid.Row="4" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                         TextChanged="CheckInputChange" Height="18"></TextBox>
+                <Label x:Name="VelocityMeasuresTextBox_Copy" Grid.Column="2" Content="м/с" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Grid.Column="2" Grid.Row="5" Content="°С" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Column="2" Grid.Row="1" Header="Выходные параметры" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="2,2,2,2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.3*"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <GroupBox Header="Показатели экономичности процесса" Grid.Row="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.1*"/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Grid.Row="0" Content="Затраты ОЗУ:"/>
+                        <Label x:Name="RAM" Grid.Column="1" Grid.Row="0" Content="sample"/>
+                        <Label Grid.Column="2" Grid.Row="0" Content="КБ"/>
+                        <Label Grid.Column="0" Grid.Row="1" Content="Время вычислений:"/>
+                        <Label x:Name="time" Grid.Column="1" Grid.Row="1" Content="sample"/>
+                        <Label Grid.Column="2" Grid.Row="1" Content="мс"/>
+                    </Grid>
+                </GroupBox>
+                <TabControl Grid.Row="1">
+                    <TabItem Header="Таблица">
+                        <WindowsFormsHost>
+                            <forms:DataGridView x:Name="matrix" AutoSizeRowsMode="AllCells" AllowUserToAddRows="False"/>
+                        </WindowsFormsHost>
+                    </TabItem>
+                    <TabItem Header="График температуры">
+                        <WindowsFormsHost>
+                            <Graph3d:Graph3D x:Name="Temp3d"/>
+                        </WindowsFormsHost>
+                    </TabItem>
+                    <TabItem Header="График вязкости">
+                        <WindowsFormsHost>
+                            <Graph3d1:Graph3D1 x:Name="Visc3d"/>
+                        </WindowsFormsHost>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>

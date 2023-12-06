@@ -9,13 +9,16 @@ namespace Don_tKnowHowToNameThis
     {
         private string _path { get; set; }
         Calc _calc = new Calc();
+        List<string> _rows = new List<string>();
+        List<string> _columns = new List<string>();
+        List<List<string>> _resualt = new List<List<string>>();
 
         public FileWork(Calc calc, string fileName)
         {
             _path = fileName;
             _calc = calc;
         }
-        public void SaveToExel()
+        public void SaveToExсel()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -73,6 +76,78 @@ namespace Don_tKnowHowToNameThis
                     { "Производительность, кг/ч",                                           _calc.Q },
                     { "Температура продукта, °С",                                           _calc.temperature[_calc.temperature.Count-1] },
                     { "Вязкость продукта, Па*с",                                            _calc.viscosity[_calc.viscosity.Count -1] },
+                };
+
+                foreach (var str in inputDatas)
+                {
+                    worksheet.Cells[r, c].Value = str.Key;
+                    worksheet.Cells[r++, c + 1].Value = str.Value;
+                }
+
+                excelPackage.SaveAs(file);
+            }
+        }
+        public void SaveToExсel(List<string> rows, List<string> columns, List<List<string>> resualt)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (ExcelPackage excelPackage = new ExcelPackage())
+            {
+                excelPackage.Workbook.Properties.Created = DateTime.Now;
+
+                FileInfo file = new FileInfo(_path);
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add(file.Name);
+                int rowAndColumn = 1;
+                for (int i = 0; i < columns.Count; i++)
+                {
+                    worksheet.Cells[rowAndColumn, rowAndColumn + 4 + i].Value = columns[i];
+                }
+                for (int i = 0; i < rows.Count; i++)
+                {
+                    worksheet.Cells[rowAndColumn + 1 + i, rowAndColumn + 3].Value = rows[i];
+                }
+                int r = 1;
+                foreach (List<string> row in resualt)
+                {
+                    int col = 0;
+                    foreach (string column in row)
+                    {
+                        worksheet.Cells[rowAndColumn + r, rowAndColumn + 4 + col].Value = column;
+                        col++;
+                    }
+                    r++;
+                }
+
+                r = rowAndColumn;
+                int c = rowAndColumn;
+                Dictionary<string, object> inputDatas = new Dictionary<string, object>()
+                {
+                    { "Входные данные",                                                     "" },
+                    { "Тип материала",                                                      _calc._material },
+                    { "", ""},
+                    { "Геометрические параметры канала:",                                   "" },
+                    { "Ширина, м",                                                          _calc._W },
+                    { "Глубина, м",                                                         _calc._H },
+                    { "Длина, м",                                                           _calc._L },
+                    { " ", ""},
+                    { "Параметры свойств материала:",                                       ""},
+                    { "Плотность, кг/м^3",                                                  _calc._R },
+                    { "Удельная теплоёмкость, Дж/(кг*°С)",                                  _calc._c },
+                    { "Температура плавления, °С",                                          _calc._T0 },
+                    { "  ", ""},
+                    { "Режимные параметры процесса:",                                       "" },
+                    { "Скорость крышки, м/с",                                               _calc._Vu },
+                    { "Температура крышки, °С",                                             _calc._Tu },
+                    { "   ", ""},
+                    { "Параметры метода решения уравнений модели:",                         "" },
+                    { "Шаг расчета по длине канала, м",                                     _calc._step },
+                    { "    ", ""},
+                    { "Эмпирические коэффициенты математической модели:",                   "" },
+                    { "Коэффициент консистенции при температуре приведения, Па*с^n",        _calc._mu0 },
+                    { "Энергия активации вязкого течения материала, Дж/моль",                  _calc._Ea },
+                    { "Температура приведения, °С",                                         _calc._Tr },
+                    { "Индекс течения",                                                     _calc._n },
+                    { "Коэффициент теплоотдачи от крышки канала к материалу, Вт /(м^2*°С)", _calc._alphaU },
                 };
 
                 foreach (var str in inputDatas)

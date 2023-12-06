@@ -46,7 +46,7 @@ namespace Don_tKnowHowToNameThis {
             serie.Fill = null;
             serie.GeometrySize = 3;
             serie.Name = serieName;
-            serie.TooltipLabelFormatter = (chartPoint) => $"{YAxes[0].Name}: {chartPoint.PrimaryValue}, {XAxes[0].Name}: {chartPoint.SecondaryValue}";
+            serie.TooltipLabelFormatter = (chartPoint) => $"{XAxes[0].Name}: {chartPoint.SecondaryValue}, {YAxes[0].Name}: {chartPoint.PrimaryValue}";
             Series.Add(serie);
         }
     }

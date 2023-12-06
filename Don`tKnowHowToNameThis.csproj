@@ -6,11 +6,16 @@
     <RootNamespace>Don_tKnowHowToNameThis</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="EPPlus" Version="6.2.2" />
+    <PackageReference Include="Gu.Wpf.DataGrid2D" Version="0.2.4" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.701" />
+    <PackageReference Include="MySql.Data" Version="8.0.33" />
+    <PackageReference Include="ToastNotifications" Version="2.5.1" />
+    <PackageReference Include="ToastNotifications.Messages" Version="2.5.1" />
   </ItemGroup>
 
 </Project>

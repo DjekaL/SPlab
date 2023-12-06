@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 
 namespace Don_tKnowHowToNameThis
@@ -14,7 +16,9 @@ namespace Don_tKnowHowToNameThis
         List<double> viscosity = new List<double>();
         BindingList<List> data = new BindingList<List>();
         Calc _calc;
-        public Table(Calc calc)
+        Stopwatch _t;
+        double _memLost;
+        public Table(Calc calc, Stopwatch t, double memLost)
         {
             InitializeComponent();
             /*zCoords = z;
@@ -24,6 +28,8 @@ namespace Don_tKnowHowToNameThis
             zCoords = calc.zCoords;
             temperature = calc.temperature;
             viscosity = calc.viscosity;
+            _t = t;
+            _memLost = memLost;
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -36,14 +42,19 @@ namespace Don_tKnowHowToNameThis
             eff.Content = _calc.Q;
             T.Content = _calc.temperature[_calc.temperature.Count -1];
             visc.Content = _calc.viscosity[_calc.viscosity.Count -1];
-            RAM.Content = _calc.Lostmem;
-            time.Content = _calc.LostTime;
 
             Chart temperatureChart = new Chart(zCoords, temperature, "Температура, °C", "Температура");
             tempChart.DataContext = temperatureChart;
-
             Chart viscosityChart = new Chart(zCoords, viscosity, "Вязкость, Па * с", "Вязкость");
             visChart.DataContext = viscosityChart;
+
+            _t.Stop();
+            double timeLost = _t.ElapsedMilliseconds;
+            double tmp = GC.GetTotalMemory(false);
+            _memLost = Math.Abs((tmp - _memLost) / 1024);
+            RAM.Content = Math.Round(_memLost, 0);
+            time.Content = timeLost.ToString();
+
         }
     }
 }

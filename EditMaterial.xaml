@@ -1,0 +1,130 @@
+﻿<Window x:Class="Don_tKnowHowToNameThis.EditMaterial"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Don_tKnowHowToNameThis"
+        mc:Ignorable="d"
+        Title="EditMaterial" Height="450" Width="900">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Изменить существующий материал" Loaded="UpdateMatrialTab_Loaded">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.3*"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="0.4*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Материал:" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <ComboBox Name="addMaterialCombo" Grid.Row="0" Grid.Column="1" Width="250" Height="30" FontSize="14" SelectionChanged="AddMaterial_SelectionChanged"></ComboBox>
+                    <Button Name="changeMatParamsButton" Grid.ColumnSpan="3" Grid.Row="4" Width="200" Height="50" FontSize="16" Click="UpdateMaterial_Click">Изменить материал</Button>
+                    <DataGrid x:Name="propTable" Grid.Row="1" Grid.ColumnSpan="2" Margin="10, 10, 10, 10" AutoGenerateColumns="False" 
+                              CellEditEnding="updateTable_CellEditEnding" CanUserAddRows="False" CanUserDeleteRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Path= Title}" Header="Свойство"  Width="2*" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding Path= Value, UpdateSourceTrigger=PropertyChanged}" Header="Значение" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Path= Unit}" Header="Единица измерения" Width="*" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <DataGrid x:Name="coeffTable" Grid.Row="2" Grid.ColumnSpan="2" Margin="10, 10, 10, 10" AutoGenerateColumns="False"
+                              CellEditEnding="updateTable_CellEditEnding" CanUserAddRows="False" CanUserDeleteRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Path= Title}" Header="Эмпирический коэффициент мат. модели"  Width="2*" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding Path= Value, UpdateSourceTrigger=PropertyChanged}" Header="Значение" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Path= Unit}" Header="Единица измерения" Width="*" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Добавить новый материал" Loaded="AddMaterial_Loaded">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.4*"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="0.4*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Материал:" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBox x:Name="addMaterial" Grid.Row="0" Grid.Column="1" Width="200" Height="30" FontSize="14" TextChanged="addMaterial_TextChanged"></TextBox>
+                    <Button x:Name="addNewMaterialButton" Grid.ColumnSpan="3" Grid.Row="5" Width="200" Height="50" FontSize="16" Click="InsertMaterial_Click" Grid.Column="0">Добавить материал</Button>
+                    <DataGrid x:Name="newPropTable" Grid.Row="1" Grid.ColumnSpan="2" Margin="10, 10, 10, 10" AutoGenerateColumns="False"
+                              CanUserAddRows="True" RowEditEnding="addTable_RowEditEnding">
+                        <DataGrid.Columns>
+                            <DataGridComboBoxColumn x:Name="propComboBox" SelectedItemBinding="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}" Header="Свойство"  Width="2*"/>
+                            <DataGridTextColumn Binding="{Binding Path= Value, UpdateSourceTrigger=PropertyChanged}" Header="Значение" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Path= Unit, UpdateSourceTrigger=PropertyChanged}" Header="Единица измерения" IsReadOnly="True" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <DataGrid x:Name="newCoeffTable" Grid.Row="2" Grid.ColumnSpan="2" Margin="10, 10, 10, 10" AutoGenerateColumns="False"
+                              CanUserAddRows="True" RowEditEnding="addTable_RowEditEnding">
+                        <DataGrid.Columns>
+                            <DataGridComboBoxColumn SelectedItemBinding="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}" x:Name="coeffComboBox" Header="Эмпирический коэффициент мат. модели"  Width="2*"/>
+                            <DataGridTextColumn Binding="{Binding Path= Value, UpdateSourceTrigger=PropertyChanged}" Header="Значение" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Path= Unit, UpdateSourceTrigger=PropertyChanged}" Header="Единица измерения" IsReadOnly="True" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Удалить материал" Loaded="DeleteMaterialTab_Loaded">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Материал:" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="dellMaterialCombo" Grid.Row="0" Grid.Column="1" Width="200" Height="50" FontSize="16" SelectionChanged="dellMaterialCombo_SelectionChanged"></ComboBox>
+                    <Button x:Name="dellMaterialButton" Grid.ColumnSpan="2" Grid.Row="1" Width="200" Height="50" FontSize="16" Click="DeleteMaterial_Click">Удалить материал</Button>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Создать новую единицу измерения">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="0.3*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Единица измерения:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                    <TextBox x:Name="unitText" Grid.Row="0" Grid.Column="1" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" 
+                             TextChanged="unitText_TextChanged"/>
+                    <Button x:Name="addUnitBtn" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="50" Width="300" 
+                            HorizontalAlignment="Center" FontSize="20" Click="addUnitBtn_Click">Добавить единицу измерения</Button>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Создать новое свойство" Loaded="addPropTabItem_Loaded">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="0.3*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Свойство:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                    <TextBox x:Name="propText" Grid.Row="0" Grid.Column="1" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                             FontSize="20" TextChanged="propText_TextChanged"/>
+                    <ComboBox x:Name="unitComboBox" Grid.Row="0" Grid.Column="2" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                    <Button x:Name="addPropBtn" Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Height="50" Width="200" HorizontalAlignment="Center" 
+                            FontSize="20" Click="addPropBtn_Click">Добавить свойство</Button>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

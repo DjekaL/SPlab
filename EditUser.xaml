@@ -1,0 +1,68 @@
+﻿<Window x:Class="Don_tKnowHowToNameThis.EditUser"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Don_tKnowHowToNameThis"
+        mc:Ignorable="d"
+        Title="EditUser" Height="508" Width="800">
+    <Grid>
+        <TabControl>
+            <TabItem x:Name="addNewUser1" Header="Добавить учетную запись исследователя" Loaded="addNewUser1_Loaded">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Name="Errors" Grid.Row="0" Grid.ColumnSpan = "2" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="22"/>
+                    <Label Grid.Row="1" Grid.Column="0" Content="Логин:" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Label Grid.Row="2" Grid.Column="0" Content="Пароль:" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBox x:Name="addNewLogin" Grid.Row="1" Grid.Column="1" Width="200" Height="50" FontSize="22" TextChanged="addNewLogin_TextChanged"></TextBox>
+                    <TextBox x:Name="addNewPassword" Grid.Row="2" Grid.Column="1" Width="200" Height="50" FontSize="22" TextChanged="addNewLogin_TextChanged"></TextBox>
+                    <Button x:Name="addNewUser" Grid.ColumnSpan="2" Grid.Row="3" Width="200" Height="50" FontSize="16" Click="addNewUser_Click">Добавить пользователя</Button>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="changPas" Header="Изменить пароль" Loaded="ChangePassword_Loaded">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Content="Новый пароль:" FontSize="22" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBox x:Name="oldPas" Grid.Row="1" Grid.Column="1" Width="200" Height="50" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextChanged="PasChanfe_Changed"></TextBox>
+                    <Button x:Name="changePasButton" Grid.ColumnSpan="2" Grid.Row="3" Width="200" Height="50" FontSize="16" Click="changePas_Click">Поменять пароль</Button>
+                    <Label Content="Старый пароль:" Grid.Column="0" Grid.Row="1" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBox x:Name="newPas" Grid.Row="2" Grid.Column="1" Width="200" Height="50" FontSize="22" TextChanged="PasChanfe_Changed"/>
+                    <Label x:Name="currenrtUser" Content="Текущий пользователь: " FontSize="22" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Удалить учетную запись исследователя" Loaded="dellUser_Loaded">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Пользователь:" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="dellUserComboBox" Grid.Row="0" Grid.Column="1" Width="200" Height="50" FontSize="16" SelectionChanged="dellUserComboBox_SelectionChanged"></ComboBox>
+                    <Button x:Name="dellUserButton" Grid.ColumnSpan="2" Grid.Row="1" Width="200" Height="50" FontSize="16" Click="dellUser_Click">Удалить пользователя</Button>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
